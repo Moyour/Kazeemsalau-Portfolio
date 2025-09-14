@@ -13,6 +13,11 @@ const storage = new Storage();
 
 const router = Router();
 
+// Health check endpoint for Render
+router.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
+});
+
 // Helper function for admin routes with session timeout
 const adminRoute = [authenticateToken, sessionTimeout, requireAdmin];
 

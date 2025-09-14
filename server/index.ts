@@ -51,28 +51,20 @@ app.get("/*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
 });
 
-let currentPort = 5001; // Start trying from 5001
+const PORT = process.env.PORT || 5001;
 
 export function startServer(): Promise<Server> {
   return new Promise((resolve, reject) => {
-    const tryListen = (port: number) => {
-      const httpServer = createServer(app);
-      httpServer.listen(port, () => {
-        console.log(`Server listening on port ${port}`);
-        resolve(httpServer);
-      });
+    const httpServer = createServer(app);
+    httpServer.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+      resolve(httpServer);
+    });
 
-      httpServer.on("error", (err: any) => {
-        if (err.code === "EADDRINUSE") {
-          console.warn(`Port ${port} is already in use. Trying next port...`);
-          tryListen(port + 1); // Try the next port
-        } else {
-          reject(err); // Reject with other errors
-        }
-      });
-    };
-
-    tryListen(currentPort);
+    httpServer.on("error", (err: any) => {
+      console.error(`Server error: ${err.message}`);
+      reject(err);
+    });
   });
 }
 
