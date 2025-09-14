@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Mail, Linkedin, MapPin, Download, Calendar, Send, X, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,14 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { insertContactSchema, type InsertContact } from "@shared/schema";
+import { type InsertContact } from "../../server/storage";
 import { apiRequest } from "@/lib/queryClient";
 
 const projectTypes = [
   "eLearning Development",
   "Corporate Training", 
-  "Mobile Learning",
-  "Assessment Design",
   "Learning Strategy",
   "Other"
 ];
@@ -25,19 +22,17 @@ export default function Contact() {
   const { toast } = useToast();
 
   const form = useForm<InsertContact>({
-    resolver: zodResolver(insertContactSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
-      company: "",
       projectType: "",
       message: "",
     },
   });
 
   const contactMutation = useMutation({
-    mutationFn: (data: InsertContact) => apiRequest("POST", "/api/contact", data),
+    mutationFn: (data: InsertContact) => apiRequest("POST", "/api/contact-submissions", data),
     onSuccess: () => {
       toast({
         title: "Message sent successfully!",
@@ -123,15 +118,6 @@ export default function Contact() {
                     </a>
                   </div>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MapPin className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-white">Location</p>
-                      <p className="text-white/80" data-testid="contact-location">Manchester, United Kingdom</p>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -211,7 +197,7 @@ export default function Contact() {
                         <FormControl>
                           <Input 
                             type="email"
-                            placeholder="kazeem.salau@yahoo.com" 
+                            placeholder="Jonhdoe@youremail.com" 
                             {...field}
                             className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
                             data-testid="input-email"
@@ -222,25 +208,6 @@ export default function Contact() {
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="company"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-white">Company</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Your company name" 
-                            {...field}
-                            value={field.value || ""}
-                            className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
-                            data-testid="input-company"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
                   <FormField
                     control={form.control}

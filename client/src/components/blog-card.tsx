@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { BlogPost } from "@shared/schema";
 import { Clock, MessageCircle, Star } from "lucide-react";
+import { formatShortDate } from "@/lib/date-utils";
 
 interface BlogCardProps {
   post: BlogPost;
@@ -28,17 +29,12 @@ export default function BlogCard({ post }: BlogCardProps) {
         <div className="flex-1 space-y-3">
           {/* Author Info */}
           <div className="flex items-center gap-3">
-            
             <span className="text-sm text-gray-700 font-medium">{author.name}</span>
             {author.verified && (
               <div className="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
                 <div className="w-2 h-2 bg-white rounded-full"></div>
               </div>
             )}
-            <span className="text-gray-400">•</span>
-            <span className="text-sm text-gray-500">
-              in <span className="font-medium text-gray-700">{post.category || 'Design'}</span>
-            </span>
           </div>
 
           {/* Title */}
@@ -61,20 +57,13 @@ export default function BlogCard({ post }: BlogCardProps) {
           <div className="flex items-center gap-6 pt-2">
             <div className="flex items-center gap-1 text-gray-500">
               <Star className="w-4 h-4" />
-              <span className="text-sm">{new Date(post.createdAt!).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric"
-              })}</span>
-            </div>
-            
-            <div className="flex items-center gap-1 text-gray-500">
+              <span className="text-sm">{formatShortDate(post.createdAt)}</span>
+              <span className="text-gray-400 mx-2">•</span>
+              <span className="text-sm font-medium text-gray-700">{post.category || 'Design'}</span>
+              <span className="text-gray-400 mx-2">•</span>
               <Clock className="w-4 h-4" />
               <span className="text-sm">{engagement.readTime}</span>
             </div>
-
-            
-
-            
           </div>
         </div>
 

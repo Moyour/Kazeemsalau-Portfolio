@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { Sparkles, ArrowRight, Target, Users, Brain, Zap, Calendar, ExternalLink, Filter, Monitor } from "lucide-react";
-import { Project } from "@shared/schema";
+import { Project } from "../../../shared/schema";
 
 export default function Portfolio() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -12,6 +12,9 @@ export default function Portfolio() {
 
   useEffect(() => {
     setIsLoaded(true);
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -24,10 +27,10 @@ export default function Portfolio() {
   });
 
   const categories = [
-    { id: "Digital", label: "Digital Learning", icon: Target, count: projects.length },
-    { id: "mobile", label: "Mobile Experiences", icon: Brain, count: projects.filter(p => p.category === "elearning").length },
-    { id: "Corporate", label: "Corporate Training", icon: Zap, count: projects.filter(p => p.category === "mobile").length },
-    { id: "Game", label: "Gamified", icon: Users, count: projects.filter(p => p.category === "corporate").length },
+    { id: "Digital", label: "Digital Learning", icon: Monitor },
+    { id: "mobile", label: "Mobile Experiences", icon: Brain },
+    { id: "Corporate", label: "Corporate Training", icon: Users },
+    { id: "Game", label: "Gamified Learning", icon: Sparkles },
   ];
 
   const filteredProjects = projects.filter((project: Project) => {
@@ -35,10 +38,10 @@ export default function Portfolio() {
   });
 
   const impactStats = [
-    { number: "150K+", label: "Learners Transformed", icon: Users },
-    { number: "95%", label: "Satisfaction Rate", icon: Target },
-    { number: "40+", label: "Projects Delivered", icon: Sparkles },
-    { number: "85%", label: "Performance Improvement", icon: Brain },
+    { label: "Transform Learning", icon: Users },
+    { label: "Exceed Expectations", icon: Target },
+    { label: "Timely Delivery", icon: Calendar },
+    { label: "Boost Results", icon: Brain },
   ];
 
   return (
@@ -118,7 +121,6 @@ export default function Portfolio() {
                   <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500">
                     <div className="text-center space-y-4">
                       <stat.icon className="w-8 h-8 text-white mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
-                      <div className="text-3xl font-black text-white group-hover:scale-110 transition-all duration-300">{stat.number}</div>
                       <div className="text-white/80 font-medium text-sm group-hover:text-white group-hover:translate-y-0.5 transition-all duration-300">{stat.label}</div>
                     </div>
                   </div>
@@ -159,7 +161,7 @@ export default function Portfolio() {
               <span className="text-white/50">IMPACT</span>
             </h2>
             <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Learning solutions that inspire, engage, and deliver results with combination of creativity, strategy, and technology to design experiences that not only transfer knowledge but also drive real change in the way people learn and work.
+              Where innovation meets impact. I craft learning experiences that don't just teach—they transform minds, ignite passion, and drive extraordinary results that last.
             </p>
           </div>
           
@@ -174,7 +176,6 @@ export default function Portfolio() {
                 <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500">
                   <div className="text-center space-y-4">
                     <category.icon className="w-8 h-8 text-white mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
-                    <div className="text-3xl font-black text-white group-hover:scale-110 transition-all duration-300">{category.count}</div>
                     <div className="text-white/80 font-medium text-sm group-hover:text-white group-hover:translate-y-0.5 transition-all duration-300">{category.label}</div>
                   </div>
                 </div>
@@ -235,7 +236,7 @@ export default function Portfolio() {
                         {/* Tools/Technologies */}
                         {project.tools && project.tools.length > 0 && (
                           <div className="flex flex-wrap gap-3">
-                            {project.tools.map((tool, toolIndex) => (
+                            {project.tools.map((tool: string, toolIndex: number) => (
                               <span 
                                 key={toolIndex}
                                 className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white/90 text-sm font-medium border border-white/20"

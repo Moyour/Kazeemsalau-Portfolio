@@ -120,7 +120,7 @@ export default function ProjectDetail() {
                   alt={project.title}
                   className="w-full h-full object-cover rounded-2xl"
                   onError={(e) => {
-                    console.log('Image failed to load:', project.imageUrl);
+                    // Debug: Image load error (remove in production)
                     e.currentTarget.style.display = 'none';
                     const fallbackDiv = e.currentTarget.parentElement?.querySelector('.fallback-placeholder') as HTMLElement;
                     if (fallbackDiv) {
@@ -128,7 +128,7 @@ export default function ProjectDetail() {
                     }
                   }}
                   onLoad={() => {
-                    console.log('Image loaded successfully:', project.imageUrl);
+                    // Debug: Image loaded successfully (remove in production)
                   }}
                   data-testid="project-image"
                 />

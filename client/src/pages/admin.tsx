@@ -1,20 +1,33 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Project, BlogPost, Testimonial, ContactSubmission, Resume, type InsertProject, type InsertBlogPost, type InsertTestimonial, type InsertResume } from "@shared/schema";
+// Types are now defined in server/storage.ts - using any for now
+type Project = any;
+type BlogPost = any;
+type Testimonial = any;
+type ContactSubmission = any;
+type Resume = any;
+type InsertProject = any;
+type InsertBlogPost = any;
+type InsertTestimonial = any;
+type InsertResume = any;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import BlogImageUpload from "@/components/BlogImageUpload";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trash2, Edit, Plus, Save, X, FileText, Users, Mail, FolderOpen, Eye, EyeOff, ImageIcon, Type, List, Quote } from "lucide-react";
+import { Trash2, Edit, Plus, Save, X, FileText, Users, Mail, FolderOpen, Eye, EyeOff, ImageIcon, Type, List, Quote, LogOut } from "lucide-react";
 import MarkdownContent from "@/components/markdown-content";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatDate } from "@/lib/date-utils";
 
 
 export default function Admin() {
+  const { logout } = useAuth();
   const [activeTab, setActiveTab] = useState("projects");
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
@@ -25,7 +38,7 @@ export default function Admin() {
   const [formData, setFormData] = useState<InsertProject>({
     title: "",
     description: "",
-    category: "elearning",
+    category: "E-Learning",
     tools: [],
     imageUrl: "",
     caseStudyUrl: "",
@@ -41,7 +54,7 @@ export default function Admin() {
     title: "",
     excerpt: "",
     content: "",
-    category: "instructional-design",
+    category: "Instructional Design",
     imageUrl: "",
     readTime: "",
     published: false,
@@ -72,7 +85,7 @@ export default function Admin() {
 
   
   const { data: blogPosts = [], isLoading: blogLoading } = useQuery<BlogPost[]>({
-    queryKey: ["/api/blog?all=true"],
+    queryKey: ["/api/blog-posts"],
     staleTime: 0,
     refetchOnWindowFocus: true,
   });
@@ -105,7 +118,7 @@ export default function Admin() {
 
   const updateProjectMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<InsertProject> }) => {
-      return await apiRequest("PATCH", `/api/projects/${id}`, data);
+      return await apiRequest("PUT", `/api/projects/${id}`, data);
     },
     onSuccess: () => {
       toast({ title: "Project updated successfully!" });
@@ -132,11 +145,11 @@ export default function Admin() {
 
   const createBlogMutation = useMutation({
     mutationFn: async (data: InsertBlogPost) => {
-      return await apiRequest("POST", "/api/blog", data);
+      return await apiRequest("POST", "/api/blog-posts", data);
     },
     onSuccess: () => {
       toast({ title: "Blog post created successfully!" });
-      queryClient.invalidateQueries({ queryKey: ["/api/blog?all=true"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
       resetBlogForm();
     },
     onError: (error) => {
@@ -146,11 +159,11 @@ export default function Admin() {
 
   const updateBlogMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<InsertBlogPost> }) => {
-      return await apiRequest("PATCH", `/api/blog/${id}`, data);
+      return await apiRequest("PUT", `/api/blog-posts/${id}`, data);
     },
     onSuccess: () => {
       toast({ title: "Blog post updated successfully!" });
-      queryClient.invalidateQueries({ queryKey: ["/api/blog?all=true"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
       resetBlogForm();
     },
     onError: (error) => {
@@ -160,11 +173,11 @@ export default function Admin() {
 
   const deleteBlogMutation = useMutation({
     mutationFn: async (id: string) => {
-      return await apiRequest("DELETE", `/api/blog/${id}`);
+      return await apiRequest("DELETE", `/api/blog-posts/${id}`);
     },
     onSuccess: () => {
       toast({ title: "Blog post deleted successfully!" });
-      queryClient.invalidateQueries({ queryKey: ["/api/blog?all=true"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
     },
     onError: (error) => {
       toast({ title: "Error deleting blog post", description: error.message, variant: "destructive" });
@@ -227,7 +240,7 @@ export default function Admin() {
     setFormData({
       title: "",
       description: "",
-      category: "elearning",
+      category: "E-Learning",
       tools: [],
       imageUrl: "",
       caseStudyUrl: "",
@@ -248,7 +261,7 @@ export default function Admin() {
       title: "",
       excerpt: "",
       content: "",
-      category: "instructional-design",
+      category: "Instructional Design",
       imageUrl: "",
       readTime: "",
       published: false,
@@ -376,9 +389,19 @@ export default function Admin() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">Website Admin</h1>
-            <p className="text-white/80">Complete content management system for your portfolio</p>
+          <div className="mb-8 flex justify-between items-start">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2">Website Admin</h1>
+              <p className="text-white/80">Complete content management system for your portfolio</p>
+            </div>
+            <Button
+              onClick={logout}
+              variant="outline"
+              className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -575,7 +598,7 @@ export default function Admin() {
                       <Button
                         type="submit"
                         disabled={createProjectMutation.isPending || updateProjectMutation.isPending}
-                        className="bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600"
+                        className="bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white"
                         data-testid="button-save"
                       >
                         <Save className="w-4 h-4 mr-2" />
@@ -585,7 +608,7 @@ export default function Admin() {
                         type="button"
                         variant="outline"
                         onClick={resetProjectForm}
-                        className="border-white/20 text-white hover:bg-white/10 bg-[#ff00001a]"
+                        className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5"
                         data-testid="button-cancel"
                       >
                         <X className="w-4 h-4 mr-2" />
@@ -617,7 +640,7 @@ export default function Admin() {
                           <p className="text-white/80 mb-3">{project.description}</p>
                           {project.tools && project.tools.length > 0 && (
                             <div className="flex flex-wrap gap-2 mb-3">
-                              {project.tools.map((tool, index) => (
+                              {project.tools.map((tool: string, index: number) => (
                                 <Badge key={index} variant="secondary" className="bg-white/10 text-white/90">
                                   {tool}
                                 </Badge>
@@ -635,7 +658,7 @@ export default function Admin() {
                             variant="outline"
                             size="sm"
                             onClick={() => startProjectEdit(project)}
-                            className="border-white/20 text-white hover:bg-white/10 bg-[#554491]"
+                            className="border-blue-500/20 text-blue-300 hover:bg-blue-500/10 bg-blue-500/5"
                             data-testid={`button-edit-${project.id}`}
                           >
                             <Edit className="w-4 h-4" />
@@ -644,7 +667,7 @@ export default function Admin() {
                             variant="outline"
                             size="sm"
                             onClick={() => deleteProjectMutation.mutate(project.id)}
-                            className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-[#57449100]"
+                            className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5"
                             data-testid={`button-delete-${project.id}`}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -694,11 +717,12 @@ export default function Admin() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="instructional-design">Instructional Design</SelectItem>
-                              <SelectItem value="elearning">E-Learning</SelectItem>
-                              <SelectItem value="book-review">Book Review</SelectItem>
-                              <SelectItem value="personal-development">Personal Development</SelectItem>
-                              <SelectItem value="case-study">Case Study</SelectItem>
+                              <SelectItem value="Instructional Design">Instructional Design</SelectItem>
+                              <SelectItem value="E-Learning">E-Learning</SelectItem>
+                              <SelectItem value="Book Review">Book Review</SelectItem>
+                              <SelectItem value="Personal-Development">Personal Development</SelectItem>
+                              <SelectItem value="Case-Study">Case Study</SelectItem>
+                              <SelectItem value="Learning Technology">Learning Technology</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -722,7 +746,7 @@ export default function Admin() {
                             variant="outline"
                             size="sm"
                             onClick={() => setShowPreview(!showPreview)}
-                            className="border-white/20 text-white hover:bg-white/10"
+                            className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 bg-purple-500/5"
                           >
                             {showPreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
                             {showPreview ? 'Hide Preview' : 'Show Preview'}
@@ -746,7 +770,7 @@ export default function Admin() {
                                   setBlogFormData({...blogFormData, content: newText});
                                 }
                               }}
-                              className="text-white/80 hover:bg-white/10 h-8"
+                              className="text-blue-300 hover:bg-blue-500/10 h-8 border border-blue-500/20"
                             >
                               <ImageIcon className="w-4 h-4 mr-1" />
                               Image
@@ -765,7 +789,7 @@ export default function Admin() {
                                   setBlogFormData({...blogFormData, content: newText});
                                 }
                               }}
-                              className="text-white/80 hover:bg-white/10 h-8"
+                              className="text-blue-300 hover:bg-blue-500/10 h-8 border border-blue-500/20"
                             >
                               <Type className="w-4 h-4 mr-1" />
                               Heading
@@ -784,7 +808,7 @@ export default function Admin() {
                                   setBlogFormData({...blogFormData, content: newText});
                                 }
                               }}
-                              className="text-white/80 hover:bg-white/10 h-8"
+                              className="text-blue-300 hover:bg-blue-500/10 h-8 border border-blue-500/20"
                             >
                               <List className="w-4 h-4 mr-1" />
                               List
@@ -803,7 +827,7 @@ export default function Admin() {
                                   setBlogFormData({...blogFormData, content: newText});
                                 }
                               }}
-                              className="text-white/80 hover:bg-white/10 h-8"
+                              className="text-blue-300 hover:bg-blue-500/10 h-8 border border-blue-500/20"
                             >
                               <Quote className="w-4 h-4 mr-1" />
                               Quote
@@ -839,16 +863,14 @@ export default function Admin() {
                         </div>
                       </div>
 
+                      <div className="grid grid-cols-1 gap-6">
+                        <BlogImageUpload
+                          value={blogFormData.imageUrl}
+                          onChange={(imageUrl) => setBlogFormData({...blogFormData, imageUrl})}
+                        />
+                      </div>
+                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="text-white text-sm font-medium">Image URL</label>
-                          <Input 
-                            value={blogFormData.imageUrl || ''}
-                            onChange={(e) => setBlogFormData({...blogFormData, imageUrl: e.target.value})}
-                            className="bg-white/10 border-white/20 text-white placeholder:text-white/60 mt-2"
-                            placeholder="Optional image for the blog post"
-                          />
-                        </div>
                         <div>
                           <label className="text-white text-sm font-medium">Read Time</label>
                           <Input 
@@ -877,11 +899,11 @@ export default function Admin() {
                       </div>
 
                       <div className="flex gap-4">
-                        <Button type="submit" className="bg-gradient-to-r from-green-500 to-purple-500">
+                        <Button type="submit" className="bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white">
                           <Save className="w-4 h-4 mr-2" />
-                          {editingBlogPost ? 'Update' : 'Create'} Blog Post
+                          {editingBlogPost ? 'Publish' : 'Create'} Blog Post
                         </Button>
-                        <Button type="button" variant="outline" onClick={resetBlogForm} className="border-red/20 text-white hover:bg-white/10">
+                        <Button type="button" variant="outline" onClick={resetBlogForm} className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5">
                           <X className="w-4 h-4 mr-2" />
                           Cancel
                         </Button>
@@ -933,7 +955,7 @@ export default function Admin() {
                             </div>
                             <p className="text-white/80 mb-3">{post.excerpt || "No excerpt provided"}</p>
                             <p className="text-white/60 text-sm">
-                              Created: {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Date unknown'}
+                              Created: {formatDate(post.createdAt)}
                             </p>
                           </div>
                           <div className="flex gap-2">
@@ -941,7 +963,7 @@ export default function Admin() {
                               variant="outline"
                               size="sm"
                               onClick={() => startBlogEdit(post)}
-                              className="border-white/20 text-white hover:bg-white/10 bg-[#554491]"
+                              className="border-blue-500/20 text-blue-300 hover:bg-blue-500/10 bg-blue-500/5"
                               data-testid={`button-edit-blog-${post.id}`}
                             >
                               <Edit className="w-4 h-4" />
@@ -950,7 +972,7 @@ export default function Admin() {
                               variant="outline"
                               size="sm"
                               onClick={() => deleteBlogMutation.mutate(post.id)}
-                              className="border-red-500/20 text-red-300 hover:bg-red-500/10"
+                              className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5"
                               data-testid={`button-delete-blog-${post.id}`}
                             >
                               <Trash2 className="w-4 h-4" />
@@ -1022,11 +1044,11 @@ export default function Admin() {
                       </div>
 
                       <div className="flex gap-4">
-                        <Button type="submit" className="bg-gradient-to-r from-green-500 to-purple-500">
+                        <Button type="submit" className="bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white">
                           <Save className="w-4 h-4 mr-2" />
                           Create Testimonial
                         </Button>
-                        <Button type="button" variant="outline" onClick={resetTestimonialForm} className="border-white/20 text-white hover:bg-white/10">
+                        <Button type="button" variant="outline" onClick={resetTestimonialForm} className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5">
                           <X className="w-4 h-4 mr-2" />
                           Cancel
                         </Button>
@@ -1060,7 +1082,7 @@ export default function Admin() {
                             variant="outline"
                             size="sm"
                             onClick={() => deleteTestimonialMutation.mutate(testimonial.id)}
-                            className="border-red-500/20 text-red-300 hover:bg-red-500/10"
+                            className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -1125,7 +1147,7 @@ export default function Admin() {
                           )}
                           
                           <p className="text-white/60 text-sm">
-                            Uploaded: {resume.uploadedAt ? new Date(resume.uploadedAt).toLocaleDateString() : 'Date unknown'}
+                            Uploaded: {formatDate(resume.uploadedAt)}
                           </p>
                         </div>
                         
@@ -1134,7 +1156,7 @@ export default function Admin() {
                             <Button
                               onClick={() => activateResumeMutation.mutate(resume.id)}
                               size="sm"
-                              className="bg-green-500/20 hover:bg-green-500/30 text-green-300"
+                              className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30"
                               data-testid={`button-activate-resume-${resume.id}`}
                             >
                               Set Active
@@ -1143,8 +1165,8 @@ export default function Admin() {
                           <Button
                             onClick={() => deleteResumeMutation.mutate(resume.id)}
                             size="sm"
-                            variant="destructive"
-                            className="bg-red-500/20 hover:bg-red-500/30"
+                            variant="outline"
+                            className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5"
                             data-testid={`button-delete-resume-${resume.id}`}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -1197,7 +1219,7 @@ export default function Admin() {
                           </div>
                           <p className="text-white/80 mb-3">{contact.message}</p>
                           <p className="text-white/60 text-sm">
-                            Received: {contact.createdAt ? new Date(contact.createdAt).toLocaleDateString() : 'Date unknown'}
+                            Received: {formatDate(contact.createdAt)}
                           </p>
                         </div>
                       </div>

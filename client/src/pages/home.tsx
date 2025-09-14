@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Quote, Sparkles, Monitor } from "lucide-react";
 import aboutMeImage from "../assets/about-me.png";
 import testiImage from "../assets/Tes4.jpg";
-import type { Project } from "@/../../shared/schema";
+// import type { Project } from "@/../../shared/schema";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -15,9 +15,11 @@ export default function Home() {
   const projectsRef = useRef<HTMLElement>(null);
 
   // Fetch projects from portfolio
-  const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
+  const { data: projects = [], isLoading: projectsLoading } = useQuery<any[]>({
     queryKey: ['/api/projects'],
   });
+
+  // Debug: Projects logged (remove in production)
 
   // Get the first project as featured (you can change this logic)
   const featuredProject = projects && projects.length > 0 ? projects[0] : null;

@@ -1,37 +1,45 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import svgr from "vite-plugin-svgr";
+import * as path from "node:path";
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer(),
-          ),
-        ]
-      : []),
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+  base: './',
+  plugins: [react(), svgr()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+      },
     },
   },
-  root: path.resolve(import.meta.dirname, "client"),
-  build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
-    emptyOutDir: true,
+  css: {
+    postcss: {
+      plugins: [
+        (await import("tailwindcss")).default,
+        (await import("autoprefixer")).default,
+      ],
+    },
   },
-  server: {
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
+  resolve: {
+    alias: {
+      "@": path.resolve(process.cwd(), "client", "src"),
+      "@shared": path.resolve(process.cwd(), "shared"),
+      "@assets": path.resolve(process.cwd(), "attached_assets"),
+    },
+  },
+  root: path.resolve(process.cwd(), "client"),
+  build: {
+    outDir: path.resolve(process.cwd(), "client/dist"),
+    emptyOutDir: true,
+    rollupOptions: {
+      input: path.resolve(process.cwd(), "client", "index.html"),
     },
   },
 });

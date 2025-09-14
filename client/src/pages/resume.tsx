@@ -60,11 +60,13 @@ export default function Resume() {
               Professional Summary
             </h3>
             <p className="text-gray-700 leading-relaxed text-lg">
-              Results孝2Results-driven Instructional Designer with 8+ years of experience creating engaging,
-              learner-centered educational experiences. Expert in applying learning science principles,
-              design thinking methodologies, and cutting-edge educational technologies to deliver
-              measurable learning outcomes. Proven track record of improving learner engagement by
-              40% and knowledge retention by 35% through innovative design approaches.
+              I build learning that truly changes how people work.
+
+              I have designed a wide range of training programs used across industries like sales, insurance, healthcare, and telecommunications. These programs have reached large audiences and delivered meaningful impact. Whether delivered in a blended format or as self paced learning, I create experiences that are practical, engaging, and aligned with business goals.
+
+              I work closely with subject matter experts and business partners to ensure every course is relevant, clear, and focused on results.
+
+              I bring complex ideas to life through interactive and user friendly design. My focus is always on helping people grow and supporting organizations through thoughtful and effective learning.
             </p>
           </div>
 
@@ -88,8 +90,8 @@ export default function Resume() {
                 <ul className="space-y-2 text-gray-600">
                   <li>• Articulate Storyline 360</li>
                   <li>• Adobe Creative Suite</li>
-                  <li>• LMS Administration</li>
-                  <li>• xAPI/SCORM</li>
+                  <li>• Camtasia</li>
+                  <li>• Colossyan</li>
                 </ul>
               </div>
               <div>
@@ -113,46 +115,79 @@ export default function Resume() {
               {/* Job 1 */}
               <div className="border-l-4 border-purple-200 pl-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                  <h4 className="text-xl font-semibold text-gray-900">Senior Learning Experience Designer</h4>
-                  <span className="text-gray-500 font-medium">2021 - Present</span>
+                  <h4 className="text-xl font-semibold text-gray-900">Instructional Designer/Operations Specialist</h4>
+                  <span className="text-gray-500 font-medium">2022 - Present</span>
                 </div>
-                <p className="text-purple-600 font-medium mb-3">TechCorp Solutions | San Francisco, CA</p>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Lead design and development of enterprise-wide learning programs serving 5,000+ employees</li>
-                  <li>• Implemented microlearning strategy resulting in 40% increase in course completion rates</li>
-                  <li>• Collaborated with cross-functional teams to align learning objectives with business goals</li>
-                  <li>• Mentored junior designers and established design standards and best practices</li>
-                </ul>
+                <p className="text-purple-600 font-medium mb-3">TM Forum | UK</p>
+              
               </div>
 
               {/* Job 2 */}
               <div className="border-l-4 border-purple-200 pl-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                  <h4 className="text-xl font-semibold text-gray-900">Instructional Designer</h4>
-                  <span className="text-gray-500 font-medium">2019 - 2021</span>
+                  <h4 className="text-xl font-semibold text-gray-900">Learning Manager</h4>
+                  <span className="text-gray-500 font-medium">2019 - 2022</span>
                 </div>
-                <p className="text-purple-600 font-medium mb-3">EduTech Innovations | Remote</p>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Designed and developed 50+ interactive e-learning modules using Articulate Storyline</li>
-                  <li>• Conducted learner analysis and usability testing to optimize learning experiences</li>
-                  <li>• Improved learner satisfaction scores by 35% through user-centered design approaches</li>
-                  <li>• Created comprehensive style guides and design documentation</li>
-                </ul>
+                <p className="text-purple-600 font-medium mb-3">Leadway Assurance | NIG</p>
+                
               </div>
 
               {/* Job 3 */}
               <div className="border-l-4 border-purple-200 pl-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                  <h4 className="text-xl font-semibold text-gray-900">Learning Specialist</h4>
+                  <h4 className="text-xl font-semibold text-gray-900">Learning Experience Designer</h4>
                   <span className="text-gray-500 font-medium">2017 - 2019</span>
                 </div>
-                <p className="text-purple-600 font-medium mb-3">Global Learning Institute | New York, NY</p>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Developed curriculum for professional development programs in healthcare sector</li>
-                  <li>• Facilitated training sessions for 200+ healthcare professionals annually</li>
-                  <li>• Implemented learning analytics to track and improve program effectiveness</li>
-                  <li>• Collaborated with subject matter experts to ensure content accuracy and relevance</li>
-                </ul>
+                <p className="text-purple-600 font-medium mb-3">Leadway Assurance | NIG</p>
+                
+              </div>
+
+              
+               {/* Job 3 */}
+                <div className="border-l-4 border-purple-200 pl-6">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
+                    <h4 className="text-xl font-semibold text-gray-900">Instructional Designer </h4>
+                    <span className="text-gray-500 font-medium">2017 - 2017</span>
+                  </div>
+                  <p className="text-purple-600 font-medium mb-3">Kotivu.NG | NIG</p>
+                  
+                </div>
+
+              {/* Job 3 */}
+              <div className="border-l-4 border-purple-200 pl-6">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
+                  <h4 className="text-xl font-semibold text-gray-900">Instructional Designer </h4>
+                  <span className="text-gray-500 font-medium">2016 - 2016</span>
+                </div>
+                <p className="text-purple-600 font-medium mb-3">WorkforceGroup | NIG</p>
+
+              </div>
+
+              <div className="border-l-4 border-purple-200 pl-6">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
+                  <h4 className="text-xl font-semibold text-gray-900">Graphic Designer </h4>
+                  <span className="text-gray-500 font-medium">2014 - 2016</span>
+                </div>
+                <p className="text-purple-600 font-medium mb-3">WorkforceGroup | NIG</p>
+
+              </div>
+            </div>
+            
+          </div>
+
+          
+
+          {/* Education */}
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 border-b-2 border-purple-200 pb-2">
+              Education
+            </h3>
+            <div className="space-y-6">
+              
+              <div className="border-l-4 border-purple-200 pl-6">
+                <h4 className="text-xl font-semibold text-gray-900">Bachelor of Science (B.S.)</h4>
+                <p className="text-purple-600 font-medium">Computer Science </p>
+               
               </div>
             </div>
           </div>
@@ -163,76 +198,47 @@ export default function Resume() {
               Education
             </h3>
             <div className="space-y-6">
+
               <div className="border-l-4 border-purple-200 pl-6">
-                <h4 className="text-xl font-semibold text-gray-900">Master of Education (M.Ed.)</h4>
-                <p className="text-purple-600 font-medium">Instructional Technology | Stanford University</p>
-                <p className="text-gray-500">2017 | Magna Cum Laude</p>
+                <h4 className="text-xl font-semibold text-gray-900">Professional Certificate in Instructional Design</h4>
+                <p className="text-purple-600 font-medium">Digital Learning Institute </p>
+
               </div>
-              <div className="border-l-4 border-purple-200 pl-6">
-                <h4 className="text-xl font-semibold text-gray-900">Bachelor of Science (B.S.)</h4>
-                <p className="text-purple-600 font-medium">Educational Psychology | UC Berkeley</p>
-                <p className="text-gray-500">2015 | Summa Cum Laude</p>
-              </div>
+
+              
             </div>
           </div>
 
           {/* Certifications */}
           <div className="mb-12">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 border-b-2 border-purple-200 pb-2">
-              Certifications & Awards
+              Certifications
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
+              <div className="border-l-4 border-purple-200 pl-6">
+                <h4 className="text-xl font-semibold text-gray-900">Professional Certificate in Instructional Design</h4>
+                <p className="text-purple-600 font-medium">Computer Science </p>
+
+              </div>
+
+              
+              
+              
               <div>
                 <h4 className="font-semibold text-gray-800 mb-3">Professional Certifications</h4>
                 <ul className="space-y-2 text-gray-600">
-                  <li>• Certified Professional in Learning and Performance (CPLP)</li>
-                  <li>• Google UX Design Certificate</li>
-                  <li>• Articulate Storyline 360 Expert</li>
-                  <li>• Adobe Certified Expert (ACE)</li>
+                  <li>• Professional Certificate in Instructional Design</li>
+                  <li>• User Experience: The Beginner's Guide (IxDF)</li>
+                  <li>• The Complete Agile & Scrum Project Management Course (Udemy)</li>
+                
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-800 mb-3">Awards & Recognition</h4>
+                 <h4 className="font-semibold text-gray-800 mb-3">Professional Certifications</h4>
                 <ul className="space-y-2 text-gray-600">
-                  <li>• Learning Innovation Award 2023</li>
-                  <li>• Best E-Learning Course Design 2022</li>
-                  <li>• Outstanding Graduate Student Award 2017</li>
-                  <li>• Dean's List (2013-2015)</li>
+                  <li>• Digital HR Strategy (AIHR)</li>
+                  <li>• Project         Management Fundamentals (Udemy)</li>
                 </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Key Projects */}
-          <div className="mb-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 border-b-2 border-purple-200 pb-2">
-              Key Projects
-            </h3>
-            <div className="space-y-6">
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">Enterprise Onboarding Transformation</h4>
-                <p className="text-gray-700 mb-3">
-                  Complete redesign of company-wide onboarding program using design thinking methodology.
-                  Reduced time-to-productivity by 45% and increased new hire satisfaction by 60%.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">Design Thinking</span>
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">Microlearning</span>
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">Analytics</span>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">AI-Enhanced Learning Platform</h4>
-                <p className="text-gray-700 mb-3">
-                  Pioneered integration of AI-powered personalization features in corporate LMS,
-                  resulting in 50% improvement in learning path completion and 30% increase in knowledge retention.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">AI Integration</span>
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">Personalization</span>
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">LMS</span>
-                </div>
               </div>
             </div>
           </div>

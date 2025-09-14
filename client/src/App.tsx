@@ -3,6 +3,8 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import About from "@/pages/about";
@@ -13,6 +15,8 @@ import BlogPost from "@/pages/blog-post";
 import Contact from "@/pages/contact";
 import Resume from "@/pages/resume";
 import Admin from "@/pages/admin";
+import Login from "@/pages/login";
+import AuthCallback from "@/pages/auth-callback";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 
@@ -30,7 +34,13 @@ function Router() {
           <Route path="/blog/:id" component={BlogPost} />
           <Route path="/contact" component={Contact} />
           <Route path="/resume" component={Resume} />
-          <Route path="/admin" component={Admin} />
+          <Route path="/login" component={Login} />
+          <Route path="/auth/callback" component={AuthCallback} />
+          <Route path="/admin">
+            <ProtectedRoute requireAdmin>
+              <Admin />
+            </ProtectedRoute>
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </main>
@@ -42,10 +52,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

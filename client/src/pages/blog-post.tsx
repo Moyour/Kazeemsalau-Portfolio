@@ -4,8 +4,10 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BlogPost } from "@shared/schema";
+// Type is now defined in server/storage.ts - using any for now
+type BlogPost = any;
 import MarkdownContent from "@/components/markdown-content";
+import { formatDate } from "@/lib/date-utils";
 
 export default function BlogPostPage() {
   const { id } = useParams<{ id: string }>();
@@ -15,7 +17,14 @@ export default function BlogPostPage() {
     isLoading,
     error,
   } = useQuery<BlogPost>({
-    queryKey: ["/api/blog", id],
+    queryKey: ["/api/blog-posts", id],
+    queryFn: async () => {
+      const res = await fetch(`/api/blog-posts/${id}`);
+      if (!res.ok) {
+        throw new Error('Failed to fetch blog post');
+      }
+      return res.json();
+    },
     enabled: !!id,
   });
 
@@ -89,11 +98,7 @@ export default function BlogPostPage() {
             <div className="flex items-center">
               <Calendar className="h-4 w-4 mr-2" />
               <span data-testid="post-date">
-                {new Date(post.createdAt!).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {formatDate(post.createdAt)}
               </span>
             </div>
             {post.readTime && (

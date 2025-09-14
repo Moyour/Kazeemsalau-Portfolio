@@ -1,71 +1,84 @@
-import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import 'dotenv/config';
+import express from "express";
+import { createServer, type Server } from "http";
+import session from "express-session";
+import { router } from "./routes"; // Import the new router
+import { setupGoogleAuth, passport } from "./googleAuth";
+import { Storage } from "./storage";
+import path from "path";
+import fs from "fs";
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); // Enable JSON body parsing
 
-app.use((req, res, next) => {
-  const start = Date.now();
-  const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+// Session configuration for Passport
+app.use(session({
+  secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // Set to true in production with HTTPS
+    maxAge: 365 * 24 * 60 * 60 * 1000 // 1 year - effectively no timeout
+  }
+}));
 
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
+// Initialize Google Auth
+const storage = new Storage();
+setupGoogleAuth(storage);
 
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
-    }
-  });
-
+// Serve static files from uploads directory
+const uploadDir = path.join(process.cwd(), "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+app.use("/uploads", (req, res, next) => {
+  // Add CORS headers for file access
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET");
   next();
+}, express.static(uploadDir));
+
+// Mount the API routes
+app.use("/api", router);
+
+// Catch-all for client-side routing
+app.use(express.static("client/dist"));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
 });
 
-(async () => {
-  const server = await registerRoutes(app);
+let currentPort = 5001; // Start trying from 5001
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+export function startServer(): Promise<Server> {
+  return new Promise((resolve, reject) => {
+    const tryListen = (port: number) => {
+      const httpServer = createServer(app);
+      httpServer.listen(port, () => {
+        console.log(`Server listening on port ${port}`);
+        resolve(httpServer);
+      });
 
-    res.status(status).json({ message });
-    throw err;
+      httpServer.on("error", (err: any) => {
+        if (err.code === "EADDRINUSE") {
+          console.warn(`Port ${port} is already in use. Trying next port...`);
+          tryListen(port + 1); // Try the next port
+        } else {
+          reject(err); // Reject with other errors
+        }
+      });
+    };
+
+    tryListen(currentPort);
   });
+}
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+// Start the server if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+  startServer();
+}
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
-})();
+export { app };

@@ -3,33 +3,34 @@ import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import BlogCard from "@/components/blog-card";
-import { BlogPost } from "@shared/schema";
+// Type is now defined in server/storage.ts - using any for now
+type BlogPost = any;
 import testiImage from "../assets/Tes4.jpg";
 
 export default function Blog() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const { data: blogPosts = [], isLoading, error } = useQuery({
-    queryKey: ["/api/blog"],
+    queryKey: ["/api/blog-posts", searchTerm],
     queryFn: async () => {
-      const res = await fetch("/api/blog?published=true");
+      const url = new URL("/api/blog-posts", window.location.origin);
+      if (searchTerm) {
+        url.searchParams.set("search", searchTerm);
+      }
+      
+      const res = await fetch(url.toString());
       if (!res.ok) {
         throw new Error('Failed to fetch blog posts');
       }
       const data = await res.json();
-      // Ensure we always return an array
-      return Array.isArray(data) ? data : [];
+      // Filter for published posts and ensure we always return an array
+      const publishedPosts = Array.isArray(data) ? data.filter((post: any) => post.published) : [];
+      return publishedPosts;
     },
   });
 
-  const filteredPosts = blogPosts.filter((post: BlogPost) => {
-    const matchesSearch = !searchTerm || 
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.content.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    return matchesSearch;
-  });
+  // Server-side filtering is now handled in the API
+  const filteredPosts = blogPosts;
 
   return (
     <div className="py-20 bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400 min-h-screen">
@@ -46,7 +47,7 @@ export default function Blog() {
       </section>
 
       {/* Blog Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white" data-section="white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           
           {/* Search Bar */}

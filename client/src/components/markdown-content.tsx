@@ -8,6 +8,30 @@ interface MarkdownContentProps {
 export default function MarkdownContent({ content, className = "" }: MarkdownContentProps) {
   return (
     <div className={`prose prose-lg max-w-none ${className}`}>
+      <style jsx>{`
+        .side-by-side-images {
+          display: flex;
+          gap: 20px;
+          margin: 20px 0;
+          flex-wrap: wrap;
+        }
+        .side-by-side-images img {
+          flex: 1;
+          min-width: 200px;
+          max-width: 50%;
+          height: 300px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+        @media (max-width: 768px) {
+          .side-by-side-images {
+            flex-direction: column;
+          }
+          .side-by-side-images img {
+            max-width: 100%;
+          }
+        }
+      `}</style>
       <ReactMarkdown
         remarkPlugins={[]}
         rehypePlugins={[]}
