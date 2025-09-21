@@ -511,12 +511,26 @@ app.post('/api/init-db', async (req, res) => {
       )
     `);
     
+    // Create contact_submissions table if it doesn't exist
+    await db.run(sql`
+      CREATE TABLE IF NOT EXISTS contact_submissions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        project_type TEXT,
+        message TEXT NOT NULL,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
     console.log('✅ Blog posts table created/verified');
+    console.log('✅ Contact submissions table created/verified');
     
     res.json({ 
       success: true, 
       message: 'Database initialized successfully!',
-      tables: ['projects', 'blog_posts']
+      tables: ['projects', 'blog_posts', 'contact_submissions']
     });
   } catch (error) {
     console.error('Error initializing database:', error);
@@ -580,6 +594,64 @@ app.get('/api/blog-posts-workaround', async (req, res) => {
   } catch (error) {
     console.error('Error fetching blog posts workaround:', error);
     res.status(500).json({ error: 'Failed to fetch blog posts' });
+  }
+});
+
+// Contact submission endpoint
+app.post('/api/contact-submissions', async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    const { firstName, lastName, email, projectType, message } = req.body;
+    
+    // Validate required fields
+    if (!firstName || !lastName || !email || !message) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
+    // Insert contact submission
+    await db.run(sql`
+      INSERT INTO contact_submissions (
+        first_name, last_name, email, project_type, message, created_at
+      ) VALUES (?, ?, ?, ?, ?, datetime('now'))
+    `, [firstName, lastName, email, projectType || 'Other', message]);
+    
+    res.json({ 
+      success: true, 
+      message: 'Contact submission received successfully!' 
+    });
+  } catch (error) {
+    console.error('Error creating contact submission:', error);
+    res.status(500).json({ error: 'Failed to create contact submission' });
+  }
+});
+
+// Get contact submissions endpoint (for admin)
+app.get('/api/contact-submissions', async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    const submissions = await db.all(sql`SELECT * FROM contact_submissions ORDER BY created_at DESC`);
+    
+    // Map field names to match schema
+    const submissionsWithCorrectFields = submissions.map(submission => ({
+      id: submission.id,
+      firstName: submission.first_name,
+      lastName: submission.last_name,
+      email: submission.email,
+      projectType: submission.project_type,
+      message: submission.message,
+      createdAt: submission.created_at
+    }));
+    
+    res.json(submissionsWithCorrectFields);
+  } catch (error) {
+    console.error('Error fetching contact submissions:', error);
+    res.status(500).json({ error: 'Failed to fetch contact submissions' });
   }
 });
 
