@@ -37,6 +37,76 @@ try {
   const sqlite = new Database(dbPath);
   db = drizzle(sqlite);
   
+  // Create tables if they don't exist
+  console.log('🔧 Creating database tables...');
+  
+  // Create users table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      username TEXT NOT NULL UNIQUE,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      role TEXT DEFAULT 'user',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+  
+  // Create blog_posts table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS blog_posts (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      title TEXT NOT NULL,
+      excerpt TEXT NOT NULL,
+      content TEXT NOT NULL,
+      category TEXT NOT NULL,
+      image_url TEXT,
+      read_time TEXT,
+      published INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+  
+  // Create projects table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS projects (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      title TEXT NOT NULL,
+      description TEXT NOT NULL,
+      long_description TEXT,
+      category TEXT NOT NULL,
+      tools TEXT DEFAULT '[]',
+      image_url TEXT,
+      case_study_url TEXT,
+      scorm_url TEXT,
+      demo_url TEXT,
+      featured INTEGER DEFAULT 0,
+      challenge TEXT,
+      solution TEXT,
+      process TEXT,
+      results TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+  
+  // Create testimonials table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS testimonials (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      name TEXT NOT NULL,
+      role TEXT NOT NULL,
+      company TEXT NOT NULL,
+      content TEXT NOT NULL,
+      avatar_url TEXT,
+      rating TEXT DEFAULT '5',
+      featured INTEGER DEFAULT 0
+    )
+  `);
+  
+  console.log('✅ Database tables created successfully');
+  
   // Initialize storage with direct database connection
   storage = new Storage();
   setupGoogleAuth(storage);
@@ -44,17 +114,7 @@ try {
   console.log('✅ Database initialized successfully');
 } catch (error) {
   console.error('❌ Database initialization failed:', error);
-  
-  // Create a fallback database connection
-  try {
-    const dbPath = './sqlite.db';
-    const sqlite = new Database(dbPath);
-    db = drizzle(sqlite);
-    console.log('✅ Fallback database initialized');
-  } catch (fallbackError) {
-    console.error('❌ Fallback database failed:', fallbackError);
-    db = null;
-  }
+  db = null;
 }
 
 // Initialize Passport
