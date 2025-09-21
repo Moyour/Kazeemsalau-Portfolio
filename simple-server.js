@@ -273,6 +273,104 @@ app.post('/api/import-data', async (req, res) => {
   }
 });
 
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+    
+    // Find user
+    const users = await db.all(sql`SELECT * FROM users WHERE username = ${username} OR email = ${username}`);
+    
+    if (users.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const user = users[0];
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+    
+    if (!isValidPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    // Generate token (simple implementation)
+    const token = crypto.randomBytes(32).toString('hex');
+    
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Get blog posts
+app.get('/api/blog-posts', async (req, res) => {
+  try {
+    const posts = await db.all(sql`SELECT * FROM blog_posts ORDER BY created_at DESC`);
+    res.json(posts);
+  } catch (error) {
+    console.error('Error fetching blog posts:', error);
+    res.status(500).json({ error: 'Failed to fetch blog posts' });
+  }
+});
+
+// Get projects
+app.get('/api/projects', async (req, res) => {
+  try {
+    const projects = await db.all(sql`SELECT * FROM projects ORDER BY created_at DESC`);
+    res.json(projects);
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(500).json({ error: 'Failed to fetch projects' });
+  }
+});
+
+// Get single blog post
+app.get('/api/blog-posts/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const posts = await db.all(sql`SELECT * FROM blog_posts WHERE id = ${id}`);
+    
+    if (posts.length === 0) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+    
+    res.json(posts[0]);
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    res.status(500).json({ error: 'Failed to fetch blog post' });
+  }
+});
+
+// Get single project
+app.get('/api/projects/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const projects = await db.all(sql`SELECT * FROM projects WHERE id = ${id}`);
+    
+    if (projects.length === 0) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+    
+    res.json(projects[0]);
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    res.status(500).json({ error: 'Failed to fetch project' });
+  }
+});
+
 // Serve static files
 app.use(express.static("client/dist"));
 app.get("/*", (req, res) => {
