@@ -108,6 +108,25 @@ app.get('/api/db-test', (req, res) => {
   res.json({ success: true, message: 'Database is working!', test: [{ test: 1 }] });
 });
 
+app.get('/api/testimonials', async (req, res) => {
+  const { featured } = req.query;
+  let testimonials = sampleTestimonials;
+  
+  if (featured === 'true') {
+    testimonials = sampleTestimonials.filter(t => t.featured);
+  }
+  
+  res.json(testimonials);
+});
+
+app.get('/api/contacts', async (req, res) => {
+  res.json(sampleContacts);
+});
+
+app.get('/api/resumes', async (req, res) => {
+  res.json(sampleResumes);
+});
+
 app.get('/api/setup-admin', async (req, res) => {
   res.json({ 
     success: true, 
@@ -171,25 +190,6 @@ app.get('/api/projects/:id', async (req, res) => {
   }
   
   res.json(project);
-});
-
-app.get('/api/testimonials', async (req, res) => {
-  const { featured } = req.query;
-  let testimonials = sampleTestimonials;
-  
-  if (featured === 'true') {
-    testimonials = sampleTestimonials.filter(t => t.featured);
-  }
-  
-  res.json(testimonials);
-});
-
-app.get('/api/contacts', async (req, res) => {
-  res.json(sampleContacts);
-});
-
-app.get('/api/resumes', async (req, res) => {
-  res.json(sampleResumes);
 });
 
 app.post('/api/import-data', async (req, res) => {
