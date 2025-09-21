@@ -267,10 +267,24 @@ app.get('/api/projects', async (req, res) => {
     
     const projects = await db.all(sql`SELECT * FROM projects ORDER BY created_at DESC`);
     
-    // Ensure tools field is always an array
+    // Ensure tools field is always an array and map field names to match schema
     const projectsWithArrayTools = projects.map(project => ({
-      ...project,
-      tools: typeof project.tools === 'string' ? JSON.parse(project.tools) : project.tools
+      id: project.id,
+      title: project.title,
+      description: project.description,
+      longDescription: project.long_description,
+      category: project.category,
+      tools: typeof project.tools === 'string' ? JSON.parse(project.tools) : project.tools,
+      imageUrl: project.image_url,
+      caseStudyUrl: project.case_study_url,
+      scormUrl: project.scorm_url,
+      demoUrl: project.demo_url,
+      featured: Boolean(project.featured),
+      challenge: project.challenge,
+      solution: project.solution,
+      process: project.process,
+      results: project.results,
+      createdAt: project.created_at
     }));
     
     res.json(projectsWithArrayTools);
@@ -372,10 +386,24 @@ app.get('/api/projects/:id', async (req, res) => {
       return res.status(404).json({ error: 'Project not found' });
     }
     
-    // Ensure tools field is always an array
+    // Ensure tools field is always an array and map field names to match schema
     const project = {
-      ...projects[0],
-      tools: typeof projects[0].tools === 'string' ? JSON.parse(projects[0].tools) : projects[0].tools
+      id: projects[0].id,
+      title: projects[0].title,
+      description: projects[0].description,
+      longDescription: projects[0].long_description,
+      category: projects[0].category,
+      tools: typeof projects[0].tools === 'string' ? JSON.parse(projects[0].tools) : projects[0].tools,
+      imageUrl: projects[0].image_url,
+      caseStudyUrl: projects[0].case_study_url,
+      scormUrl: projects[0].scorm_url,
+      demoUrl: projects[0].demo_url,
+      featured: Boolean(projects[0].featured),
+      challenge: projects[0].challenge,
+      solution: projects[0].solution,
+      process: projects[0].process,
+      results: projects[0].results,
+      createdAt: projects[0].created_at
     };
     
     res.json(project);
