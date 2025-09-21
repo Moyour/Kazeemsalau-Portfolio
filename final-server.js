@@ -552,6 +552,37 @@ app.post('/api/add-blog', async (req, res) => {
   }
 });
 
+// Workaround endpoint: Get blog posts from projects (for Railway)
+app.get('/api/blog-posts-workaround', async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    // Get projects that could be displayed as blog posts
+    const projects = await db.all(sql`SELECT * FROM projects ORDER BY created_at DESC`);
+    
+    // Convert projects to blog post format
+    const blogPosts = projects.map(project => ({
+      id: project.id,
+      title: project.title,
+      excerpt: project.description,
+      content: project.long_description || project.description,
+      category: project.category,
+      imageUrl: project.image_url,
+      readTime: '5 min read', // Default read time
+      published: true,
+      createdAt: project.created_at,
+      updatedAt: project.created_at
+    }));
+    
+    res.json(blogPosts);
+  } catch (error) {
+    console.error('Error fetching blog posts workaround:', error);
+    res.status(500).json({ error: 'Failed to fetch blog posts' });
+  }
+});
+
 // Serve uploads folder for images (specific route before catch-all)
 app.use('/uploads', express.static('uploads'));
 
