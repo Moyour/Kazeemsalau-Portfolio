@@ -310,7 +310,7 @@ app.post("/api/import-data", async (req, res) => {
   }
 });
 
-// Mount the API routes
+// Mount the API routes (BEFORE static files to avoid conflicts)
 app.use("/api", router);
 
 // Catch-all for client-side routing
