@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { sql } from 'drizzle-orm';
+import crypto from 'crypto';
 
 // This will work for both local and Railway environments
 const dbPath = process.env.SQLITE_DATABASE_PATH || './sqlite.db';
@@ -22,7 +23,7 @@ async function updateRailwayPassword() {
     
     // CHANGE THESE VALUES TO WHAT YOU WANT
     const newUsername = 'kazeemsalau';
-    const newPassword = 'Porsche6704@!';
+    const newPassword = '911Porsche@!';
     const newEmail = 'kaspersalau@gmail.com';
     
     const passwordHash = await bcrypt.hash(newPassword, 12);
