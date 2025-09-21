@@ -48,6 +48,11 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
+// Simple test route
+app.get("/test", (req, res) => {
+  res.json({ message: "Server is working!", timestamp: new Date().toISOString() });
+});
+
 // Temporary admin setup route
 app.get("/api/setup-admin", async (req, res) => {
   try {
