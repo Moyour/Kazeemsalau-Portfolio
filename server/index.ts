@@ -23,28 +23,37 @@ app.use(session({
   }
 }));
 
-// Initialize Google Auth
+// Initialize database directly
+import Database from 'better-sqlite3';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
+
+let db;
 let storage;
+
 try {
+  const dbPath = process.env.SQLITE_DATABASE_PATH || './sqlite.db';
+  console.log('🔍 Connecting to database:', dbPath);
+  
+  const sqlite = new Database(dbPath);
+  db = drizzle(sqlite);
+  
+  // Initialize storage with direct database connection
   storage = new Storage();
   setupGoogleAuth(storage);
+  
   console.log('✅ Database initialized successfully');
 } catch (error) {
   console.error('❌ Database initialization failed:', error);
-  // Try to initialize storage again with error handling
+  
+  // Create a fallback database connection
   try {
-    storage = new Storage();
-    console.log('✅ Database re-initialized successfully');
-  } catch (retryError) {
-    console.error('❌ Database re-initialization failed:', retryError);
-    // Create a mock storage for testing
-    storage = {
-      db: {
-        all: () => [],
-        run: () => {},
-        prepare: () => ({ all: () => [], run: () => {} })
-      }
-    };
+    const dbPath = './sqlite.db';
+    const sqlite = new Database(dbPath);
+    db = drizzle(sqlite);
+    console.log('✅ Fallback database initialized');
+  } catch (fallbackError) {
+    console.error('❌ Fallback database failed:', fallbackError);
+    db = null;
   }
 }
 
@@ -86,22 +95,22 @@ app.get("/api/setup-admin", async (req, res) => {
     
     const passwordHash = await bcrypt.hash(newPassword, 12);
     
-    // Check if storage is properly initialized
-    if (!storage || !storage.db) {
+    // Check if database is properly initialized
+    if (!db) {
       return res.status(500).json({ 
         error: 'Database not initialized', 
-        details: 'Storage is not properly set up' 
+        details: 'Database connection failed' 
       });
     }
     
     // Check if admin exists
-    const existingAdmin = await storage.db.all(sql`
+    const existingAdmin = await db.all(sql`
       SELECT id, username, email, role FROM users WHERE role = 'admin'
     `);
     
     if (existingAdmin.length > 0) {
       // Update existing admin
-      await storage.db.run(sql`
+      await db.run(sql`
         UPDATE users 
         SET username = ${newUsername}, 
             email = ${newEmail}, 
@@ -111,7 +120,7 @@ app.get("/api/setup-admin", async (req, res) => {
     } else {
       // Create new admin
       const userId = crypto.randomUUID();
-      await storage.db.run(sql`
+      await db.run(sql`
         INSERT INTO users (id, username, email, password_hash, role, created_at, updated_at)
         VALUES (${userId}, ${newUsername}, ${newEmail}, ${passwordHash}, 'admin', datetime('now'), datetime('now'))
       `);
@@ -127,6 +136,83 @@ app.get("/api/setup-admin", async (req, res) => {
   } catch (error) {
     console.error('Setup error:', error);
     res.status(500).json({ error: 'Setup failed', details: error.message });
+  }
+});
+
+// Data import route for Railway
+app.post("/api/import-data", async (req, res) => {
+  try {
+    const { blog_posts, projects, testimonials } = req.body;
+    
+    if (!db) {
+      return res.status(500).json({ 
+        error: 'Database not initialized', 
+        details: 'Database connection failed' 
+      });
+    }
+    
+    let importedCount = 0;
+    
+    // Import blog posts
+    if (blog_posts && blog_posts.length > 0) {
+      for (const post of blog_posts) {
+        try {
+          await db.run(sql`
+            INSERT OR REPLACE INTO blog_posts 
+            (id, title, excerpt, content, category, image_url, read_time, published, created_at, updated_at)
+            VALUES (${post.id}, ${post.title}, ${post.excerpt}, ${post.content}, ${post.category}, ${post.image_url}, ${post.read_time}, ${post.published}, ${post.created_at}, ${post.updated_at})
+          `);
+          importedCount++;
+        } catch (error) {
+          console.error('Error importing blog post:', post.title, error);
+        }
+      }
+    }
+    
+    // Import projects
+    if (projects && projects.length > 0) {
+      for (const project of projects) {
+        try {
+          await db.run(sql`
+            INSERT OR REPLACE INTO projects 
+            (id, title, description, long_description, category, tools, image_url, case_study_url, scorm_url, demo_url, featured, challenge, solution, process, results, created_at)
+            VALUES (${project.id}, ${project.title}, ${project.description}, ${project.long_description}, ${project.category}, ${project.tools}, ${project.image_url}, ${project.case_study_url}, ${project.scorm_url}, ${project.demo_url}, ${project.featured}, ${project.challenge}, ${project.solution}, ${project.process}, ${project.results}, ${project.created_at})
+          `);
+          importedCount++;
+        } catch (error) {
+          console.error('Error importing project:', project.title, error);
+        }
+      }
+    }
+    
+    // Import testimonials
+    if (testimonials && testimonials.length > 0) {
+      for (const testimonial of testimonials) {
+        try {
+          await db.run(sql`
+            INSERT OR REPLACE INTO testimonials 
+            (id, name, role, company, content, avatar_url, rating, featured)
+            VALUES (${testimonial.id}, ${testimonial.name}, ${testimonial.role}, ${testimonial.company}, ${testimonial.content}, ${testimonial.avatar_url}, ${testimonial.rating}, ${testimonial.featured})
+          `);
+          importedCount++;
+        } catch (error) {
+          console.error('Error importing testimonial:', testimonial.name, error);
+        }
+      }
+    }
+    
+    res.json({ 
+      success: true, 
+      message: `Data imported successfully! ${importedCount} records imported.`,
+      imported: {
+        blog_posts: blog_posts?.length || 0,
+        projects: projects?.length || 0,
+        testimonials: testimonials?.length || 0
+      }
+    });
+  } catch (error) {
+    console.error('Import error:', error);
+    res.status(500).json({ error: 'Import failed', details: error.message });
   }
 });
 
