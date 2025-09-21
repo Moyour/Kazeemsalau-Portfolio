@@ -149,6 +149,32 @@ app.get("/test", (req, res) => {
   res.json({ message: "Server is working!", timestamp: new Date().toISOString() });
 });
 
+// Database test route
+app.get("/api/db-test", (req, res) => {
+  if (!db) {
+    return res.status(500).json({ 
+      error: 'Database not initialized', 
+      details: 'Database connection failed' 
+    });
+  }
+  
+  try {
+    // Test database connection
+    const result = db.all(sql`SELECT 1 as test`);
+    res.json({ 
+      success: true, 
+      message: 'Database is working!', 
+      test: result,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Database test failed', 
+      details: error.message 
+    });
+  }
+});
+
 // Temporary admin setup route
 app.get("/api/setup-admin", async (req, res) => {
   try {
