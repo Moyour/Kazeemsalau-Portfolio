@@ -345,6 +345,9 @@ app.get('/api/blog-posts/:id', async (req, res) => {
   }
 });
 
+// Serve uploads folder for images (specific route before catch-all)
+app.use('/uploads', express.static('uploads'));
+
 // Serve static files
 app.use(express.static("client/dist"));
 
