@@ -24,8 +24,22 @@ app.use(session({
 }));
 
 // Initialize Google Auth
-const storage = new Storage();
-setupGoogleAuth(storage);
+let storage;
+try {
+  storage = new Storage();
+  setupGoogleAuth(storage);
+  console.log('✅ Database initialized successfully');
+} catch (error) {
+  console.error('❌ Database initialization failed:', error);
+  // Create a mock storage for testing
+  storage = {
+    db: {
+      all: () => [],
+      run: () => {},
+      prepare: () => ({ all: () => [], run: () => {} })
+    }
+  };
+}
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -114,14 +128,19 @@ const PORT = process.env.PORT || 5001;
 
 export function startServer(): Promise<Server> {
   return new Promise((resolve, reject) => {
+    console.log('🚀 Starting server...');
+    console.log(`📡 Port: ${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    
     const httpServer = createServer(app);
     httpServer.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
+      console.log(`✅ Server listening on port ${PORT}`);
+      console.log(`🌐 Health check: http://localhost:${PORT}/api/health`);
       resolve(httpServer);
     });
 
     httpServer.on("error", (err: any) => {
-      console.error(`Server error: ${err.message}`);
+      console.error(`❌ Server error: ${err.message}`);
       reject(err);
     });
   });
