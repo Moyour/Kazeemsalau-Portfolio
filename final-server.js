@@ -280,6 +280,38 @@ app.get('/api/projects', async (req, res) => {
   }
 });
 
+// Update project image endpoint
+app.post('/api/update-project-image', async (req, res) => {
+  try {
+    const { title, image_url } = req.body;
+    
+    if (!title || !image_url) {
+      return res.status(400).json({ error: 'Title and image_url are required' });
+    }
+    
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    await db.run(sql`
+      UPDATE projects 
+      SET image_url = ${image_url}
+      WHERE title = ${title}
+    `);
+    
+    res.json({
+      success: true,
+      message: 'Project image updated successfully!',
+      title,
+      image_url
+    });
+    
+  } catch (error) {
+    console.error('Update project image error:', error);
+    res.status(500).json({ error: 'Failed to update project image' });
+  }
+});
+
 // Individual project endpoint
 app.get('/api/projects/:id', async (req, res) => {
   try {
