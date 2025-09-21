@@ -18,6 +18,54 @@ router.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
+// Temporary route to update Railway database password (REMOVE AFTER USE)
+router.get("/api/setup-admin", async (req, res) => {
+  try {
+    const bcrypt = await import('bcryptjs');
+    const crypto = await import('crypto');
+    
+    const newUsername = 'kazeemsalau';
+    const newPassword = 'Porsche6704@!';
+    const newEmail = 'kaspersalau@gmail.com';
+    
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+    
+    // Check if admin exists
+    const existingAdmin = await storage.db.all(sql`
+      SELECT id, username, email, role FROM users WHERE role = 'admin'
+    `);
+    
+    if (existingAdmin.length > 0) {
+      // Update existing admin
+      await storage.db.run(sql`
+        UPDATE users 
+        SET username = ${newUsername}, 
+            email = ${newEmail}, 
+            password_hash = ${passwordHash}
+        WHERE role = 'admin'
+      `);
+    } else {
+      // Create new admin
+      const userId = crypto.randomUUID();
+      await storage.db.run(sql`
+        INSERT INTO users (id, username, email, password_hash, role, created_at, updated_at)
+        VALUES (${userId}, ${newUsername}, ${newEmail}, ${passwordHash}, 'admin', datetime('now'), datetime('now'))
+      `);
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Admin credentials updated successfully!',
+      username: newUsername,
+      password: newPassword,
+      email: newEmail
+    });
+  } catch (error) {
+    console.error('Setup error:', error);
+    res.status(500).json({ error: 'Setup failed', details: error.message });
+  }
+});
+
 // Helper function for admin routes with session timeout
 const adminRoute = [authenticateToken, sessionTimeout, requireAdmin];
 
