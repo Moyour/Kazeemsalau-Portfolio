@@ -488,6 +488,42 @@ app.get('/api/blog-posts/:id', async (req, res) => {
   }
 });
 
+// Database initialization endpoint
+app.post('/api/init-db', async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    // Create blog_posts table if it doesn't exist
+    await db.run(sql`
+      CREATE TABLE IF NOT EXISTS blog_posts (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        excerpt TEXT,
+        content TEXT NOT NULL,
+        category TEXT,
+        image_url TEXT,
+        read_time TEXT,
+        published INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    console.log('✅ Blog posts table created/verified');
+    
+    res.json({ 
+      success: true, 
+      message: 'Database initialized successfully!',
+      tables: ['projects', 'blog_posts']
+    });
+  } catch (error) {
+    console.error('Error initializing database:', error);
+    res.status(500).json({ error: 'Failed to initialize database' });
+  }
+});
+
 // Add blog post endpoint
 app.post('/api/add-blog', async (req, res) => {
   try {
