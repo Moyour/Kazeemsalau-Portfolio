@@ -117,6 +117,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 app.get('/api/blog-posts', async (req, res) => {
+  console.log('📝 Blog posts requested');
   res.json(sampleBlogPosts);
 });
 
