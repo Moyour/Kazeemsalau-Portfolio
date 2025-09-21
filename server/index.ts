@@ -108,8 +108,14 @@ try {
   console.log('✅ Database tables created successfully');
   
   // Initialize storage with direct database connection
-  storage = new Storage();
-  setupGoogleAuth(storage);
+  try {
+    storage = new Storage();
+    setupGoogleAuth(storage);
+    console.log('✅ Storage initialized successfully');
+  } catch (storageError) {
+    console.error('❌ Storage initialization failed:', storageError);
+    // Continue without storage for now
+  }
   
   console.log('✅ Database initialized successfully');
 } catch (error) {
@@ -162,6 +168,8 @@ app.get("/api/setup-admin", async (req, res) => {
         details: 'Database connection failed' 
       });
     }
+    
+    console.log('🔍 Setting up admin user...');
     
     // Check if admin exists
     const existingAdmin = await db.all(sql`
