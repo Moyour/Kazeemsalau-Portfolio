@@ -100,6 +100,55 @@ app.get('/api/db-test', async (req, res) => {
   }
 });
 
+// Update admin password endpoint
+app.post('/api/update-admin', async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    const { username, password, email } = req.body;
+    
+    if (!username || !password || !email) {
+      return res.status(400).json({ error: 'Username, password, and email are required' });
+    }
+    
+    const passwordHash = await bcrypt.hash(password, 12);
+    
+    // Check if admin exists
+    const existingAdmin = await db.all(sql`SELECT id FROM users WHERE role = 'admin'`);
+    
+    if (existingAdmin.length > 0) {
+      // Update existing admin
+      await db.run(sql`
+        UPDATE users 
+        SET username = ${username}, 
+            email = ${email}, 
+            password_hash = ${passwordHash}
+        WHERE role = 'admin'
+      `);
+    } else {
+      // Create new admin
+      const userId = crypto.randomUUID();
+      await db.run(sql`
+        INSERT INTO users (id, username, email, password_hash, role, created_at, updated_at)
+        VALUES (${userId}, ${username}, ${email}, ${passwordHash}, 'admin', datetime('now'), datetime('now'))
+      `);
+    }
+    
+    res.json({
+      success: true,
+      message: 'Admin credentials updated successfully!',
+      username,
+      email
+    });
+    
+  } catch (error) {
+    console.error('Update admin error:', error);
+    res.status(500).json({ error: 'Failed to update admin credentials' });
+  }
+});
+
 // Setup admin endpoint
 app.get('/api/setup-admin', async (req, res) => {
   try {
