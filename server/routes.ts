@@ -66,6 +66,76 @@ router.get("/api/setup-admin", async (req, res) => {
   }
 });
 
+// Temporary route to import blog data (REMOVE AFTER USE)
+router.post("/api/import-data", async (req, res) => {
+  try {
+    const { blog_posts, projects, testimonials } = req.body;
+    
+    let importedCount = 0;
+    
+    // Import blog posts
+    if (blog_posts && blog_posts.length > 0) {
+      for (const post of blog_posts) {
+        try {
+          await storage.db.run(sql`
+            INSERT OR REPLACE INTO blog_posts 
+            (id, title, excerpt, content, category, image_url, read_time, published, created_at, updated_at)
+            VALUES (${post.id}, ${post.title}, ${post.excerpt}, ${post.content}, ${post.category}, ${post.image_url}, ${post.read_time}, ${post.published}, ${post.created_at}, ${post.updated_at})
+          `);
+          importedCount++;
+        } catch (error) {
+          console.error('Error importing blog post:', post.title, error);
+        }
+      }
+    }
+    
+    // Import projects
+    if (projects && projects.length > 0) {
+      for (const project of projects) {
+        try {
+          await storage.db.run(sql`
+            INSERT OR REPLACE INTO projects 
+            (id, title, description, long_description, category, tools, image_url, case_study_url, scorm_url, demo_url, featured, challenge, solution, process, results, created_at)
+            VALUES (${project.id}, ${project.title}, ${project.description}, ${project.long_description}, ${project.category}, ${project.tools}, ${project.image_url}, ${project.case_study_url}, ${project.scorm_url}, ${project.demo_url}, ${project.featured}, ${project.challenge}, ${project.solution}, ${project.process}, ${project.results}, ${project.created_at})
+          `);
+          importedCount++;
+        } catch (error) {
+          console.error('Error importing project:', project.title, error);
+        }
+      }
+    }
+    
+    // Import testimonials
+    if (testimonials && testimonials.length > 0) {
+      for (const testimonial of testimonials) {
+        try {
+          await storage.db.run(sql`
+            INSERT OR REPLACE INTO testimonials 
+            (id, name, role, company, content, avatar_url, rating, featured)
+            VALUES (${testimonial.id}, ${testimonial.name}, ${testimonial.role}, ${testimonial.company}, ${testimonial.content}, ${testimonial.avatar_url}, ${testimonial.rating}, ${testimonial.featured})
+          `);
+          importedCount++;
+        } catch (error) {
+          console.error('Error importing testimonial:', testimonial.name, error);
+        }
+      }
+    }
+    
+    res.json({ 
+      success: true, 
+      message: `Data imported successfully! ${importedCount} records imported.`,
+      imported: {
+        blog_posts: blog_posts?.length || 0,
+        projects: projects?.length || 0,
+        testimonials: testimonials?.length || 0
+      }
+    });
+  } catch (error) {
+    console.error('Import error:', error);
+    res.status(500).json({ error: 'Import failed', details: error.message });
+  }
+});
+
 // Helper function for admin routes with session timeout
 const adminRoute = [authenticateToken, sessionTimeout, requireAdmin];
 
