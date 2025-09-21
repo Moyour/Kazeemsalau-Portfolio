@@ -242,7 +242,7 @@ export default function Home() {
           Drop me a message, let's make something learners will love.
         </p>
         <div className="flex justify-center gap-8">
-          <Link href="/contact">
+          <Link href="/get-in-touch">
             <Button className="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 px-12 py-6 rounded-full text-xl font-semibold">
               Get In Touch 
             </Button>

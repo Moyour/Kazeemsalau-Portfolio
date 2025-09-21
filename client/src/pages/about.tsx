@@ -325,7 +325,7 @@ export default function About() {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <a 
-                href="/contact"
+                href="/get-in-touch"
                 className="group bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white px-12 py-6 rounded-full font-bold text-lg hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 transition-all duration-300 flex items-center justify-center gap-3 hover:scale-105"
               >
                 Let's Create Magic

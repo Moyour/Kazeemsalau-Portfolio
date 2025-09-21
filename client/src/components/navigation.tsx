@@ -27,10 +27,10 @@ export default function Navigation() {
   const [location] = useLocation();
   const [isScrolledToWhiteSection, setIsScrolledToWhiteSection] = useState(false);
 
-  // Special case: blog listing page and contact page have gradient backgrounds, not white
-  const isGradientPage = location === '/blog' || location === '/contact';
+  // Special case: blog listing page and get-in-touch page have gradient backgrounds, not white
+  const isGradientPage = location === '/blog' || location === '/get-in-touch';
 
-  // Scroll detection for gradient pages (blog and contact)
+  // Scroll detection for gradient pages (blog and get-in-touch)
   useEffect(() => {
     if (isGradientPage) {
       const handleScroll = () => {
@@ -121,14 +121,14 @@ export default function Navigation() {
             
           </div>
 
-          {/* Contact Button */}
+          {/* Get In Touch Button */}
           <div className="hidden md:block">
-            <ScrollLink href="/contact">
+            <ScrollLink href="/get-in-touch">
               <Button 
                 className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 px-5 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap"
                 data-testid="contact-button"
               >
-                Contact
+                Get In Touch
               </Button>
             </ScrollLink>
           </div>
@@ -175,12 +175,12 @@ export default function Navigation() {
               ))}
               
               
-              <ScrollLink href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+              <ScrollLink href="/get-in-touch" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button 
                   className="w-full bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 px-6 py-2 rounded-full font-medium transition-colors duration-200 mt-2"
                   data-testid="mobile-contact-button"
                 >
-                  Contact
+                  Get In Touch
                 </Button>
               </ScrollLink>
             </div>

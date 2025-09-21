@@ -40,7 +40,7 @@ export default function Hero() {
                   View My Work
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/get-in-touch">
                 <Button 
                   variant="outline" 
                   size="lg"

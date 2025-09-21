@@ -18,7 +18,7 @@ const projectTypes = [
   "Other"
 ];
 
-export default function Contact() {
+export default function GetInTouch() {
   const { toast } = useToast();
 
   const form = useForm<InsertContact>({
