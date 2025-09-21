@@ -7,6 +7,10 @@ import * as path from "node:path";
 export default defineConfig({
   base: './',
   plugins: [react(), svgr()],
+  esbuild: {
+    // Skip type checking during build
+    target: 'es2020'
+  },
   server: {
     proxy: {
       '/api': {
