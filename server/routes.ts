@@ -344,8 +344,8 @@ router.get("/rss.xml", async (req, res) => {
     <link>https://kazeemsalau.com</link>
     <atom:link href="https://kazeemsalau.com/api/rss.xml" rel="self" type="application/rss+xml"/>
     <language>en-gb</language>
-    <managingEditor>moyoursalau@gmail.com (Kazeem Salau)</managingEditor>
-    <webMaster>moyoursalau@gmail.com (Kazeem Salau)</webMaster>
+    <managingEditor>kaspersalau@gmail.com (Kazeem Salau)</managingEditor>
+    <webMaster>kaspersalau@gmail.com (Kazeem Salau)</webMaster>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <generator>LearnFlow RSS Generator</generator>
     

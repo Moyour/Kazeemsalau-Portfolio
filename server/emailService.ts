@@ -128,7 +128,7 @@ This message was sent from your LearnFlow contact form.
 }
 
 export async function sendContactNotification(contact: ContactSubmission): Promise<boolean> {
-  const adminEmail = process.env.ADMIN_EMAIL || 'moyoursalau@gmail.com';
+  const adminEmail = process.env.ADMIN_EMAIL || 'kaspersalau@gmail.com';
   
   const emailOptions: EmailOptions = {
     to: adminEmail,

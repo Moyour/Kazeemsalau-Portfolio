@@ -10,7 +10,7 @@ export const GOOGLE_AUTH_ENABLED = Boolean(GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SEC
 
 // Allowed admin emails - add your Google email here
 const ADMIN_EMAILS = [
-  'moyoursalau@gmail.com', // Your Google email
+  'kaspersalau@gmail.com', // Your Google email
   'admin@example.com',     // Add more admin emails as needed
 ];
 
