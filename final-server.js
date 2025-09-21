@@ -420,8 +420,32 @@ app.get('/api/blog-posts', async (req, res) => {
       return res.status(500).json({ error: 'Database not initialized' });
     }
     
-    const posts = await db.all(sql`SELECT * FROM blog_posts ORDER BY created_at DESC`);
-    res.json(posts);
+    const { published } = req.query;
+    let query = sql`SELECT * FROM blog_posts`;
+    
+    if (published === 'true') {
+      query = sql`SELECT * FROM blog_posts WHERE published = 1 ORDER BY created_at DESC`;
+    } else {
+      query = sql`SELECT * FROM blog_posts ORDER BY created_at DESC`;
+    }
+    
+    const blogPosts = await db.all(query);
+    
+    // Map field names to match schema
+    const blogPostsWithCorrectFields = blogPosts.map(post => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+      category: post.category,
+      imageUrl: post.image_url,
+      readTime: post.read_time,
+      published: Boolean(post.published),
+      createdAt: post.created_at,
+      updatedAt: post.updated_at
+    }));
+    
+    res.json(blogPostsWithCorrectFields);
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     res.status(500).json({ error: 'Failed to fetch blog posts' });
@@ -437,16 +461,58 @@ app.get('/api/blog-posts/:id', async (req, res) => {
       return res.status(500).json({ error: 'Database not initialized' });
     }
     
-    const posts = await db.all(sql`SELECT * FROM blog_posts WHERE id = ${id}`);
+    const posts = await db.all(sql`SELECT * FROM blog_posts WHERE id = ?`, [id]);
     
     if (posts.length === 0) {
       return res.status(404).json({ error: 'Blog post not found' });
     }
     
-    res.json(posts[0]);
+    // Map field names to match schema
+    const blogPost = {
+      id: posts[0].id,
+      title: posts[0].title,
+      excerpt: posts[0].excerpt,
+      content: posts[0].content,
+      category: posts[0].category,
+      imageUrl: posts[0].image_url,
+      readTime: posts[0].read_time,
+      published: Boolean(posts[0].published),
+      createdAt: posts[0].created_at,
+      updatedAt: posts[0].updated_at
+    };
+    
+    res.json(blogPost);
   } catch (error) {
     console.error('Error fetching blog post:', error);
     res.status(500).json({ error: 'Failed to fetch blog post' });
+  }
+});
+
+// Add blog post endpoint
+app.post('/api/add-blog', async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    const { id, title, excerpt, content, category, imageUrl, readTime, published } = req.body;
+    
+    await db.run(sql`
+      INSERT OR REPLACE INTO blog_posts (
+        id, title, excerpt, content, category, image_url, read_time, published, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+    `, [
+      id, title, excerpt, content, category, imageUrl, readTime, published ? 1 : 0
+    ]);
+    
+    res.json({ 
+      success: true, 
+      message: 'Blog post added successfully!',
+      blogPost: { id, title, image_url: imageUrl }
+    });
+  } catch (error) {
+    console.error('Error adding blog post:', error);
+    res.status(500).json({ error: 'Failed to add blog post' });
   }
 });
 
