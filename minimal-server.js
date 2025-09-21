@@ -81,13 +81,25 @@ try {
   console.log('⚠️ Using in-memory storage');
   db = {
     all: (query) => {
-      if (query.sql.includes('users')) return inMemoryData.users;
-      if (query.sql.includes('blog_posts')) return inMemoryData.blog_posts;
-      if (query.sql.includes('projects')) return inMemoryData.projects;
+      console.log('In-memory query:', query.sql);
+      if (query.sql && query.sql.includes('users')) return inMemoryData.users;
+      if (query.sql && query.sql.includes('blog_posts')) return inMemoryData.blog_posts;
+      if (query.sql && query.sql.includes('projects')) return inMemoryData.projects;
+      if (query.sql && query.sql.includes('SELECT 1')) return [{ test: 1 }];
       return [];
     },
     run: (query) => {
-      console.log('In-memory query:', query.sql);
+      console.log('In-memory run query:', query.sql);
+      if (query.sql && query.sql.includes('INSERT')) {
+        // Simulate adding data to in-memory storage
+        if (query.sql.includes('blog_posts')) {
+          inMemoryData.blog_posts.push({ id: 'temp-' + Date.now() });
+        } else if (query.sql.includes('projects')) {
+          inMemoryData.projects.push({ id: 'temp-' + Date.now() });
+        } else if (query.sql.includes('users')) {
+          inMemoryData.users.push({ id: 'temp-' + Date.now() });
+        }
+      }
       return { changes: 1 };
     }
   };
