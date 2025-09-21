@@ -31,14 +31,21 @@ try {
   console.log('✅ Database initialized successfully');
 } catch (error) {
   console.error('❌ Database initialization failed:', error);
-  // Create a mock storage for testing
-  storage = {
-    db: {
-      all: () => [],
-      run: () => {},
-      prepare: () => ({ all: () => [], run: () => {} })
-    }
-  };
+  // Try to initialize storage again with error handling
+  try {
+    storage = new Storage();
+    console.log('✅ Database re-initialized successfully');
+  } catch (retryError) {
+    console.error('❌ Database re-initialization failed:', retryError);
+    // Create a mock storage for testing
+    storage = {
+      db: {
+        all: () => [],
+        run: () => {},
+        prepare: () => ({ all: () => [], run: () => {} })
+      }
+    };
+  }
 }
 
 // Initialize Passport
@@ -78,6 +85,14 @@ app.get("/api/setup-admin", async (req, res) => {
     const newEmail = 'kaspersalau@gmail.com';
     
     const passwordHash = await bcrypt.hash(newPassword, 12);
+    
+    // Check if storage is properly initialized
+    if (!storage || !storage.db) {
+      return res.status(500).json({ 
+        error: 'Database not initialized', 
+        details: 'Storage is not properly set up' 
+      });
+    }
     
     // Check if admin exists
     const existingAdmin = await storage.db.all(sql`
