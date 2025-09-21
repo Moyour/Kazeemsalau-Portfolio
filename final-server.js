@@ -612,11 +612,12 @@ app.post('/api/contact-submissions', async (req, res) => {
     }
     
     // Insert contact submission
+    const submissionId = crypto.randomUUID();
     await db.run(sql`
       INSERT INTO contact_submissions (
-        first_name, last_name, email, project_type, message, created_at
-      ) VALUES (?, ?, ?, ?, ?, datetime('now'))
-    `, [firstName, lastName, email, projectType || 'Other', message]);
+        id, first_name, last_name, email, project_type, message, created_at
+      ) VALUES (${submissionId}, ${firstName}, ${lastName}, ${email}, ${projectType || 'Other'}, ${message}, datetime('now'))
+    `);
     
     res.json({ 
       success: true, 
