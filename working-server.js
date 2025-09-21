@@ -73,6 +73,32 @@ const sampleProjects = [
   }
 ];
 
+const sampleTestimonials = [
+  {
+    id: '1',
+    name: 'Sarah Johnson',
+    role: 'Learning Director',
+    company: 'TechCorp',
+    content: 'Kazeem delivered an exceptional eLearning solution that transformed our training program.',
+    avatar_url: '/assets/avatar1.jpg',
+    rating: '5',
+    featured: 1
+  },
+  {
+    id: '2',
+    name: 'Michael Chen',
+    role: 'HR Manager',
+    company: 'Global Inc',
+    content: 'The interactive modules created by Kazeem significantly improved our employee engagement.',
+    avatar_url: '/assets/avatar2.jpg',
+    rating: '5',
+    featured: 1
+  }
+];
+
+const sampleContacts = [];
+const sampleResumes = [];
+
 // API Routes
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString(), server: 'working-server' });
@@ -145,6 +171,25 @@ app.get('/api/projects/:id', async (req, res) => {
   }
   
   res.json(project);
+});
+
+app.get('/api/testimonials', async (req, res) => {
+  const { featured } = req.query;
+  let testimonials = sampleTestimonials;
+  
+  if (featured === 'true') {
+    testimonials = sampleTestimonials.filter(t => t.featured);
+  }
+  
+  res.json(testimonials);
+});
+
+app.get('/api/contacts', async (req, res) => {
+  res.json(sampleContacts);
+});
+
+app.get('/api/resumes', async (req, res) => {
+  res.json(sampleResumes);
 });
 
 app.post('/api/import-data', async (req, res) => {
