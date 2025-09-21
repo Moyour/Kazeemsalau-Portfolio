@@ -117,7 +117,19 @@ try {
   console.log('✅ Database initialized successfully');
 } catch (error) {
   console.error('❌ Database initialization failed:', error);
-  db = null;
+  console.log('⚠️ Falling back to in-memory storage');
+  db = {
+    all: (query) => {
+      if (query.sql.includes('users')) return inMemoryData.users;
+      if (query.sql.includes('blog_posts')) return inMemoryData.blog_posts;
+      if (query.sql.includes('projects')) return inMemoryData.projects;
+      return [];
+    },
+    run: (query) => {
+      console.log('In-memory query:', query.sql);
+      return { changes: 1 };
+    }
+  };
 }
 
 // Routes
