@@ -15,10 +15,35 @@ app.use(express.json());
 // Initialize database
 let db;
 try {
-  const dbPath = process.env.SQLITE_DATABASE_PATH || './sqlite.db';
-  console.log('🔍 Connecting to database:', dbPath);
+  // Try different database paths
+  const dbPaths = [
+    process.env.SQLITE_DATABASE_PATH,
+    './sqlite.db',
+    '/tmp/sqlite.db',
+    ':memory:'
+  ];
   
-  const sqlite = new Database(dbPath);
+  let sqlite = null;
+  let dbPath = null;
+  
+  for (const path of dbPaths) {
+    if (path) {
+      try {
+        console.log('🔍 Trying database path:', path);
+        sqlite = new Database(path);
+        dbPath = path;
+        break;
+      } catch (error) {
+        console.log('❌ Failed to create database at:', path, error.message);
+      }
+    }
+  }
+  
+  if (!sqlite) {
+    throw new Error('Could not create database at any path');
+  }
+  
+  console.log('✅ Database created at:', dbPath);
   db = drizzle(sqlite);
   
   // Create tables
