@@ -176,6 +176,84 @@ app.get('/api/setup-admin', async (req, res) => {
   }
 });
 
+// Add the auth/login endpoint that the frontend expects
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+    
+    // Find user
+    const users = await db.all(sql`SELECT * FROM users WHERE username = ${username} OR email = ${username}`);
+    
+    if (users.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const user = users[0];
+    
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+    
+    if (!isValidPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    // Generate token (simple implementation)
+    const token = crypto.randomBytes(32).toString('hex');
+    
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Add the auth/me endpoint for token verification
+app.get('/api/auth/me', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+    
+    const token = authHeader.substring(7);
+    // For now, we'll just return the user info if token exists
+    // In a real app, you'd verify the token properly
+    
+    // Find the admin user (simplified for now)
+    const users = await db.all(sql`SELECT * FROM users WHERE role = 'admin' LIMIT 1`);
+    
+    if (users.length === 0) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    
+    const user = users[0];
+    res.json({
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Auth me error:', error);
+    res.status(500).json({ error: 'Token verification failed' });
+  }
+});
+
 app.post('/api/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -230,7 +308,14 @@ app.get('/api/blog-posts', async (req, res) => {
 app.get('/api/projects', async (req, res) => {
   try {
     const projects = await db.all(sql`SELECT * FROM projects ORDER BY created_at DESC`);
-    res.json(projects);
+    
+    // Ensure tools field is always an array
+    const projectsWithArrayTools = projects.map(project => ({
+      ...project,
+      tools: typeof project.tools === 'string' ? JSON.parse(project.tools) : project.tools
+    }));
+    
+    res.json(projectsWithArrayTools);
   } catch (error) {
     console.error('Error fetching projects:', error);
     res.status(500).json({ error: 'Failed to fetch projects' });
@@ -262,7 +347,13 @@ app.get('/api/projects/:id', async (req, res) => {
       return res.status(404).json({ error: 'Project not found' });
     }
     
-    res.json(projects[0]);
+    // Ensure tools field is always an array
+    const project = {
+      ...projects[0],
+      tools: typeof projects[0].tools === 'string' ? JSON.parse(projects[0].tools) : projects[0].tools
+    };
+    
+    res.json(project);
   } catch (error) {
     console.error('Error fetching project:', error);
     res.status(500).json({ error: 'Failed to fetch project' });

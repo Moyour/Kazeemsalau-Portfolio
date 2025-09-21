@@ -11,7 +11,7 @@ async function changeAdminPassword() {
   try {
     // CHANGE THESE VALUES TO WHAT YOU WANT
     const newUsername = 'kazeemsalau';           // Your new username
-    const newPassword = 'Porsche6704@!';  // Your new password
+    const newPassword = '911Porsche@!';  // Your new password
     const newEmail = 'kaspersalau@gmail.com'; // Your email
     
     const passwordHash = await bcrypt.hash(newPassword, 12);

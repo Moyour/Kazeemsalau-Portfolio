@@ -41,7 +41,7 @@ const sampleProjects = [
     description: 'A comprehensive learning management system for corporate training.',
     long_description: 'This project involved creating a full-featured LMS...',
     category: 'eLearning Development',
-    tools: '["React", "Node.js", "MongoDB"]',
+    tools: ["React", "Node.js", "MongoDB"],
     image_url: '/assets/project1.jpg',
     case_study_url: '/portfolio/1',
     scorm_url: null,
@@ -59,7 +59,7 @@ const sampleProjects = [
     description: 'Custom interactive learning modules for various subjects.',
     long_description: 'This project focused on creating engaging...',
     category: 'eLearning Development',
-    tools: '["Vue.js", "SCORM", "HTML5"]',
+    tools: ["Vue.js", "SCORM", "HTML5"],
     image_url: '/assets/project2.jpg',
     case_study_url: '/portfolio/2',
     scorm_url: 'https://scorm.example.com',
@@ -167,7 +167,12 @@ app.get('/api/blog-posts', async (req, res) => {
 });
 
 app.get('/api/projects', async (req, res) => {
-  res.json(sampleProjects);
+  // Ensure tools field is always an array
+  const projects = sampleProjects.map(project => ({
+    ...project,
+    tools: typeof project.tools === 'string' ? JSON.parse(project.tools) : project.tools
+  }));
+  res.json(projects);
 });
 
 app.get('/api/blog-posts/:id', async (req, res) => {
@@ -189,7 +194,13 @@ app.get('/api/projects/:id', async (req, res) => {
     return res.status(404).json({ error: 'Project not found' });
   }
   
-  res.json(project);
+  // Ensure tools field is always an array
+  const projectWithArrayTools = {
+    ...project,
+    tools: typeof project.tools === 'string' ? JSON.parse(project.tools) : project.tools
+  };
+  
+  res.json(projectWithArrayTools);
 });
 
 app.post('/api/import-data', async (req, res) => {
