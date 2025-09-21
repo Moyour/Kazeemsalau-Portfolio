@@ -280,6 +280,51 @@ app.get('/api/projects', async (req, res) => {
   }
 });
 
+// Add project endpoint
+app.post('/api/add-project', async (req, res) => {
+  try {
+    const project = req.body;
+    
+    if (!project.title || !project.description) {
+      return res.status(400).json({ error: 'Title and description are required' });
+    }
+    
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    // Ensure tools is a string for database storage
+    const toolsString = typeof project.tools === 'string' ? project.tools : JSON.stringify(project.tools);
+    
+    await db.run(sql`
+      INSERT OR REPLACE INTO projects (
+        id, title, description, long_description, category, tools, 
+        image_url, case_study_url, scorm_url, demo_url, featured,
+        challenge, solution, process, results, created_at
+      ) VALUES (
+        ${project.id}, ${project.title}, ${project.description}, ${project.long_description},
+        ${project.category}, ${toolsString}, ${project.image_url}, ${project.case_study_url},
+        ${project.scorm_url}, ${project.demo_url}, ${project.featured}, ${project.challenge},
+        ${project.solution}, ${project.process}, ${project.results}, datetime('now')
+      )
+    `);
+    
+    res.json({
+      success: true,
+      message: 'Project added successfully!',
+      project: {
+        id: project.id,
+        title: project.title,
+        image_url: project.image_url
+      }
+    });
+    
+  } catch (error) {
+    console.error('Add project error:', error);
+    res.status(500).json({ error: 'Failed to add project' });
+  }
+});
+
 // Update project image endpoint
 app.post('/api/update-project-image', async (req, res) => {
   try {
