@@ -75,7 +75,7 @@ const sampleProjects = [
 
 // API Routes
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.json({ status: 'OK', timestamp: new Date().toISOString(), server: 'working-server' });
 });
 
 app.get('/api/db-test', (req, res) => {
