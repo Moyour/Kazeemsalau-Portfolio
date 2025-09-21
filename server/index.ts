@@ -311,7 +311,7 @@ app.post("/api/import-data", async (req, res) => {
 });
 
 // Mount the API routes (BEFORE static files to avoid conflicts)
-app.use("/api", router);
+// app.use("/api", router); // Commented out for debugging
 
 // Catch-all for client-side routing
 app.use(express.static("client/dist"));
