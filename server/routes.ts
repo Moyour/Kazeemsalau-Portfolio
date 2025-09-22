@@ -70,6 +70,34 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
+// TEMP: Debug user endpoint (remove after diagnosing Railway)
+router.get("/api/_debug/user", async (req, res) => {
+  try {
+    const { username, email } = req.query as { username?: string; email?: string };
+    if (!username && !email) {
+      return res.status(400).json({ error: "Provide username or email" });
+    }
+    const user = email
+      ? await storage.getUserByEmail(email)
+      : await storage.getUserByUsername(username!);
+    if (!user) return res.json({ exists: false });
+    res.json({
+      exists: true,
+      user: {
+        id: (user as any).id,
+        username: (user as any).username,
+        email: (user as any).email,
+        role: (user as any).role,
+        password_hash_prefix: (user as any).password_hash?.slice(0, 12) || null,
+        password_hash_len: ((user as any).password_hash || '').length,
+      },
+    });
+  } catch (error) {
+    console.error("Debug user error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.post("/auth/register", async (req, res) => {
   try {
     const { username, email, password, role = 'user' } = req.body;
