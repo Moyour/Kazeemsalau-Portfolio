@@ -81,6 +81,38 @@ async function initializeDatabase() {
 // Initialize database on startup
 initializeDatabase();
 
+// Ensure admin user exists
+ensureAdminExists();
+
+// Auto-create admin user on startup
+async function ensureAdminExists() {
+  try {
+    if (!db) return;
+    
+    const existingAdmin = await db.all(sql`SELECT * FROM users WHERE role = 'admin' LIMIT 1`);
+    
+    if (existingAdmin.length === 0) {
+      console.log('🔧 No admin user found, creating default admin...');
+      const username = 'kazeemsalau';
+      const email = 'kaspersalau@gmail.com';
+      const password = '911Porsche@!';
+      const passwordHash = await bcrypt.hash(password, 10);
+      const userId = crypto.randomUUID();
+      
+      await db.run(sql`
+        INSERT INTO users (id, username, email, password_hash, role, created_at, updated_at)
+        VALUES (${userId}, ${username}, ${email}, ${passwordHash}, 'admin', datetime('now'), datetime('now'))
+      `);
+      
+      console.log('✅ Default admin user created successfully!');
+    } else {
+      console.log('✅ Admin user exists');
+    }
+  } catch (error) {
+    console.error('❌ Error ensuring admin exists:', error);
+  }
+}
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString(), server: 'final-server' });
