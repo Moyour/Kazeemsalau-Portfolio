@@ -230,6 +230,20 @@ app.get("/api/setup-admin", async (req, res) => {
     
     console.log('🔍 Setting up admin user...');
     
+    // Ensure users table exists first
+    sqlite.exec(`
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+        username TEXT UNIQUE NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        role TEXT DEFAULT 'user',
+        created_at TEXT DEFAULT (datetime('now')),
+        updated_at TEXT DEFAULT (datetime('now')),
+        last_login_at TEXT
+      )
+    `);
+    
     // Check if admin exists
     const existingAdmin = await db.all(sql`
       SELECT id, username, email, role FROM users WHERE role = 'admin'
