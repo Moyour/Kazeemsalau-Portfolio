@@ -32,13 +32,15 @@ const adminRoute = [authenticateToken, sessionTimeout, requireAdmin];
 // Authentication Routes
 router.post("/auth/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
     
-    if (!username || !password) {
-      return res.status(400).json({ error: "Username and password are required" });
+    if ((!username && !email) || !password) {
+      return res.status(400).json({ error: "Username or email and password are required" });
     }
 
-    const result = await loginUser(username, password, storage);
+    // Allow login via username or email
+    const identifier = username || email;
+    const result = await loginUser(identifier, password, storage);
     if (!result) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
