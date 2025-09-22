@@ -779,6 +779,96 @@ app.get('/api/contact-submissions', async (req, res) => {
   }
 });
 
+// Force create sample projects endpoint
+app.post('/api/create-sample-projects', async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ error: 'Database not initialized' });
+    }
+    
+    // Clear existing projects first
+    await db.run(sql`DELETE FROM projects`);
+    
+    const sampleProjects = [
+      {
+        id: crypto.randomUUID(),
+        title: "Emotional Intelligence",
+        description: "This course focuses on developing emotional intelligence, helping learners understand, manage, and leverage their emotions effectively. It emphasizes the connection between emotional awareness and better decision-making, resilience under pressure, and achieving meaningful success beyond technical skills or knowledge.",
+        long_description: "This comprehensive course covers all aspects of emotional intelligence including self-awareness, self-regulation, motivation, empathy, and social skills. Participants will explore real-life scenarios that strengthen their ability to respond thoughtfully and confidently in both personal and professional contexts.",
+        category: "corporate",
+        tools: JSON.stringify(["Articulate Storyline", "Adobe Creative Suite"]),
+        image_url: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop",
+        case_study_url: "",
+        scorm_url: "https://codvacreatives.com/demo/ei/story_html5.html",
+        demo_url: "",
+        featured: 0,
+        challenge: "Many individuals struggle to recognize and regulate their emotions, especially in high-pressure situations, which can lead to poor decisions, strained relationships, and missed opportunities.",
+        solution: "The course offers practical strategies, tools, and exercises to enhance emotional intelligence through interactive scenarios, reflective exercises, and guided insights.",
+        process: "Learners progress through structured modules that combine theory with practical application, including understanding emotions, practicing self-awareness, and engaging in scenario-based exercises.",
+        results: "Participants gain heightened emotional awareness, improved decision-making skills, and the ability to manage stress and interpersonal dynamics effectively."
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "The Fixer",
+        description: "This training is designed as a special assignment where you step into the role of 'The Fixer,' tasked with addressing critical knowledge gaps in agency policy. Through immersive, scenario-based learning, you will sharpen decision-making skills, collaborate with colleagues, and apply policy knowledge to restore service delivery and boost organizational performance.",
+        long_description: "An interactive problem-solving course that puts you in the role of the key problem solver, leveraging your insight, professionalism, and decision-making ability to close policy gaps and rebuild confidence in agency operations.",
+        category: "elearning",
+        tools: JSON.stringify(["Storyline", "Illustration", "Scenario Design"]),
+        image_url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+        case_study_url: "",
+        scorm_url: "https://codvacreatives.com/demo/fixer/story_html5.html",
+        demo_url: "",
+        featured: 0,
+        challenge: "Despite strong skills and reputation for excellence, recent downturns in service delivery have revealed significant policy knowledge gaps within the agency.",
+        solution: "The program positions you as the key problem solver, leveraging your insight and decision-making ability to close policy gaps through practical tasks and collaboration exercises.",
+        process: "Participants are guided through real-world challenges simulating agency operations, with each scenario demanding careful application of policy knowledge and strategic thinking.",
+        results: "By completing the assignment, you reinforce your reputation as 'The Fixer' while the agency benefits from improved service delivery and stronger compliance."
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Business Writing",
+        description: "Strong business writing is more than putting words on a page — it's about influencing decisions, building credibility, and communicating with clarity. This course is designed to help professionals at all levels master the fundamentals of business writing, from crafting concise emails to developing persuasive reports.",
+        long_description: "A comprehensive course covering all aspects of professional business communication, from emails to reports, proposals, and executive summaries. You'll learn techniques for editing and refining your drafts to eliminate errors and enhance professionalism.",
+        category: "corporate",
+        tools: JSON.stringify(["Articulate Storyline", "Content Design"]),
+        image_url: "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&h=600&fit=crop",
+        case_study_url: "",
+        scorm_url: "https://codvacreatives.com/demo/Businesswriting/story_html5.html",
+        demo_url: "",
+        featured: 1,
+        challenge: "In today's fast-paced business environment, unclear or poorly written communication can cause misunderstandings, delays, and even damage professional relationships.",
+        solution: "Our Business Writing course equips you with the tools and strategies to overcome these challenges, teaching you how to plan, structure, and refine your writing for maximum impact.",
+        process: "This course takes you through a step-by-step journey to transform your writing, beginning with the foundations of effective communication and progressing to persuasive writing strategies.",
+        results: "By the end of the course, you'll be able to write with confidence and precision in any business setting, projecting greater professionalism and enhancing your credibility."
+      }
+    ];
+    
+    for (const project of sampleProjects) {
+      await db.run(sql`
+        INSERT INTO projects (
+          id, title, description, long_description, category, tools, image_url, 
+          case_study_url, scorm_url, demo_url, featured, challenge, solution, 
+          process, results, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      `, [
+        project.id, project.title, project.description, project.long_description,
+        project.category, project.tools, project.image_url, project.case_study_url,
+        project.scorm_url, project.demo_url, project.featured, project.challenge,
+        project.solution, project.process, project.results
+      ]);
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Sample projects created successfully!',
+      count: sampleProjects.length
+    });
+  } catch (error) {
+    console.error('Error creating sample projects:', error);
+    res.status(500).json({ error: 'Failed to create sample projects' });
+  }
+});
+
 // Serve uploads folder for images (specific route before catch-all)
 app.use('/uploads', express.static('uploads'));
 
