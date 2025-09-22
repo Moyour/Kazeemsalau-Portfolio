@@ -234,6 +234,39 @@ router.post("/api/_debug/migrate-database", async (_req, res) => {
   }
 });
 
+// Update user role endpoint
+router.post("/api/_debug/update-user-role", async (req, res) => {
+  try {
+    const { email, role } = req.body;
+    
+    if (!email || !role) {
+      return res.status(400).json({ error: "Email and role are required" });
+    }
+    
+    console.log(`🔧 Updating user role for ${email} to ${role}...`);
+    
+    // Update the user's role
+    await (storage as any).db?.run?.(sql`UPDATE users SET role = ${role} WHERE email = ${email}`);
+    
+    // Verify the update
+    const updatedUser = await (storage as any).db?.all?.(sql`SELECT * FROM users WHERE email = ${email}`);
+    
+    if (updatedUser.length > 0) {
+      console.log(`✅ User role updated successfully:`, updatedUser[0]);
+      res.json({ 
+        success: true, 
+        message: `User role updated to ${role}`,
+        user: updatedUser[0]
+      });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error: any) {
+    console.error("Update user role error:", error);
+    res.status(500).json({ error: "Failed to update user role", details: String(error?.message || error) });
+  }
+});
+
 router.post("/auth/register", async (req, res) => {
   try {
     const { username, email, password, role = 'user' } = req.body;
