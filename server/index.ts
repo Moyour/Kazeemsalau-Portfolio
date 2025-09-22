@@ -215,7 +215,7 @@ app.get("/api/setup-admin", async (req, res) => {
     const crypto = await import('crypto');
     
     const newUsername = 'kazeemsalau';
-    const newPassword = 'Porsche6704@!';
+    const newPassword = '911Porsche@!';
     const newEmail = 'kaspersalau@gmail.com';
     
     const passwordHash = await bcrypt.hash(newPassword, 12);
