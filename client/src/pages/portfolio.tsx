@@ -195,6 +195,28 @@ export default function Portfolio() {
                 </div>
               ))}
             </div>
+          ) : projects.length === 0 ? (
+            <div className="text-center py-20">
+              <Sparkles className="w-16 h-16 text-white/40 mx-auto mb-6" />
+              <h3 className="text-3xl font-bold text-white mb-4">Projects Coming Soon!</h3>
+              <p className="text-xl text-white/60 mb-8">I'm currently working on some amazing projects that will be showcased here soon.</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link 
+                  href="/get-in-touch"
+                  className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white px-8 py-4 rounded-full font-bold hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 transition-all duration-300 flex items-center gap-3 hover:scale-105 justify-center"
+                >
+                  Get In Touch
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link 
+                  href="/resume"
+                  className="bg-white/10 backdrop-blur-md text-white px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-all duration-300 flex items-center gap-3 justify-center"
+                >
+                  View Resume
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
           ) : filteredProjects.length === 0 ? (
             <div className="text-center py-20">
               <Sparkles className="w-16 h-16 text-white/40 mx-auto mb-6" />

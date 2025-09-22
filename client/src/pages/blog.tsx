@@ -97,10 +97,37 @@ export default function Blog() {
               ))}
             </div>
           ) : filteredPosts.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-lg text-gray-600">
-                {searchTerm ? `No articles found matching "${searchTerm}".` : "No articles found."}
-              </p>
+            <div className="text-center py-20">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  {searchTerm ? `No articles found matching "${searchTerm}"` : "Blog Coming Soon!"}
+                </h3>
+                <p className="text-lg text-gray-600 mb-8">
+                  {searchTerm 
+                    ? "Try adjusting your search terms or browse all articles." 
+                    : "I'm working on some insightful articles about instructional design, learning technology, and educational experiences that will be published here soon."
+                  }
+                </p>
+                {!searchTerm && (
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a 
+                      href="/get-in-touch"
+                      className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 rounded-full font-semibold hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 flex items-center gap-2 justify-center"
+                    >
+                      Get In Touch
+                    </a>
+                    <a 
+                      href="/portfolio"
+                      className="bg-gray-100 text-gray-700 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition-all duration-300 flex items-center gap-2 justify-center"
+                    >
+                      View Portfolio
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <div className="max-w-4xl mx-auto space-y-12">

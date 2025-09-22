@@ -79,7 +79,7 @@ export default function GetInTouch() {
                 <div className="space-y-4">
                   <div className="flex items-start space-x-4">
                     <a
-                      href="mailto:your.email@example.com"
+                      href="mailto:kazeem.salau@yahoo.com"
                       className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 hover:bg-white/30 transition-colors"
                       title="Send an email"
                       data-testid="email-link"

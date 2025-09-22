@@ -35,7 +35,7 @@ export default function Footer() {
               <Youtube className="h-5 w-5 text-white" />
             </a>
             <a
-              href="https://www.linkedin.com/in/kazeem-salau"
+              href="linkedin.com/in/kazeem-salau-164b1087"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors"
