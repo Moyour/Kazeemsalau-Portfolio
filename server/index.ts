@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from "express";
 import { createServer, type Server } from "http";
 import session from "express-session";
-import { router } from "./routes"; // Import the new router
+import { router, setStorageInstance } from "./routes"; // Import the new router
 import { setupGoogleAuth, passport } from "./googleAuth";
 import { Storage, setDatabase } from "./storage";
 import { sql } from "drizzle-orm";
@@ -139,6 +139,7 @@ try {
   try {
     setDatabase(db);
     storage = new Storage();
+    setStorageInstance(storage); // Set storage instance for routes
     setupGoogleAuth(storage);
     console.log('✅ Storage initialized successfully');
   } catch (storageError) {

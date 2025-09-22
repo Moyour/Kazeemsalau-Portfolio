@@ -8,7 +8,12 @@ import { authenticateToken, requireAdmin, loginUser, hashPassword, AuthRequest, 
 import { setupGoogleAuth, passport, GOOGLE_AUTH_ENABLED } from "./googleAuth";
 import { sendContactNotification } from "./emailService";
 
-const storage = new Storage();
+let storage: Storage;
+
+// Function to set the storage instance after database is initialized
+export function setStorageInstance(storageInstance: Storage) {
+  storage = storageInstance;
+}
 
 const router = Router();
 
