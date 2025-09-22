@@ -231,7 +231,7 @@ app.get("/api/setup-admin", async (req, res) => {
     console.log('🔍 Setting up admin user...');
     
     // Ensure users table exists first
-    sqlite.exec(`
+    await db.run(sql`
       CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
         username TEXT UNIQUE NOT NULL,
