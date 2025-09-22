@@ -7,6 +7,7 @@ import fs from "fs";
 import { authenticateToken, requireAdmin, loginUser, hashPassword, AuthRequest, generateToken, sessionTimeout, verifyPassword } from "./auth";
 import { setupGoogleAuth, passport, GOOGLE_AUTH_ENABLED } from "./googleAuth";
 import { sendContactNotification } from "./emailService";
+import { sql } from "drizzle-orm";
 
 let storage: Storage;
 
@@ -95,6 +96,26 @@ router.get("/api/_debug/user", async (req, res) => {
   } catch (error) {
     console.error("Debug user error:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// TEMP: Patch users table to add missing last_login_at column on Railway
+router.post("/api/_debug/patch-users-last-login", async (_req, res) => {
+  try {
+    // Try querying the column; if it fails, we'll add it
+    try {
+      await storage.getAllUsers();
+      // Attempt a harmless select that references the column to detect existence
+      await (storage as any).db?.all?.(sql`SELECT last_login_at FROM users LIMIT 1`);
+      return res.json({ patched: false, message: "Column already exists" });
+    } catch (_e) {
+      // Add the column
+      await (storage as any).db?.run?.(sql`ALTER TABLE users ADD COLUMN last_login_at TEXT`);
+      return res.json({ patched: true, message: "Added last_login_at column" });
+    }
+  } catch (error: any) {
+    console.error("Patch users table error:", error);
+    res.status(500).json({ error: "Patch failed", details: String(error?.message || error) });
   }
 });
 
