@@ -45,12 +45,14 @@ router.post("/auth/login", async (req, res) => {
       : await storage.getUserByUsername(username);
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      console.warn("Login failed: user not found", { by: email ? 'email' : 'username', value: email || username });
+      return res.status(401).json({ error: "Invalid credentials", code: "no_user" });
     }
 
-    const isValidPassword = await verifyPassword(password, user.password_hash);
+    const isValidPassword = await verifyPassword(password, (user as any).password_hash);
     if (!isValidPassword) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      console.warn("Login failed: bad password for user", { username: (user as any).username, email: (user as any).email });
+      return res.status(401).json({ error: "Invalid credentials", code: "bad_password" });
     }
 
     await storage.updateUserLastLogin(user.id);
