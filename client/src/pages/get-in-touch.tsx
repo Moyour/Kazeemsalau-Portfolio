@@ -278,19 +278,19 @@ export default function GetInTouch() {
               
               {/* Fallback Contact Methods */}
               <div className="mt-8 p-6 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
-                <h4 className="text-lg font-semibold text-yellow-200 mb-4 flex items-center gap-2">
+                <h4 className="text-lg font-semibold text-white-200 mb-4 flex items-center gap-2">
                   <Mail className="w-5 h-5" />
                   Alternative Contact Methods
                 </h4>
-                <p className="text-yellow-100/80 mb-4">
+                <p className="text-white-100/80 mb-4">
                   If the form isn't working, you can reach me directly:
                 </p>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-yellow-200" />
+                    <Mail className="w-4 h-4 text-white-200" />
                     <a 
                       href="mailto:kazeem.salau@yahoo.com"
-                      className="text-yellow-200 hover:text-yellow-100 underline"
+                      className="text-white-200 hover:text-yellow-100 underline"
                     >
                       kazeem.salau@yahoo.com
                     </a>
@@ -301,7 +301,7 @@ export default function GetInTouch() {
                       href="https://x.com/themoyoursalau?s=21"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-yellow-200 hover:text-yellow-100 underline"
+                      className="text-white-200 hover:text-yellow-100 underline"
                     >
                       @themoyoursalau
                     </a>
@@ -312,7 +312,7 @@ export default function GetInTouch() {
                       href="https://www.youtube.com/@moyoursalau"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-yellow-200 hover:text-yellow-100 underline"
+                      className="text-white-200 hover:text-yellow-100 underline"
                     >
                       YouTube Channel
                     </a>

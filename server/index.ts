@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from "express";
 import { createServer, type Server } from "http";
 import session from "express-session";
-import { router, setStorageInstance } from "./routes"; // Import the new router
+import { router, setStorageInstance, setDatabaseConnection } from "./routes"; // Import the new router
 import { setupGoogleAuth, passport } from "./googleAuth";
 import { Storage, setDatabase } from "./storage";
 import { sql } from "drizzle-orm";
@@ -106,6 +106,17 @@ try {
     )
   `);
   
+  // Create magic_links table for passwordless login
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS magic_links (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      user_id TEXT NOT NULL,
+      token TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      used INTEGER DEFAULT 0
+    )
+  `);
+
   // Create contact_submissions table
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS contact_submissions (
@@ -138,6 +149,7 @@ try {
   // Set database connection and initialize storage
   try {
     setDatabase(db);
+    setDatabaseConnection(db); // Set database connection for routes
     storage = new Storage();
     setStorageInstance(storage); // Set storage instance for routes
     setupGoogleAuth(storage);

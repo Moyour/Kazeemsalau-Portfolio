@@ -6,14 +6,21 @@ import path from "path";
 import fs from "fs";
 import { authenticateToken, requireAdmin, loginUser, hashPassword, AuthRequest, generateToken, sessionTimeout, verifyPassword } from "./auth";
 import { setupGoogleAuth, passport, GOOGLE_AUTH_ENABLED } from "./googleAuth";
-import { sendContactNotification } from "./emailService";
+import { sendContactNotification, sendEmail } from "./emailService";
 import { sql } from "drizzle-orm";
+import crypto from "node:crypto";
 
 let storage: Storage;
+let db: any;
 
 // Function to set the storage instance after database is initialized
 export function setStorageInstance(storageInstance: Storage) {
   storage = storageInstance;
+}
+
+// Function to set the database connection
+export function setDatabaseConnection(database: any) {
+  db = database;
 }
 
 const router = Router();
@@ -73,6 +80,80 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
+// Request a magic link: POST /api/auth/magic-link { email }
+router.post("/auth/magic-link", async (req, res) => {
+  try {
+    const { email } = req.body as { email?: string };
+    if (!email) return res.status(400).json({ error: "Email is required" });
+
+    const user = await storage.getUserByEmail(email);
+    if (!user) return res.status(404).json({ error: "No user with that email" });
+
+    const token = crypto.randomBytes(24).toString("hex");
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
+    // Store token using the database directly
+    await db.run(sql`
+      INSERT INTO magic_links (user_id, token, expires_at) VALUES (${(user as any).id}, ${token}, ${expiresAt})
+    `);
+
+    const baseUrl = process.env.PUBLIC_BASE_URL || "http://localhost:5001";
+    const link = `${baseUrl}/api/auth/magic-login?token=${token}`;
+
+    // Send email (or log if SMTP not configured)
+    await sendEmail({ to: email, subject: "Your sign-in link", html: `<p>Click to sign in: <a href="${link}">${link}</a></p>` });
+
+    // Always return the link so UI can show it if SMTP is not configured
+    res.json({ success: true, link });
+  } catch (error) {
+    console.error("Magic-link request error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Consume a magic link: GET /api/auth/magic-login?token=...
+router.get("/auth/magic-login", async (req, res) => {
+  try {
+    const token = (req.query.token as string) || "";
+    console.log("Magic-login attempt with token:", token);
+    if (!token) return res.status(400).send("Missing token");
+
+    const rows = await db.all(sql`SELECT * FROM magic_links WHERE token = ${token} AND used = 0 LIMIT 1`);
+    console.log("Found magic link rows:", rows?.length || 0);
+    const row = rows?.[0];
+    if (!row) {
+      console.log("No valid magic link found for token");
+      return res.status(400).send("Invalid or used link");
+    }
+
+    console.log("Magic link found, expires at:", row.expires_at);
+    if (new Date(row.expires_at).getTime() < Date.now()) {
+      console.log("Magic link expired");
+      return res.status(400).send("Link expired");
+    }
+
+    const user = await storage.getUserById(row.user_id);
+    console.log("User found:", !!user);
+    if (!user) return res.status(400).send("User not found");
+
+    // Mark link used
+    await db.run(sql`UPDATE magic_links SET used = 1 WHERE id = ${row.id}`);
+
+    // Issue JWT and return a small HTML that sets localStorage and redirects to /admin
+    const tokenJwt = generateToken(user as any);
+    const redirectTo = "/admin";
+    res.setHeader("Content-Type", "text/html");
+    res.send(`<!DOCTYPE html><html><body>
+      <script>
+        localStorage.setItem('authToken', ${JSON.stringify(tokenJwt)});
+        window.location.href = ${JSON.stringify(redirectTo)};
+      </script>
+    </body></html>`);
+  } catch (error) {
+    console.error("Magic-login error:", error);
+    res.status(500).send("Internal server error");
+  }
+});
 // TEMP: Debug user endpoint (remove after diagnosing Railway)
 router.get("/api/_debug/user", async (req, res) => {
   try {

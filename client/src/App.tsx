@@ -16,6 +16,7 @@ import GetInTouch from "@/pages/get-in-touch";
 import Resume from "@/pages/resume";
 import Admin from "@/pages/admin";
 import Login from "@/pages/login";
+import LoginMagic from "@/pages/login-magic";
 import AuthCallback from "@/pages/auth-callback";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
@@ -36,6 +37,7 @@ function Router() {
           <Route path="/get-in-touch" component={GetInTouch} />
           <Route path="/resume" component={Resume} />
           <Route path="/login" component={Login} />
+          <Route path="/login-magic" component={LoginMagic} />
           <Route path="/auth/callback" component={AuthCallback} />
           <Route path="/admin">
             <ProtectedRoute requireAdmin>
