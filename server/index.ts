@@ -106,6 +106,33 @@ try {
     )
   `);
   
+  // Create contact_submissions table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS contact_submissions (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      first_name TEXT NOT NULL,
+      last_name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      company TEXT,
+      project_type TEXT,
+      message TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+  
+  // Create resumes table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS resumes (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      filename TEXT NOT NULL,
+      original_name TEXT NOT NULL,
+      file_url TEXT NOT NULL,
+      parsed_content TEXT,
+      is_active INTEGER DEFAULT 0,
+      uploaded_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+  
   console.log('✅ Database tables created successfully');
   
   // Set database connection and initialize storage
