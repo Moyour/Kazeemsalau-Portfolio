@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { authenticateToken, requireAdmin, loginUser, hashPassword, AuthRequest, generateToken, sessionTimeout } from "./auth";
+import { authenticateToken, requireAdmin, loginUser, hashPassword, AuthRequest, generateToken, sessionTimeout, verifyPassword } from "./auth";
 import { setupGoogleAuth, passport, GOOGLE_AUTH_ENABLED } from "./googleAuth";
 import { sendContactNotification } from "./emailService";
 
@@ -38,21 +38,31 @@ router.post("/auth/login", async (req, res) => {
       return res.status(400).json({ error: "Username or email and password are required" });
     }
 
-    // Allow login via username or email
-    const identifier = username || email;
-    const result = await loginUser(identifier, password, storage);
-    if (!result) {
+    // Fetch user by username or email
+    const user = email
+      ? await storage.getUserByEmail(email)
+      : await storage.getUserByUsername(username);
+
+    if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    const isValidPassword = await verifyPassword(password, user.password_hash);
+    if (!isValidPassword) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    await storage.updateUserLastLogin(user.id);
+    const token = generateToken(user);
+
     res.json({
       user: {
-        id: result.user.id,
-        username: result.user.username,
-        email: result.user.email,
-        role: result.user.role,
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
       },
-      token: result.token,
+      token,
     });
   } catch (error) {
     console.error("Login error:", error);
