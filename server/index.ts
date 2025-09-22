@@ -188,12 +188,16 @@ app.get("/api/db-test", (req, res) => {
   }
   
   try {
-    // Test database connection
+    // Test database connection and show tables
     const result = db.all(sql`SELECT 1 as test`);
+    const tables = db.all(sql`SELECT name FROM sqlite_master WHERE type='table'`);
+    const userCount = db.all(sql`SELECT COUNT(*) as count FROM users`);
     res.json({ 
       success: true, 
       message: 'Database is working!', 
       test: result,
+      tables: tables,
+      userCount: userCount,
       timestamp: new Date().toISOString()
     });
   } catch (error) {
