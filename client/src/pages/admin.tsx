@@ -621,7 +621,25 @@ export default function Admin() {
               )}
 
               <div className="grid gap-6">
-                {projects.map((project) => (
+                {projects.length === 0 ? (
+                  <Card className="bg-yellow-500/10 backdrop-blur-md border-yellow-500/20">
+                    <CardContent className="p-8 text-center">
+                      <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <FolderOpen className="w-8 h-8 text-yellow-300" />
+                      </div>
+                      <h3 className="text-xl font-bold text-yellow-200 mb-2">No Projects Found</h3>
+                      <p className="text-yellow-100/80 mb-4">
+                        Your admin panel is empty because Railway's add endpoints are not working properly.
+                      </p>
+                      <div className="space-y-2 text-sm text-yellow-100/70">
+                        <p><strong>Quick Fix:</strong> Add projects manually using the form above</p>
+                        <p><strong>Alternative:</strong> Contact Railway support about the add-project endpoint</p>
+                        <p><strong>Note:</strong> This is a known issue with Railway deployment</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  projects.map((project) => (
                   <Card key={project.id} className="bg-white/10 backdrop-blur-md border-white/20">
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
@@ -676,7 +694,8 @@ export default function Admin() {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                ))
+                )}
               </div>
             </TabsContent>
 
