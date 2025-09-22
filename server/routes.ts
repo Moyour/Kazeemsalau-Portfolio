@@ -62,7 +62,13 @@ router.post("/auth/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials", code: "bad_password" });
     }
 
-    await storage.updateUserLastLogin(user.id);
+    // Update last login if possible (gracefully handle missing column)
+    try {
+      await storage.updateUserLastLogin(user.id);
+    } catch (error) {
+      console.warn("Could not update last login (column may not exist):", error.message);
+    }
+    
     const token = generateToken(user);
 
     res.json({
@@ -182,23 +188,49 @@ router.get("/api/_debug/user", async (req, res) => {
   }
 });
 
-// TEMP: Patch users table to add missing last_login_at column on Railway
-router.post("/api/_debug/patch-users-last-login", async (_req, res) => {
+// Database migration endpoint to add missing columns
+router.post("/api/_debug/migrate-database", async (_req, res) => {
   try {
-    // Try querying the column; if it fails, we'll add it
+    console.log("🔧 Running database migration...");
+    
+    // Check if last_login_at column exists
     try {
-      await storage.getAllUsers();
-      // Attempt a harmless select that references the column to detect existence
       await (storage as any).db?.all?.(sql`SELECT last_login_at FROM users LIMIT 1`);
-      return res.json({ patched: false, message: "Column already exists" });
+      console.log("✅ last_login_at column already exists");
     } catch (_e) {
-      // Add the column
+      console.log("➕ Adding last_login_at column...");
       await (storage as any).db?.run?.(sql`ALTER TABLE users ADD COLUMN last_login_at TEXT`);
-      return res.json({ patched: true, message: "Added last_login_at column" });
+      console.log("✅ last_login_at column added successfully");
     }
+    
+    // Check if magic_links table exists
+    try {
+      await (storage as any).db?.all?.(sql`SELECT * FROM magic_links LIMIT 1`);
+      console.log("✅ magic_links table already exists");
+    } catch (_e) {
+      console.log("➕ Creating magic_links table...");
+      await (storage as any).db?.run?.(sql`
+        CREATE TABLE IF NOT EXISTS magic_links (
+          id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+          user_id TEXT NOT NULL,
+          token TEXT NOT NULL UNIQUE,
+          expires_at TEXT NOT NULL,
+          used BOOLEAN DEFAULT FALSE,
+          created_at TEXT DEFAULT (datetime('now')),
+          FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+      `);
+      console.log("✅ magic_links table created successfully");
+    }
+    
+    res.json({ 
+      success: true, 
+      message: "Database migration completed successfully",
+      timestamp: new Date().toISOString()
+    });
   } catch (error: any) {
-    console.error("Patch users table error:", error);
-    res.status(500).json({ error: "Patch failed", details: String(error?.message || error) });
+    console.error("Migration error:", error);
+    res.status(500).json({ error: "Failed to migrate database", details: String(error?.message || error) });
   }
 });
 
