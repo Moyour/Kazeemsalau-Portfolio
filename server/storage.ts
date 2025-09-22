@@ -1,4 +1,5 @@
-import { db } from "./db";
+// Database connection will be injected
+let db: any;
 import { InferSelectModel, InferInsertModel, sql } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 
@@ -144,6 +145,11 @@ export interface IStorage {
   deleteResume(id: string): Promise<boolean>;
   setActiveResume(id: string): Promise<Resume | undefined>;
   getActiveResume(): Promise<Resume | undefined>;
+}
+
+// Function to set the database connection
+export function setDatabase(database: any) {
+  db = database;
 }
 
 export class Storage implements IStorage {
@@ -589,5 +595,10 @@ export class Storage implements IStorage {
 
   async updateUserLastLogin(id: string): Promise<void> {
     await db.run(sql`UPDATE users SET last_login_at = ${new Date().toISOString()} WHERE id = ${id};`);
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    const rows = (await db.all(sql`SELECT * FROM users;`)) as UserDbRow[];
+    return rows;
   }
 }

@@ -4,7 +4,7 @@ import { createServer, type Server } from "http";
 import session from "express-session";
 import { router } from "./routes"; // Import the new router
 import { setupGoogleAuth, passport } from "./googleAuth";
-import { Storage } from "./storage";
+import { Storage, setDatabase } from "./storage";
 import { sql } from "drizzle-orm";
 import path from "path";
 import fs from "fs";
@@ -31,10 +31,11 @@ let db;
 let storage;
 
 try {
-  const dbPath = process.env.SQLITE_DATABASE_PATH || './sqlite.db';
-  console.log('🔍 Connecting to database:', dbPath);
+  const rawDbPath = process.env.SQLITE_DATABASE_PATH || './sqlite.db';
+  const sqliteFilePath = rawDbPath.replace(/^file:/, '');
+  console.log('🔍 Connecting to database:', sqliteFilePath);
   
-  const sqlite = new Database(dbPath);
+  const sqlite = new Database(sqliteFilePath);
   db = drizzle(sqlite);
   
   // Create tables if they don't exist
@@ -107,8 +108,9 @@ try {
   
   console.log('✅ Database tables created successfully');
   
-  // Initialize storage with direct database connection
+  // Set database connection and initialize storage
   try {
+    setDatabase(db);
     storage = new Storage();
     setupGoogleAuth(storage);
     console.log('✅ Storage initialized successfully');
@@ -311,7 +313,7 @@ app.post("/api/import-data", async (req, res) => {
 });
 
 // Mount the API routes (BEFORE static files to avoid conflicts)
-// app.use("/api", router); // Commented out for debugging
+app.use("/api", router);
 
 // Catch-all for client-side routing
 app.use(express.static("client/dist"));
