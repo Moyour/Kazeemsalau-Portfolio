@@ -457,17 +457,13 @@ app.post("/api/import-data", async (req, res) => {
 // Mount the API routes (BEFORE static files to avoid conflicts)
 app.use("/api", router);
 
-// Only serve static files in production
-console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files
-  app.use(express.static("client/dist"));
-  
-  // Catch-all for client-side routing (must be before error handlers)
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
-  });
-}
+// Serve static files and handle client-side routing
+app.use(express.static("client/dist"));
+
+// Catch-all for client-side routing
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
+});
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);
