@@ -460,20 +460,18 @@ app.use("/api", router);
 // Only serve static files in production
 console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
-  // Catch-all for client-side routing
+  // Serve static files
   app.use(express.static("client/dist"));
-
-  // Error handling middleware (must be last)
-  app.use(notFoundHandler);
-  app.use(errorHandler);
+  
+  // Catch-all for client-side routing (must be before error handlers)
   app.get("/*", (req, res) => {
     res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
   });
-} else {
-  // In development, just handle API routes
-  app.use(notFoundHandler);
-  app.use(errorHandler);
 }
+
+// Error handling middleware (must be last)
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 
