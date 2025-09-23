@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.kazeemsalau.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /admin
+Disallow: /api/
+Disallow: /login
+Disallow: /auth/
+
+# Allow all other content
+Allow: /portfolio/
+Allow: /blog/
+Allow: /about
+Allow: /get-in-touch
+
+# Crawl delay (optional)
+Crawl-delay: 1

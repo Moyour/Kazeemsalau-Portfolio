@@ -20,6 +20,7 @@ import LoginMagic from "@/pages/login-magic";
 import AuthCallback from "@/pages/auth-callback";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import LiveChatWidget from "@/components/live-chat-widget";
 
 function Router() {
   // Router component for client-side routing
@@ -48,6 +49,7 @@ function Router() {
         </Switch>
       </main>
       <Footer />
+      <LiveChatWidget />
     </div>
   );
 }
