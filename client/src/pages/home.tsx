@@ -202,7 +202,7 @@ export default function Home() {
                     <img
                       src={featuredProject.imageUrl}
                       alt={featuredProject.title}
-                      className="w-full h-full object-contain rounded-2xl"
+                      className="w-full h-full object-cover rounded-2xl"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
