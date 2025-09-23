@@ -80,7 +80,7 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden pt-20">
         <div
           className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400"
           style={{
@@ -96,7 +96,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="relative z-10 px-8 lg:px-16 py-20 flex items-center min-h-screen">
+        <div className="relative z-10 px-8 lg:px-16 py-20 flex items-center min-h-screen pt-32">
           <div className="max-w-2xl">
             <h1 className="text-[15vw] lg:text-[12vw] xl:text-[10vw] font-black leading-[0.8] tracking-tighter mb-8 text-white drop-shadow-2xl">
               FOR<br />
