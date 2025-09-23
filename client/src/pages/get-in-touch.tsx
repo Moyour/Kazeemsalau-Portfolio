@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { type InsertContact } from "../../server/storage";
 import { apiRequest } from "@/lib/queryClient";
+import NewsletterSignup from "@/components/newsletter-signup";
 
 const projectTypes = [
   "eLearning Development",
@@ -297,6 +298,22 @@ export default function GetInTouch() {
                 </Form>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-gradient-to-br from-purple-50 to-indigo-50">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Stay Connected</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Get the latest updates on my projects, insights, and opportunities. 
+              Join my community of developers and designers.
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <NewsletterSignup />
           </div>
         </div>
       </section>
