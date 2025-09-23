@@ -6,11 +6,9 @@ type Project = any;
 type BlogPost = any;
 type Testimonial = any;
 type ContactSubmission = any;
-type Resume = any;
 type InsertProject = any;
 type InsertBlogPost = any;
 type InsertTestimonial = any;
-type InsertResume = any;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,7 +29,6 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState("projects");
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
-  const [resumeText, setResumeText] = useState("");
   const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -69,13 +66,6 @@ export default function Admin() {
     featured: false,
   });
 
-  const [resumeFormData, setResumeFormData] = useState<InsertResume>({
-    filename: "",
-    originalName: "",
-    fileUrl: "",
-    parsedContent: "",
-    isActive: false,
-  });
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -159,9 +149,6 @@ export default function Admin() {
     queryKey: ["/api/contacts"],
   });
 
-  const { data: resumes = [], isLoading: resumesLoading } = useQuery<Resume[]>({
-    queryKey: ["/api/resumes"],
-  });
 
   const createProjectMutation = useMutation({
     mutationFn: async (data: InsertProject) => {
@@ -355,88 +342,8 @@ export default function Admin() {
     setBlogFormData({ ...post });
   };
 
-  // Resume mutations
-  const createResumeMutation = useMutation({
-    mutationFn: async (data: InsertResume) => {
-      return await apiRequest("POST", "/api/resumes", data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/resumes"] });
-      toast({ title: "Resume saved successfully!" });
-      resetResumeForm();
-    },
-    onError: () => {
-      toast({ title: "Failed to save resume", variant: "destructive" });
-    },
-  });
 
-  const activateResumeMutation = useMutation({
-    mutationFn: async (id: string) => {
-      return await apiRequest("PATCH", `/api/resumes/${id}/activate`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/resumes"] });
-      toast({ title: "Resume activated successfully!" });
-    },
-    onError: () => {
-      toast({ title: "Failed to activate resume", variant: "destructive" });
-    },
-  });
-
-  const deleteResumeMutation = useMutation({
-    mutationFn: async (id: string) => {
-      return await apiRequest("DELETE", `/api/resumes/${id}`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/resumes"] });
-      toast({ title: "Resume deleted successfully!" });
-    },
-    onError: () => {
-      toast({ title: "Failed to delete resume", variant: "destructive" });
-    },
-  });
-
-  const handleResumeUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append("resume", file);
-
-    try {
-      const response = await fetch("/api/parse-resume", {
-        method: "POST",
-        body: formData,
-      });
-      
-      if (!response.ok) {
-        throw new Error("Upload failed");
-      }
-
-      const result = await response.json();
-      
-      // Create resume record
-      createResumeMutation.mutate({
-        filename: result.data.filename || file.name,
-        originalName: file.name,
-        fileUrl: result.data.fileUrl || `/uploads/${file.name}`,
-        parsedContent: result.data.rawContent || "",
-        isActive: false,
-      });
-
-    } catch (error) {
-      toast({ title: "Failed to upload resume", variant: "destructive" });
-    }
-  };
-
-  const resetResumeForm = () => {
-    setResumeFormData({
-      filename: "",
-      originalName: "",
-      fileUrl: "",
-      parsedContent: "",
-      isActive: false,
-    });
-  };
-
-  const isLoading = projectsLoading || blogLoading || testimonialsLoading || contactsLoading || resumesLoading;
+  const isLoading = projectsLoading || blogLoading || testimonialsLoading || contactsLoading;
 
   if (isLoading) {
     return (
@@ -478,10 +385,6 @@ export default function Admin() {
               <TabsTrigger value="testimonials" className="data-[state=active]:bg-white/20">
                 <Users className="w-4 h-4 mr-2" />
                 Testimonials
-              </TabsTrigger>
-              <TabsTrigger value="resumes" className="data-[state=active]:bg-white/20">
-                <FileText className="w-4 h-4 mr-2" />
-                Resumes
               </TabsTrigger>
               <TabsTrigger value="contacts" className="data-[state=active]:bg-white/20">
                 <Mail className="w-4 h-4 mr-2" />
@@ -1174,108 +1077,6 @@ export default function Admin() {
               </div>
             </TabsContent>
 
-            <TabsContent value="resumes" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-white">Resume Management</h2>
-                <div>
-                  <Input
-                    type="file"
-                    accept=".pdf,.doc,.docx,.txt"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        handleResumeUpload(file);
-                      }
-                    }}
-                    className="hidden"
-                    id="resume-upload"
-                    data-testid="input-resume-upload"
-                  />
-                  <Button
-                    onClick={() => document.getElementById('resume-upload')?.click()}
-                    className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600"
-                    data-testid="button-upload-resume"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Upload Resume
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="grid gap-6">
-                {resumes.map((resume) => (
-                  <Card key={resume.id} className="bg-white/10 backdrop-blur-md border-white/20">
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3">
-                            <h3 className="text-xl font-bold text-white">{resume.originalName}</h3>
-                            {resume.isActive && (
-                              <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
-                                Active
-                              </Badge>
-                            )}
-                          </div>
-                          
-                          {resume.parsedContent && (
-                            <div className="mb-4 p-4 bg-white/5 rounded-lg">
-                              <h4 className="text-white font-medium mb-2">Parsed Content Preview:</h4>
-                              <div className="text-white/80 text-sm">
-                                <p className="line-clamp-3">{resume.parsedContent.substring(0, 200)}...</p>
-                              </div>
-                            </div>
-                          )}
-                          
-                          <p className="text-white/60 text-sm">
-                            Uploaded: {formatDate(resume.uploadedAt)}
-                          </p>
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          {!resume.isActive && (
-                            <Button
-                              onClick={() => activateResumeMutation.mutate(resume.id)}
-                              size="sm"
-                              className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30"
-                              data-testid={`button-activate-resume-${resume.id}`}
-                            >
-                              Set Active
-                            </Button>
-                          )}
-                          <Button
-                            onClick={() => deleteResumeMutation.mutate(resume.id)}
-                            size="sm"
-                            variant="outline"
-                            className="border-red-500/20 text-red-300 hover:bg-red-500/10 bg-red-500/5"
-                            data-testid={`button-delete-resume-${resume.id}`}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-                
-                {resumes.length === 0 && (
-                  <Card className="bg-white/10 backdrop-blur-md border-white/20">
-                    <CardContent className="p-12 text-center">
-                      <FileText className="w-16 h-16 text-white/40 mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-white mb-2">No resumes uploaded</h3>
-                      <p className="text-white/60 mb-4">Upload your first resume to get started</p>
-                      <Button
-                        onClick={() => document.getElementById('resume-upload')?.click()}
-                        className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600"
-                        data-testid="button-upload-first-resume"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Upload Resume
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-            </TabsContent>
 
             <TabsContent value="contacts" className="space-y-6">
               <h2 className="text-2xl font-bold text-white">Contact Messages</h2>

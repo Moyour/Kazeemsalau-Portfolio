@@ -13,7 +13,7 @@ import ProjectDetail from "@/pages/project-detail";
 import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import GetInTouch from "@/pages/get-in-touch";
-import Resume from "@/pages/resume";
+// import Resume from "@/pages/resume"; // Removed resume functionality
 import Admin from "@/pages/admin";
 import Login from "@/pages/login";
 import LoginMagic from "@/pages/login-magic";
@@ -35,7 +35,7 @@ function Router() {
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:id" component={BlogPost} />
           <Route path="/get-in-touch" component={GetInTouch} />
-          <Route path="/resume" component={Resume} />
+          {/* <Route path="/resume" component={Resume} /> */}
           <Route path="/login" component={Login} />
           <Route path="/login-magic" component={LoginMagic} />
           <Route path="/auth/callback" component={AuthCallback} />

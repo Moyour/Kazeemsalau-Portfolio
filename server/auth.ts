@@ -3,7 +3,10 @@ import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { Storage, User } from './storage';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  console.warn('⚠️  WARNING: Using fallback JWT secret. Set JWT_SECRET environment variable for production!');
+  return 'fallback-jwt-secret-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+})();
 const JWT_EXPIRES_IN = '365d'; // 1 year - effectively no timeout
 
 export interface AuthRequest extends Request {

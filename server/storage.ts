@@ -20,6 +20,7 @@ export type Project = {
   solution?: string;
   process?: string;
   results?: string;
+  order: number;
   createdAt: string;
 };
 
@@ -40,6 +41,7 @@ export type BlogPost = {
   imageUrl?: string;
   readTime?: string;
   published: boolean;
+  order: number;
   createdAt: string;
   updatedAt: string;
 };
@@ -97,21 +99,6 @@ export type InsertContact = Omit<ContactSubmission, "id" | "createdAt">;
 
 type ContactSubmissionDbRow = ContactSubmission;
 
-export type Resume = {
-  id: string;
-  filename: string;
-  originalName: string;
-  fileUrl: string;
-  parsedContent?: string;
-  isActive: boolean;
-  uploadedAt: string;
-};
-
-export type InsertResume = Omit<Resume, "id" | "uploadedAt">;
-
-type ResumeDbRow = Omit<Resume, "isActive"> & {
-  is_active: 0 | 1;
-};
 
 export interface IStorage {
   createProject(project: InsertProject): Promise<Project>;
@@ -138,13 +125,7 @@ export interface IStorage {
   getAllContactSubmissions(): Promise<ContactSubmission[]>;
   getContactSubmissionById(id: string): Promise<ContactSubmission | undefined>;
   deleteContactSubmission(id: string): Promise<boolean>;
-  createResume(resume: InsertResume): Promise<Resume>;
-  getResumeById(id: string): Promise<Resume | undefined>;
-  getAllResumes(): Promise<Resume[]>;
-  updateResume(id: string, resume: Partial<InsertResume>): Promise<Resume | undefined>;
-  deleteResume(id: string): Promise<boolean>;
-  setActiveResume(id: string): Promise<Resume | undefined>;
-  getActiveResume(): Promise<Resume | undefined>;
+  // Resume functionality removed
 }
 
 // Function to set the database connection
@@ -154,15 +135,20 @@ export function setDatabase(database: any) {
 
 export class Storage implements IStorage {
   async createProject(project: InsertProject): Promise<Project> {
+    // Get the next order number
+    const maxOrderResult = await db.all(sql`SELECT MAX(\`order\`) as max_order FROM projects`);
+    const nextOrder = (maxOrderResult[0]?.max_order || 0) + 1;
+
     const newProject: Project = {
       id: randomUUID(),
       ...project,
       tools: project.tools || [],
+      order: project.order || nextOrder,
       createdAt: new Date().toISOString(),
       featured: project.featured === true,
     };
     await db.run(sql`
-      INSERT INTO projects (id, title, description, long_description, category, tools, image_url, case_study_url, scorm_url, demo_url, featured, challenge, solution, process, results, created_at)
+      INSERT INTO projects (id, title, description, long_description, category, tools, image_url, case_study_url, scorm_url, demo_url, featured, challenge, solution, process, results, \`order\`, created_at)
       VALUES (
         ${newProject.id},
         ${newProject.title},
@@ -179,6 +165,7 @@ export class Storage implements IStorage {
         ${newProject.solution === undefined ? null : newProject.solution},
         ${newProject.process === undefined ? null : newProject.process},
         ${newProject.results === undefined ? null : newProject.results},
+        ${newProject.order},
         ${newProject.createdAt}
       );
     `);
@@ -204,12 +191,13 @@ export class Storage implements IStorage {
       solution: row.solution,
       process: row.process,
       results: row.results,
+      order: row.order || 0,
       createdAt: row.created_at,
     };
   }
 
   async getAllProjects(): Promise<Project[]> {
-    const rows = (await db.all(sql`SELECT * FROM projects ORDER BY created_at DESC;`)) as any[];
+    const rows = (await db.all(sql`SELECT * FROM projects ORDER BY \`order\` ASC, created_at DESC;`)) as any[];
     return rows.map((row) => ({
       id: row.id,
       title: row.title,
@@ -226,6 +214,7 @@ export class Storage implements IStorage {
       solution: row.solution,
       process: row.process,
       results: row.results,
+      order: row.order || 0,
       createdAt: row.created_at,
     }));
   }
@@ -269,15 +258,20 @@ export class Storage implements IStorage {
   }
 
   async createBlogPost(blogPost: InsertBlogPost): Promise<BlogPost> {
+    // Get the next order number
+    const maxOrderResult = await db.all(sql`SELECT MAX(\`order\`) as max_order FROM blog_posts`);
+    const nextOrder = (maxOrderResult[0]?.max_order || 0) + 1;
+
     const newBlogPost: BlogPost = {
       id: randomUUID(),
       ...blogPost,
+      order: blogPost.order || nextOrder,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       published: blogPost.published === true,
     };
     await db.run(sql`
-      INSERT INTO blog_posts (id, title, excerpt, content, category, image_url, read_time, published, created_at, updated_at)
+      INSERT INTO blog_posts (id, title, excerpt, content, category, image_url, read_time, published, \`order\`, created_at, updated_at)
       VALUES (
         ${newBlogPost.id},
         ${newBlogPost.title},
@@ -287,6 +281,7 @@ export class Storage implements IStorage {
         ${newBlogPost.imageUrl === undefined ? null : newBlogPost.imageUrl},
         ${newBlogPost.readTime === undefined ? null : newBlogPost.readTime},
         ${newBlogPost.published ? 1 : 0},
+        ${newBlogPost.order},
         ${newBlogPost.createdAt},
         ${newBlogPost.updatedAt}
       );
@@ -306,13 +301,14 @@ export class Storage implements IStorage {
       imageUrl: row.image_url,
       readTime: row.read_time,
       published: row.published === 1 ? true : false,
+      order: row.order || 0,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     };
   }
 
   async getAllBlogPosts(): Promise<BlogPost[]> {
-    const rows = (await db.all(sql`SELECT * FROM blog_posts ORDER BY created_at DESC;`)) as any[];
+    const rows = (await db.all(sql`SELECT * FROM blog_posts ORDER BY \`order\` ASC, created_at DESC;`)) as any[];
     return rows.map((row) => ({
       id: row.id,
       title: row.title,
@@ -322,6 +318,7 @@ export class Storage implements IStorage {
       imageUrl: row.image_url,
       readTime: row.read_time,
       published: row.published === 1 ? true : false,
+      order: row.order || 0,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     }));
@@ -497,16 +494,26 @@ export class Storage implements IStorage {
     const [row] = (await db.all(sql`SELECT * FROM resumes WHERE id = ${id};`)) as ResumeDbRow[];
     if (!row) return undefined;
     return {
-      ...row,
+      id: row.id,
+      filename: row.filename,
+      originalName: row.original_name,
+      fileUrl: row.file_url,
+      parsedContent: row.parsed_content,
       isActive: row.is_active === 1 ? true : false,
+      uploadedAt: row.uploaded_at,
     };
   }
 
   async getAllResumes(): Promise<Resume[]> {
     const rows = (await db.all(sql`SELECT * FROM resumes ORDER BY uploaded_at DESC;`)) as ResumeDbRow[];
     return rows.map((row) => ({
-      ...row,
+      id: row.id,
+      filename: row.filename,
+      originalName: row.original_name,
+      fileUrl: row.file_url,
+      parsedContent: row.parsed_content,
       isActive: row.is_active === 1 ? true : false,
+      uploadedAt: row.uploaded_at,
     }));
   }
 
@@ -549,12 +556,33 @@ export class Storage implements IStorage {
   }
 
   async getActiveResume(): Promise<Resume | undefined> {
-    const [row] = (await db.all(sql`SELECT * FROM resumes WHERE is_active = 1;`)) as ResumeDbRow[];
-    if (!row) return undefined;
-    return {
-      ...row,
-      isActive: row.is_active === 1 ? true : false,
-    };
+    try {
+      // Direct database query for active resume
+      const rows = (await db.all(sql`SELECT * FROM resumes WHERE is_active = 1 LIMIT 1;`)) as ResumeDbRow[];
+      console.log("Active resume query result:", rows);
+      
+      if (!rows || rows.length === 0) {
+        console.log("No active resume found");
+        return undefined;
+      }
+      
+      const row = rows[0];
+      const activeResume = {
+        id: row.id,
+        filename: row.filename,
+        originalName: row.original_name,
+        fileUrl: row.file_url,
+        parsedContent: row.parsed_content,
+        isActive: row.is_active === 1 ? true : false,
+        uploadedAt: row.uploaded_at,
+      };
+      
+      console.log("Active resume found:", activeResume);
+      return activeResume;
+    } catch (error) {
+      console.error("Error in getActiveResume:", error);
+      return undefined;
+    }
   }
 
   // User management methods

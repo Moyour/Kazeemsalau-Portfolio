@@ -2,15 +2,81 @@ import 'dotenv/config';
 import express from "express";
 import { createServer, type Server } from "http";
 import session from "express-session";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 import { router, setStorageInstance, setDatabaseConnection } from "./routes"; // Import the new router
 import { setupGoogleAuth, passport } from "./googleAuth";
 import { Storage, setDatabase } from "./storage";
 import { sql } from "drizzle-orm";
 import path from "path";
 import fs from "fs";
+import { errorHandler, notFoundHandler } from "./errorHandler";
+import { scheduleBackups } from "./backup";
 
 const app = express();
 app.use(express.json()); // Enable JSON body parsing
+
+// Rate limiting configuration
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: {
+    error: "Too many requests from this IP, please try again later.",
+  },
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 auth requests per windowMs
+  message: {
+    error: "Too many authentication attempts, please try again later.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const uploadLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // Limit each IP to 10 uploads per minute
+  message: {
+    error: "Too many upload attempts, please try again later.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply rate limiting
+app.use('/api', generalLimiter);
+app.use('/api/auth', authLimiter);
+app.use('/api/upload', uploadLimiter);
+
+// Security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      scriptSrc: ["'self'"],
+      connectSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Disable for compatibility
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true,
+  },
+  noSniff: true,
+  xssFilter: true,
+  referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+}));
 
 // Session configuration for Passport
 app.use(session({
@@ -116,6 +182,24 @@ try {
       used INTEGER DEFAULT 0
     )
   `);
+
+  // Add order column to projects table if it doesn't exist
+  try {
+    sqlite.exec(`ALTER TABLE projects ADD COLUMN \`order\` INTEGER DEFAULT 0`);
+    // Set order based on creation date for existing projects
+    sqlite.exec(`UPDATE projects SET \`order\` = (SELECT COUNT(*) FROM projects p2 WHERE p2.created_at <= projects.created_at)`);
+  } catch (e) {
+    // Column already exists, ignore error
+  }
+
+  // Add order column to blog_posts table if it doesn't exist
+  try {
+    sqlite.exec(`ALTER TABLE blog_posts ADD COLUMN \`order\` INTEGER DEFAULT 0`);
+    // Set order based on creation date for existing blog posts
+    sqlite.exec(`UPDATE blog_posts SET \`order\` = (SELECT COUNT(*) FROM blog_posts b2 WHERE b2.created_at <= blog_posts.created_at)`);
+  } catch (e) {
+    // Column already exists, ignore error
+  }
 
   // Create contact_submissions table
   sqlite.exec(`
@@ -375,6 +459,10 @@ app.use("/api", router);
 
 // Catch-all for client-side routing
 app.use(express.static("client/dist"));
+
+// Error handling middleware (must be last)
+app.use(notFoundHandler);
+app.use(errorHandler);
 app.get("/*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
 });
@@ -403,6 +491,8 @@ export function startServer(): Promise<Server> {
 
 // Start the server if not in test environment
 if (process.env.NODE_ENV !== 'test') {
+  // Start automated backups (daily)
+  scheduleBackups(24);
   startServer();
 }
 

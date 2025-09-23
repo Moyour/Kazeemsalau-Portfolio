@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Storage, setDatabase, type InsertProject, type Project, type InsertBlogPost, type BlogPost, type InsertTestimonial, type Testimonial, type InsertContact, type ContactSubmission, type InsertResume, type Resume, type InsertUser } from "./storage";
+import { Storage, setDatabase, type InsertProject, type Project, type InsertBlogPost, type BlogPost, type InsertTestimonial, type Testimonial, type InsertContact, type ContactSubmission, type InsertUser } from "./storage";
 import { randomUUID } from "node:crypto";
 import multer from "multer";
 import path from "path";
@@ -9,6 +9,7 @@ import { setupGoogleAuth, passport, GOOGLE_AUTH_ENABLED } from "./googleAuth";
 import { sendContactNotification, sendEmail } from "./emailService";
 import { sql } from "drizzle-orm";
 import crypto from "node:crypto";
+import { validate, sanitizeInput, projectSchema, blogPostSchema, testimonialSchema, contactSchema, loginSchema, magicLinkSchema } from "./validation";
 
 let storage: Storage;
 let db: any;
@@ -38,7 +39,7 @@ router.get("/api/health", (req, res) => {
 const adminRoute = [authenticateToken, sessionTimeout, requireAdmin];
 
 // Authentication Routes
-router.post("/auth/login", async (req, res) => {
+router.post("/auth/login", sanitizeInput, validate(loginSchema), async (req, res) => {
   try {
     const { username, email, password } = req.body;
     
@@ -87,7 +88,7 @@ router.post("/auth/login", async (req, res) => {
 });
 
 // Request a magic link: POST /api/auth/magic-link { email }
-router.post("/auth/magic-link", async (req, res) => {
+router.post("/auth/magic-link", sanitizeInput, validate(magicLinkSchema), async (req, res) => {
   try {
     const { email } = req.body as { email?: string };
     if (!email) return res.status(400).json({ error: "Email is required" });
@@ -160,8 +161,9 @@ router.get("/auth/magic-login", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
-// TEMP: Debug user endpoint (remove after diagnosing Railway)
-router.get("/api/_debug/user", async (req, res) => {
+// Debug user endpoint (development only)
+if (process.env.NODE_ENV === 'development') {
+  router.get("/api/_debug/user", async (req, res) => {
   try {
     const { username, email } = req.query as { username?: string; email?: string };
     if (!username && !email) {
@@ -186,10 +188,12 @@ router.get("/api/_debug/user", async (req, res) => {
     console.error("Debug user error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-});
+  });
+}
 
-// Database migration endpoint to add missing columns
-router.post("/api/_debug/migrate-database", async (_req, res) => {
+// Database migration endpoint (development only)
+if (process.env.NODE_ENV === 'development') {
+  router.post("/api/_debug/migrate-database", async (_req, res) => {
   try {
     console.log("🔧 Running database migration...");
     
@@ -232,10 +236,12 @@ router.post("/api/_debug/migrate-database", async (_req, res) => {
     console.error("Migration error:", error);
     res.status(500).json({ error: "Failed to migrate database", details: String(error?.message || error) });
   }
-});
+  });
+}
 
-// Update user role endpoint
-router.post("/api/_debug/update-user-role", async (req, res) => {
+// Update user role endpoint (development only)
+if (process.env.NODE_ENV === 'development') {
+  router.post("/api/_debug/update-user-role", async (req, res) => {
   try {
     const { email, role } = req.body;
     
@@ -265,7 +271,8 @@ router.post("/api/_debug/update-user-role", async (req, res) => {
     console.error("Update user role error:", error);
     res.status(500).json({ error: "Failed to update user role", details: String(error?.message || error) });
   }
-});
+  });
+}
 
 router.post("/auth/register", async (req, res) => {
   try {
@@ -361,9 +368,10 @@ const upload = multer({
   dest: uploadDir,
   limits: {
     fileSize: 100 * 1024 * 1024, // 100MB limit for SCORM files
+    files: 1, // Only allow one file at a time
   },
   fileFilter: (req, file, cb) => {
-    // Allow common file types for portfolio content
+    // Enhanced security: Check file extension and MIME type
     const allowedTypes = [
       'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml',
       'application/zip', 'application/x-zip-compressed', // SCORM files
@@ -372,14 +380,34 @@ const upload = multer({
       'application/msword', // .doc files
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
       'text/plain', // .txt files
-      'application/json' // .json files (for testing)
     ];
     
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Unsupported file type'));
+    // Remove JSON files from production
+    if (process.env.NODE_ENV === 'development') {
+      allowedTypes.push('application/json');
     }
+    
+    // Check MIME type
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error(`Unsupported file type: ${file.mimetype}`));
+    }
+    
+    // Additional security: Check file extension matches MIME type
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.zip', '.mp4', '.webm', '.pdf', '.doc', '.docx', '.txt'];
+    if (process.env.NODE_ENV === 'development') {
+      allowedExtensions.push('.json');
+    }
+    
+    const fileExtension = path.extname(file.originalname).toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      return cb(new Error(`Unsupported file extension: ${fileExtension}`));
+    }
+    
+    // Sanitize filename
+    const sanitizedOriginalname = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+    file.originalname = sanitizedOriginalname;
+    
+    cb(null, true);
   }
 });
 
@@ -393,23 +421,37 @@ const blogImageUpload = multer({
   dest: blogImageUploadDir,
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB limit for blog images
+    files: 1, // Only allow one file at a time
   },
   fileFilter: (req, file, cb) => {
-    // Only allow image files for blog images
+    // Enhanced security for blog images
     const allowedTypes = [
       'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'
     ];
     
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed for blog images'));
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    
+    // Check MIME type
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error(`Only image files are allowed. Received: ${file.mimetype}`));
     }
+    
+    // Check file extension
+    const fileExtension = path.extname(file.originalname).toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      return cb(new Error(`Unsupported image format: ${fileExtension}`));
+    }
+    
+    // Sanitize filename
+    const sanitizedOriginalname = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+    file.originalname = sanitizedOriginalname;
+    
+    cb(null, true);
   }
 });
 
 // Project Routes (Protected - Admin only)
-router.post("/projects", ...adminRoute, async (req, res) => {
+router.post("/projects", ...adminRoute, sanitizeInput, validate(projectSchema), async (req, res) => {
   try {
     const newProject: InsertProject = req.body;
     const createdProject = await storage.createProject(newProject);
@@ -492,7 +534,7 @@ router.delete("/projects/:id", ...adminRoute, async (req, res) => {
 });
 
 // Blog Post Routes (Protected - Admin only)
-router.post("/blog-posts", ...adminRoute, async (req, res) => {
+router.post("/blog-posts", ...adminRoute, sanitizeInput, validate(blogPostSchema), async (req, res) => {
   try {
     const newBlogPost: InsertBlogPost = req.body;
     const createdBlogPost = await storage.createBlogPost(newBlogPost);
@@ -732,7 +774,7 @@ router.delete("/testimonials/:id", ...adminRoute, async (req, res) => {
 });
 
 // Contact Submission Routes
-router.post("/contact-submissions", async (req, res) => {
+router.post("/contact-submissions", sanitizeInput, validate(contactSchema), async (req, res) => {
   try {
     const newSubmission: InsertContact = req.body;
     const createdSubmission = await storage.createContactSubmission(newSubmission);
@@ -786,6 +828,47 @@ router.delete("/contact-submissions/:id", ...adminRoute, async (req, res) => {
   } catch (error) {
     console.error("Error deleting contact submission:", error);
     res.status(500).json({ error: "Failed to delete contact submission" });
+  }
+});
+
+// Reorder Routes (Protected - Admin only)
+router.post("/projects/reorder", ...adminRoute, async (req, res) => {
+  try {
+    const { items } = req.body;
+    if (!Array.isArray(items)) {
+      return res.status(400).json({ error: "Items must be an array" });
+    }
+
+    // Update order for each project
+    for (let i = 0; i < items.length; i++) {
+      const { id } = items[i];
+      await db.run(sql`UPDATE projects SET \`order\` = ${i + 1} WHERE id = ${id}`);
+    }
+
+    res.json({ success: true, message: "Projects reordered successfully" });
+  } catch (error) {
+    console.error("Error reordering projects:", error);
+    res.status(500).json({ error: "Failed to reorder projects" });
+  }
+});
+
+router.post("/blog-posts/reorder", ...adminRoute, async (req, res) => {
+  try {
+    const { items } = req.body;
+    if (!Array.isArray(items)) {
+      return res.status(400).json({ error: "Items must be an array" });
+    }
+
+    // Update order for each blog post
+    for (let i = 0; i < items.length; i++) {
+      const { id } = items[i];
+      await db.run(sql`UPDATE blog_posts SET \`order\` = ${i + 1} WHERE id = ${id}`);
+    }
+
+    res.json({ success: true, message: "Blog posts reordered successfully" });
+  } catch (error) {
+    console.error("Error reordering blog posts:", error);
+    res.status(500).json({ error: "Failed to reorder blog posts" });
   }
 });
 
@@ -896,12 +979,40 @@ router.post("/resumes/:id/set-active", ...adminRoute, async (req, res) => {
 
 router.get("/resumes/active", async (req, res) => {
   try {
-    const activeResume = await storage.getActiveResume();
-    if (activeResume) {
-      res.json(activeResume);
-    } else {
-      res.status(404).json({ error: "Active resume not found" });
+    console.log("Getting active resume...");
+    console.log("Database connection:", db ? "Available" : "Not available");
+    
+    if (!db) {
+      console.error("Database connection not available");
+      return res.status(500).json({ error: "Database connection not available" });
     }
+    
+    // Test query first
+    const testRows = await db.all(sql`SELECT COUNT(*) as count FROM resumes;`);
+    console.log("Total resumes in database:", testRows);
+    
+    // Direct database query for active resume
+    const rows = await db.all(sql`SELECT * FROM resumes WHERE is_active = 1 LIMIT 1;`);
+    console.log("Active resume query result:", rows);
+    
+    if (!rows || rows.length === 0) {
+      console.log("No active resume found");
+      return res.status(404).json({ error: "Resume not found" });
+    }
+    
+    const row = rows[0] as any;
+    const activeResume = {
+      id: row.id,
+      filename: row.filename,
+      originalName: row.original_name,
+      fileUrl: row.file_url,
+      parsedContent: row.parsed_content,
+      isActive: row.is_active === 1 ? true : false,
+      uploadedAt: row.uploaded_at,
+    };
+    
+    console.log("Active resume found:", activeResume);
+    res.json(activeResume);
   } catch (error) {
     console.error("Error fetching active resume:", error);
     res.status(500).json({ error: "Failed to fetch active resume" });
@@ -949,13 +1060,32 @@ const projectImageUpload = multer({
   dest: projectImageUploadDir,
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
+    files: 1, // Only allow one file at a time
   },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed'), false);
+    // Enhanced security for project images
+    const allowedTypes = [
+      'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'
+    ];
+    
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+    
+    // Check MIME type
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error(`Only image files are allowed. Received: ${file.mimetype}`));
     }
+    
+    // Check file extension
+    const fileExtension = path.extname(file.originalname).toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      return cb(new Error(`Unsupported image format: ${fileExtension}`));
+    }
+    
+    // Sanitize filename
+    const sanitizedOriginalname = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+    file.originalname = sanitizedOriginalname;
+    
+    cb(null, true);
   },
 });
 
