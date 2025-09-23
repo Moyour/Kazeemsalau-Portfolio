@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 25%, #ec4899 50%, #f59e0b 100%);
+            width: 1200px;
+            height: 630px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            max-width: 900px;
+            padding: 40px;
+        }
+        
+        .logo {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 0.8;
+            letter-spacing: -0.02em;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #f3f4f6, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .name {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .title {
+            font-size: 24px;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .url {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            color: white;
+            font-size: 18px;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+        
+        .decorative {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .decorative-2 {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="decorative"></div>
+    <div class="decorative-2"></div>
+    
+    <div class="content">
+        <div class="logo">
+            FOR<br />
+            <span class="gradient-text">LEARNING</span><br />
+            DESIGN
+        </div>
+        <div class="name">Kazeem Salau</div>
+        <div class="title">
+            Learning Experience Designer, Instructional Designer,<br />
+            Web Application Developer, UI/UX Designer
+        </div>
+    </div>
+    
+    <div class="url">www.kazeemsalau.com</div>
+</body>
+</html>
