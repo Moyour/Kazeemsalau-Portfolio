@@ -79,6 +79,10 @@ export const errorHandler = (
 
 // 404 handler
 export const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
+  // Skip 404 handling for client-side routes (non-API routes)
+  if (!req.originalUrl.startsWith('/api/')) {
+    return next(); // Let the catch-all route handle it
+  }
   const error = new CustomError(`Route ${req.originalUrl} not found`, 404);
   next(error);
 };
