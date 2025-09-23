@@ -303,7 +303,7 @@ export default function Portfolio() {
                               <img 
                                 src={project.imageUrl}
                                 alt={project.title}
-                                className="w-full h-full object-cover rounded-2xl group-hover/visual:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-fill rounded-2xl group-hover/visual:scale-105 transition-transform duration-500"
                                 onError={(e) => {
                                   e.currentTarget.style.display = 'none';
                                   const fallbackDiv = e.currentTarget.parentElement?.querySelector('.fallback-placeholder') as HTMLElement;

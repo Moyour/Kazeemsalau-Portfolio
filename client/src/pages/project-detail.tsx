@@ -118,7 +118,7 @@ export default function ProjectDetail() {
                 <img 
                   src={project.imageUrl}
                   alt={project.title}
-                  className="w-full h-full object-cover rounded-2xl"
+                  className="w-full h-full object-fill rounded-2xl"
                   onError={(e) => {
                     // Debug: Image load error (remove in production)
                     e.currentTarget.style.display = 'none';
