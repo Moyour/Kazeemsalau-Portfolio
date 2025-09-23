@@ -938,4 +938,54 @@ router.post("/upload/blog-image", ...adminRoute, blogImageUpload.single("image")
   }
 });
 
+// Project Image Upload Route (Protected - Admin only)
+const projectImageUploadDir = path.join(process.cwd(), "uploads", "All Image Upload");
+if (!fs.existsSync(projectImageUploadDir)) {
+  fs.mkdirSync(projectImageUploadDir, { recursive: true });
+}
+
+const projectImageUpload = multer({
+  dest: projectImageUploadDir,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed'), false);
+    }
+  },
+});
+
+router.post("/upload/project-image", ...adminRoute, projectImageUpload.single("image"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No image file uploaded" });
+    }
+
+    const { originalname, filename, path: filePath, mimetype } = req.file;
+    
+    // Generate a unique filename to avoid conflicts
+    const timestamp = Date.now();
+    const extension = path.extname(originalname);
+    const uniqueFilename = `project-${timestamp}-${filename}${extension}`;
+    const finalPath = path.join(projectImageUploadDir, uniqueFilename);
+    
+    // Move the file to the final location with the unique name
+    fs.renameSync(filePath, finalPath);
+    
+    res.json({
+      success: true,
+      filename: uniqueFilename,
+      originalName: originalname,
+      url: `/uploads/All Image Upload/${uniqueFilename}`,
+      mimetype
+    });
+  } catch (error) {
+    console.error("Error uploading project image:", error);
+    res.status(500).json({ error: "Failed to upload project image" });
+  }
+});
+
 export { router };
