@@ -49,6 +49,24 @@ router.get("/hero-preview.png", (req, res) => {
   });
 });
 
+// New preview image endpoint
+router.get("/preview-image.png", (req, res) => {
+  const imagePath = path.join(process.cwd(), "client/public/preview-image.png");
+  
+  // Set proper headers for social media crawlers
+  res.setHeader("Content-Type", "image/png");
+  res.setHeader("Cache-Control", "public, max-age=31536000"); // 1 year
+  res.setHeader("Content-Disposition", "inline");
+  
+  // Serve the image
+  res.sendFile(imagePath, (err) => {
+    if (err) {
+      console.error("Error serving preview image:", err);
+      res.status(404).json({ error: "Preview image not found" });
+    }
+  });
+});
+
 // Setup admin route is handled in main server file
 
 // Import data route is handled in main server file
