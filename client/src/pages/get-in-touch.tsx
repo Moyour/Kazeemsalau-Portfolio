@@ -58,7 +58,7 @@ export default function GetInTouch() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400">
       {/* Header Section */}
-      <section className="py-12 relative">
+      <section className="py-12 pt-32 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
             Let's make something great work together?

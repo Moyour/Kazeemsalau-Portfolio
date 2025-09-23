@@ -457,15 +457,23 @@ app.post("/api/import-data", async (req, res) => {
 // Mount the API routes (BEFORE static files to avoid conflicts)
 app.use("/api", router);
 
-// Catch-all for client-side routing
-app.use(express.static("client/dist"));
+// Only serve static files in production
+console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'production') {
+  // Catch-all for client-side routing
+  app.use(express.static("client/dist"));
 
-// Error handling middleware (must be last)
-app.use(notFoundHandler);
-app.use(errorHandler);
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
-});
+  // Error handling middleware (must be last)
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
+  });
+} else {
+  // In development, just handle API routes
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+}
 
 const PORT = process.env.PORT || 5001;
 
