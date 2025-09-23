@@ -371,7 +371,8 @@ const upload = multer({
       'application/pdf',
       'application/msword', // .doc files
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
-      'text/plain' // .txt files
+      'text/plain', // .txt files
+      'application/json' // .json files (for testing)
     ];
     
     if (allowedTypes.includes(file.mimetype)) {
