@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Mail, Linkedin, MapPin, Download, Calendar, Send, X, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,13 @@ export default function GetInTouch() {
       projectType: "",
       message: "",
     },
+  });
+
+  // Fetch active resume
+  const { data: activeResume } = useQuery({
+    queryKey: ["/api/resumes/active"],
+    queryFn: () => apiRequest("GET", "/api/resumes/active"),
+    retry: false,
   });
 
   const contactMutation = useMutation({
@@ -130,18 +137,37 @@ export default function GetInTouch() {
                     variant="outline"
                     className="text-white bg-white/10 border-white/40 hover:bg-gradient-to-r hover:from-pink-400 hover:via-purple-500 hover:to-indigo-500 hover:text-white hover:border-transparent"
                     data-testid="download-resume"
+                    onClick={() => {
+                      if (activeResume?.fileUrl) {
+                        // Create a temporary link to download the file
+                        const link = document.createElement('a');
+                        link.href = activeResume.fileUrl;
+                        link.download = activeResume.originalName || 'resume.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      } else {
+                        toast({
+                          title: "Resume not available",
+                          description: "No resume has been uploaded yet. Please contact me directly.",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
                   >
                     <Download className="mr-2 h-4 w-4" />
                     Download Resume
                   </Button>
-                  <Button 
-                    variant="outline"
-                    className="border-white/40 text-white bg-white/10 border-white/40 hover:bg-gradient-to-r hover:from-pink-400 hover:via-purple-500 hover:to-indigo-500 hover:text-white hover:border-transparent"
-                    data-testid="schedule-call"
-                  >
-                    <Calendar className="mr-2 h-4 w-4" />
-                    Schedule Call
-                  </Button>
+                  <a href="mailto:kazeem.salau@yahoo.com?subject=Schedule a Call">
+                    <Button 
+                      variant="outline"
+                      className="border-white/40 text-white bg-white/10 border-white/40 hover:bg-gradient-to-r hover:from-pink-400 hover:via-purple-500 hover:to-indigo-500 hover:text-white hover:border-transparent"
+                      data-testid="schedule-call"
+                    >
+                      <Calendar className="mr-2 h-4 w-4" />
+                      Schedule Call
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>
