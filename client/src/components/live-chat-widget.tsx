@@ -36,7 +36,7 @@ export default function LiveChatWidget() {
       <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-50">
         <Button
           onClick={() => setIsOpen(true)}
-          className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse"
+          className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300"
           size="icon"
         >
           <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
