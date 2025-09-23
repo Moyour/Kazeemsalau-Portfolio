@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, CheckCircle, AlertCircle, Sparkles, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function NewsletterSignup() {
@@ -52,69 +52,100 @@ export default function NewsletterSignup() {
 
   if (isSubscribed) {
     return (
-      <Card className="w-full max-w-md mx-auto bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-        <CardContent className="pt-6">
-          <div className="text-center">
-            <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Welcome to the Newsletter!</h3>
-            <p className="text-gray-600 text-sm">
-              You're all set! Check your email for a confirmation message.
+      <div className="w-full max-w-lg mx-auto">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 p-8 shadow-xl">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-200/30 to-emerald-200/30 rounded-full -translate-y-16 translate-x-16"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-green-200/20 to-emerald-200/20 rounded-full translate-y-12 -translate-x-12"></div>
+          
+          <div className="relative text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mb-6 shadow-lg">
+              <CheckCircle className="h-10 w-10 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Welcome Aboard! 🎉</h3>
+            <p className="text-gray-700 text-lg leading-relaxed">
+              You're now part of an exclusive community of developers and designers. 
+              Check your email for a special welcome message!
             </p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="w-full max-w-sm sm:max-w-md mx-auto bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-      <CardHeader className="text-center px-4 sm:px-6 pt-6">
-        <div className="mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-purple-100">
-          <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
-        </div>
-        <CardTitle className="text-lg sm:text-xl font-bold text-gray-900">
-          Stay Updated
-        </CardTitle>
-        <CardDescription className="text-sm sm:text-base text-gray-600 px-2">
-          Get notified about my latest projects, insights, and opportunities. No spam, just valuable content.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="px-4 sm:px-6 pb-6">
-        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-          <div className="space-y-2">
-            <Input
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full text-sm sm:text-base"
-              required
-            />
+    <div className="w-full max-w-lg mx-auto">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 border-2 border-purple-200 p-8 shadow-2xl">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-200/20 to-pink-200/20 rounded-full -translate-y-20 translate-x-20"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-indigo-200/15 to-purple-200/15 rounded-full translate-y-16 -translate-x-16"></div>
+        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-gradient-to-br from-pink-200/10 to-purple-200/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        
+        <div className="relative">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl mb-4 shadow-lg">
+              <Sparkles className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">
+              Join the <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Inner Circle</span>
+            </h2>
+            <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto">
+              Get exclusive access to my latest projects, design insights, and career opportunities. 
+              No spam, just pure value.
+            </p>
           </div>
-          <Button 
-            type="submit" 
-            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-sm sm:text-base h-10 sm:h-11"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                <span className="hidden sm:inline">Subscribing...</span>
-                <span className="sm:hidden">Subscribing...</span>
-              </>
-            ) : (
-              <>
-                <Mail className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">Subscribe to Newsletter</span>
-                <span className="sm:hidden">Subscribe</span>
-              </>
-            )}
-          </Button>
-        </form>
-        <p className="text-xs text-gray-500 text-center mt-3 px-2">
-          Join 500+ developers who get my weekly insights
-        </p>
-      </CardContent>
-    </Card>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Mail className="h-5 w-5 text-gray-400" />
+              </div>
+              <Input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                required
+              />
+            </div>
+            
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 hover:from-purple-700 hover:via-indigo-700 hover:to-pink-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-lg"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                  Subscribing...
+                </>
+              ) : (
+                <>
+                  <span>Join the Community</span>
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </>
+              )}
+            </Button>
+          </form>
+
+          {/* Footer */}
+          <div className="text-center mt-6">
+            <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 mb-2">
+              <div className="flex -space-x-2">
+                <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full border-2 border-white"></div>
+                <div className="w-6 h-6 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full border-2 border-white"></div>
+                <div className="w-6 h-6 bg-gradient-to-br from-indigo-400 to-pink-500 rounded-full border-2 border-white"></div>
+              </div>
+              <span>500+ developers already joined</span>
+            </div>
+            <p className="text-xs text-gray-400">
+              Unsubscribe anytime. We respect your privacy.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
