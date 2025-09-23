@@ -88,7 +88,7 @@ export default function Home() {
             transition: "transform 0.3s ease-out",
           }}
         />
-        <div className="absolute right-0 top-0 w-1/2 h-full flex items-center justify-center">
+        <div className="absolute right-0 top-0 w-1/2 h-full flex items-center justify-center hidden lg:flex">
           <img
             src={aboutMeImage}
             alt="Kazeem Salau"

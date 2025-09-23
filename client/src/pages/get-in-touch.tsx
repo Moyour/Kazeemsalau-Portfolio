@@ -79,7 +79,7 @@ export default function GetInTouch() {
             <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">Contact</h2>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             
             {/* Contact Information Cards */}
             <div className="lg:col-span-1 space-y-6">
@@ -162,8 +162,8 @@ export default function GetInTouch() {
             </div>
 
             {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-lg">
+            <div className="md:col-span-2 lg:col-span-2">
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 shadow-lg">
                 <div className="mb-8">
                   <h3 className="text-2xl font-bold text-white mb-2">Let's talk. Have a project in mind?</h3>
                   <p className="text-white/80">We are committed to protecting your privacy. We will never collect information about you without your explicit consent.</p>
@@ -171,7 +171,7 @@ export default function GetInTouch() {
 
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                       <FormField
                         control={form.control}
                         name="firstName"
@@ -210,7 +210,7 @@ export default function GetInTouch() {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                       <FormField
                         control={form.control}
                         name="email"
