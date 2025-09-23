@@ -481,6 +481,7 @@ export function startServer(): Promise<Server> {
     httpServer.listen(PORT, () => {
       console.log(`✅ Server listening on port ${PORT}`);
       console.log(`🌐 Health check: http://localhost:${PORT}/api/health`);
+      console.log(`🚀 Client-side routing enabled for production`);
       resolve(httpServer);
     });
 
