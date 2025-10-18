@@ -91,7 +91,7 @@ export default function Home() {
         <div className="absolute right-0 top-0 w-1/2 h-full flex items-center justify-center hidden lg:flex">
           <img
             src={aboutMeImage}
-            alt="Kazeem Salau"
+            alt="Kazeem Salau - Professional eLearning Developer and Instructional Designer specializing in SCORM course development, Articulate Storyline, and Rise courses"
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
           />
         </div>
@@ -111,7 +111,7 @@ export default function Home() {
             </div>
             <div className="w-20 h-1.5 bg-white/70 rounded-full mb-8"></div>
             <p className="text-xl lg:text-2xl leading-relaxed mb-12 text-white/95 font-light">
-              An experienced Instructional Designer and Learning Experience Designer specializing in contemporary and functional design. I bring learning solutions to life with purposeful, visually compelling experiences.
+              Professional eLearning Developer and Instructional Designer specializing in SCORM course development, Articulate Storyline & Rise courses, LMS integration, and custom digital learning solutions. I create engaging, interactive learning experiences that drive results.
             </p>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-20 space-y-32">
           {testimonials.map((t, i) => (
             <div key={i} className="testimonial-card text-center">
-              <h2 className="text-8xl lg:text-9xl font-black text-white/10 tracking-wider">{t.word}</h2>
+              <h2 className="text-8xl lg:text-9xl font-black text-white/10 tracking-wider" aria-label={`Testimonial about ${t.word.toLowerCase()} work`}>{t.word}</h2>
               <blockquote className="text-2xl lg:text-3xl leading-relaxed text-gray-300 my-6">
                 "{t.quote}"
               </blockquote>
@@ -140,10 +140,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <div className="text-center mb-20">
             <h2 className="text-5xl lg:text-6xl font-black text-white mb-8 drop-shadow-lg">
-              Featured Project
+              Featured eLearning Project
             </h2>
             <p className="text-xl text-white/90 leading-relaxed max-w-3xl mx-auto">
-              Transformative learning experiences that drive measurable results.
+              Professional SCORM course development and Articulate Storyline projects that deliver measurable learning outcomes.
             </p>
           </div>
 

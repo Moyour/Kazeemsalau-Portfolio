@@ -100,9 +100,7 @@ export default function Portfolio() {
               </h1>
               
               <p className="text-2xl lg:text-3xl text-white/90 max-w-4xl mx-auto leading-relaxed font-light">
-                Every project tells a story of transformation. From confused to confident. 
-                From overwhelmed to <span className="font-bold">empowered</span>. 
-                From knowing to <span className="italic">doing</span>.
+                Professional eLearning development portfolio showcasing SCORM course development, Articulate Storyline & Rise projects, LMS integration, and custom digital learning solutions. Every project delivers measurable learning outcomes.
               </p>
             </div>
 
