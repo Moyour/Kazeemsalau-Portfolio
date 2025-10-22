@@ -200,25 +200,24 @@ export default function ProjectDetail() {
             </div>
             
             <div className="text-center">
-              <div className="inline-block">
+              <div className="flex justify-center">
                 <a
                   href={project.scormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative block"
                 >
-                  <div className="absolute -inset-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                  <div className="relative bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-8 group-hover:scale-110 transition-all duration-300 shadow-xl">
-                    <PlayCircle className="w-20 h-20 text-white" />
+                  <div className="relative bg-gray-600 rounded-full w-16 h-16 group-hover:scale-110 transition-all duration-300 shadow-2xl flex items-center justify-center">
+                    <PlayCircle className="w-8 h-8 text-white" />
                   </div>
                 </a>
-                <div className="mt-6 space-y-2">
-                  <p className="text-slate-600 font-bold text-2xl">Try Interactive Training</p>
-                  <p className="text-slate-500">Click the play button to experience the SCORM learning module</p>
-                  <div className="flex items-center justify-center gap-2 text-slate-400 text-sm mt-2">
-                    <ExternalLink className="w-4 h-4" />
-                    <span>Opens in new tab</span>
-                  </div>
+              </div>
+              <div className="mt-6 space-y-2">
+                <p className="text-slate-600 font-bold text-2xl">Try Interactive Training</p>
+                <p className="text-slate-500">Click the play button to experience the SCORM learning module</p>
+                <div className="flex items-center justify-center gap-2 text-slate-400 text-sm mt-2">
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Opens in new tab</span>
                 </div>
               </div>
             </div>
