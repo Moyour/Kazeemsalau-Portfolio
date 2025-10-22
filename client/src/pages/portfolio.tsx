@@ -279,10 +279,16 @@ export default function Portfolio() {
                             </Link>
                             
                             {project.scormUrl && (
-                              <div className="flex items-center gap-2 text-[#c4c4c4]">
-                                <Monitor className="w-4 h-4" />
-                                <span className="text-sm font-medium text-[#ffffff]">Interactive Training Available</span>
-                              </div>
+                              <a 
+                                href={project.scormUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 group/scorm"
+                              >
+                                <Monitor className="w-4 h-4 group-hover/scorm:scale-110 transition-transform" />
+                                <span className="text-sm font-medium">Play SCORM Course</span>
+                                <ExternalLink className="w-3 h-3 group-hover/scorm:translate-x-0.5 group-hover/scorm:-translate-y-0.5 transition-transform" />
+                              </a>
                             )}
                           </div>
                         </div>

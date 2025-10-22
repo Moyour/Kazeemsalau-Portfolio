@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Project } from "@shared/schema";
-import { useState } from "react";
 
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
-  const [showScormEmbed, setShowScormEmbed] = useState(false);
   
   const { data: project, isLoading, error } = useQuery<Project>({
     queryKey: ["/api/projects", id],
@@ -201,62 +199,29 @@ export default function ProjectDetail() {
               <p className="text-slate-600">Experience the actual learning content from this project</p>
             </div>
             
-            {showScormEmbed ? (
-              <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl shadow-lg overflow-hidden border border-slate-300">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-white/20 rounded-lg p-2">
-                        <Monitor className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-white">Interactive Training Module</h3>
-                        <p className="text-white/80 text-sm">Experience the actual learning content</p>
-                      </div>
-                    </div>
-                    <Button 
-                      onClick={() => setShowScormEmbed(false)}
-                      variant="ghost"
-                      size="sm"
-                      className="text-white hover:bg-white/20"
-                    >
-                      ✕
-                    </Button>
+            <div className="text-center">
+              <div className="inline-block">
+                <a
+                  href={project.scormUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative block"
+                >
+                  <div className="absolute -inset-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                  <div className="relative bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-8 group-hover:scale-110 transition-all duration-300 shadow-xl">
+                    <PlayCircle className="w-20 h-20 text-white" />
                   </div>
-                </div>
-                <div className="relative bg-white aspect-video">
-                  <iframe
-                    src={project.scormUrl}
-                    title={`${project.title} - Interactive Training`}
-                    className="w-full h-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    data-testid="scorm-iframe"
-                  />
-                  <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm px-3 py-2 rounded-lg text-xs text-white">
-                    Interactive content by {project.title}
+                </a>
+                <div className="mt-6 space-y-2">
+                  <p className="text-slate-600 font-bold text-2xl">Try Interactive Training</p>
+                  <p className="text-slate-500">Click the play button to experience the SCORM learning module</p>
+                  <div className="flex items-center justify-center gap-2 text-slate-400 text-sm mt-2">
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Opens in new tab</span>
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="text-center">
-                <div className="inline-block">
-                  <button
-                    onClick={() => setShowScormEmbed(true)}
-                    className="group relative"
-                  >
-                    <div className="absolute -inset-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                    <div className="relative bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-8 group-hover:scale-110 transition-all duration-300 shadow-xl">
-                      <PlayCircle className="w-20 h-20 text-white" />
-                    </div>
-                  </button>
-                  <div className="mt-6 space-y-2">
-                    <p className="text-slate-600 font-bold text-2xl">Try Interactive Training</p>
-                    <p className="text-slate-500">Click the play button to experience the learning module</p>
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
           </div>
         )}
 
