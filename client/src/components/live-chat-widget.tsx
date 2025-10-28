@@ -36,7 +36,7 @@ export default function LiveChatWidget() {
       <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-50">
         <Button
           onClick={() => setIsOpen(true)}
-          className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300"
+          className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-lapis-lazuli hover:bg-lapis-lazuli/90 shadow-lg hover:shadow-xl transition-all duration-300"
           size="icon"
         >
           <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
@@ -48,7 +48,7 @@ export default function LiveChatWidget() {
   return (
     <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-50 w-72 sm:w-80 md:w-96">
       <Card className="shadow-2xl border-0 bg-white">
-        <CardHeader className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-3 sm:p-4">
+        <CardHeader className="bg-lapis-lazuli text-cream p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -113,7 +113,7 @@ export default function LiveChatWidget() {
                   <Button
                     onClick={handleSendMessage}
                     size="sm"
-                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 h-8 sm:h-9 w-8 sm:w-9 p-0"
+                    className="bg-cream hover:bg-cream/80 h-8 sm:h-9 w-8 sm:w-9 p-0 text-lapis-lazuli"
                   >
                     <Send className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>

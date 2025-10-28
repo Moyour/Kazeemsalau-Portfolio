@@ -129,15 +129,12 @@ body {
   --font-mono: 'JetBrains Mono', monospace;
   --radius: 0.75rem;
   
-  /* Brand Colors */
-  --brand-purple: hsl(251, 79%, 68%);
-  --brand-slate: hsl(213, 25%, 12%);
-  --brand-slate-50: hsl(210, 6%, 98%);
-  --brand-slate-100: hsl(210, 6%, 95%);
-  --brand-slate-200: hsl(210, 6%, 90%);
-  --brand-slate-300: hsl(210, 6%, 83%);
-  --brand-slate-600: hsl(213, 16%, 39%);
-  --brand-slate-700: hsl(213, 25%, 27%);
+  /* Brand Colors - Custom Theme */
+  --lapis-lazuli: #586994;
+  --cool-gray: #7d869c;
+  --cadet-gray: #a2abab;
+  --ash-gray: #b4c4ae;
+  --cream: #e5e8b6;
 }
 
 .dark {

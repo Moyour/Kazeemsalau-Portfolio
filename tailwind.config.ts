@@ -63,17 +63,12 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
-        // Brand colors
-        'brand-purple': 'hsl(251, 79%, 68%)',
-        'brand-slate': {
-          DEFAULT: 'hsl(213, 25%, 12%)',
-          50: 'hsl(210, 6%, 98%)',
-          100: 'hsl(210, 6%, 95%)',
-          200: 'hsl(210, 6%, 90%)',
-          300: 'hsl(210, 6%, 83%)',
-          600: 'hsl(213, 16%, 39%)',
-          700: 'hsl(213, 25%, 27%)',
-        },
+        // Brand colors - Custom theme
+        'lapis-lazuli': '#586994',
+        'cool-gray': '#7d869c',
+        'cadet-gray': '#a2abab',
+        'ash-gray': '#b4c4ae',
+        'cream': '#e5e8b6',
       },
       fontFamily: {
         sans: ["Poppins", "var(--font-sans)", "sans-serif"],

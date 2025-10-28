@@ -45,7 +45,7 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400 min-h-screen overflow-x-hidden">
+    <div className="bg-cool-gray min-h-screen overflow-x-hidden">
       {/* Interactive Cursor */}
       <div 
         className="fixed w-8 h-8 bg-white/20 rounded-full pointer-events-none z-50 mix-blend-difference"
@@ -86,20 +86,20 @@ export default function Portfolio() {
                 transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
               }}
             >
-              <h1 className="text-7xl lg:text-9xl font-black text-white leading-[0.8] tracking-tighter">
+              <h1 className="text-7xl lg:text-9xl font-black text-cream leading-[0.8] tracking-tighter">
                 LEARNING
                 <br />
                 <span className="relative">
                   THAT
-                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-2 bg-gradient-to-r from-pink-400 to-amber-400 rounded-full" />
+                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-2 bg-cream rounded-full" />
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+                <span className="text-cream">
                   TRANSFORMS
                 </span>
               </h1>
               
-              <p className="text-2xl lg:text-3xl text-white/90 max-w-4xl mx-auto leading-relaxed font-light">
+              <p className="text-2xl lg:text-3xl text-cream/90 max-w-4xl mx-auto leading-relaxed font-light">
                 Professional eLearning development portfolio showcasing SCORM course development, Articulate Storyline & Rise projects, LMS integration, and custom digital learning solutions. Every project delivers measurable learning outcomes.
               </p>
             </div>
@@ -115,11 +115,11 @@ export default function Portfolio() {
             >
               {impactStats.map((stat, index) => (
                 <div key={index} className="relative group impact-stat-card">
-                  <div className="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                  <div className="absolute -inset-4 bg-lapis-lazuli rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
                   <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500">
                     <div className="text-center space-y-4">
-                      <stat.icon className="w-8 h-8 text-white mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
-                      <div className="text-white/80 font-medium text-sm group-hover:text-white group-hover:translate-y-0.5 transition-all duration-300">{stat.label}</div>
+                      <stat.icon className="w-8 h-8 text-cream mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
+                      <div className="text-cream/90 font-medium text-sm group-hover:text-cream group-hover:translate-y-0.5 transition-all duration-300">{stat.label}</div>
                     </div>
                   </div>
                 </div>
@@ -153,12 +153,12 @@ export default function Portfolio() {
       <section className="py-20 bg-black/30 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl lg:text-6xl font-black text-white mb-6">
+            <h2 className="text-5xl lg:text-6xl font-black text-cream mb-6">
               AREAS OF
               <br />
-              <span className="text-white/50">IMPACT</span>
+              <span className="text-cream/70">IMPACT</span>
             </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-xl text-cream/90 max-w-3xl mx-auto">
               Where innovation meets impact. I craft learning experiences that don't just teach—they transform minds, ignite passion, and drive extraordinary results that last.
             </p>
           </div>
@@ -170,11 +170,11 @@ export default function Portfolio() {
                 className="relative group pointer-events-none select-none"
                 data-testid={`filter-${category.id}`}
               >
-                <div className="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                <div className="absolute -inset-4 bg-lapis-lazuli rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
                 <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500">
                   <div className="text-center space-y-4">
-                    <category.icon className="w-8 h-8 text-white mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
-                    <div className="text-white/80 font-medium text-sm group-hover:text-white group-hover:translate-y-0.5 transition-all duration-300">{category.label}</div>
+                    <category.icon className="w-8 h-8 text-cream mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
+                    <div className="text-cream/90 font-medium text-sm group-hover:text-cream group-hover:translate-y-0.5 transition-all duration-300">{category.label}</div>
                   </div>
                 </div>
               </div>
@@ -196,12 +196,12 @@ export default function Portfolio() {
           ) : projects.length === 0 ? (
             <div className="text-center py-20">
               <Sparkles className="w-16 h-16 text-white/40 mx-auto mb-6" />
-              <h3 className="text-3xl font-bold text-white mb-4">Projects Coming Soon!</h3>
-              <p className="text-xl text-white/60 mb-8">I'm currently working on some amazing projects that will be showcased here soon.</p>
+              <h3 className="text-3xl font-bold text-cream mb-4">Projects Coming Soon!</h3>
+              <p className="text-xl text-cream/90 mb-8">I'm currently working on some amazing projects that will be showcased here soon.</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link 
                   href="/get-in-touch"
-                  className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white px-8 py-4 rounded-full font-bold hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 transition-all duration-300 flex items-center gap-3 hover:scale-105 justify-center"
+                  className="bg-lapis-lazuli text-cream font-bold px-8 py-4 rounded-full hover:bg-lapis-lazuli/90 transition-all duration-300 flex items-center gap-3 hover:scale-105 justify-center"
                 >
                   Get In Touch
                   <ArrowRight className="w-4 h-4" />
@@ -239,17 +239,17 @@ export default function Portfolio() {
                     }`}>
                       <div className="space-y-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-3 h-3 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full group-hover:scale-150 transition-transform duration-300" />
-                          <span className="text-white/60 text-sm uppercase tracking-wide font-medium">
+                          <div className="w-3 h-3 bg-cream rounded-full group-hover:scale-150 transition-transform duration-300" />
+                          <span className="text-cream/80 text-sm uppercase tracking-wide font-medium">
                             {project.category?.replace('_', ' ') || 'Project'}
                           </span>
                         </div>
                         
-                        <h3 className="text-4xl lg:text-5xl font-black text-white leading-tight group-hover:text-white/90 transition-colors duration-300">
+                        <h3 className="text-4xl lg:text-5xl font-black text-cream leading-tight group-hover:text-cream/90 transition-colors duration-300">
                           {project.title}
                         </h3>
                         
-                        <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+                        <p className="text-xl text-cream/90 leading-relaxed max-w-2xl">
                           {project.description}
                         </p>
 
@@ -259,7 +259,7 @@ export default function Portfolio() {
                             {project.tools.map((tool: string, toolIndex: number) => (
                               <span 
                                 key={toolIndex}
-                                className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white/90 text-sm font-medium border border-white/20"
+                                className="px-4 py-2 bg-cream/10 backdrop-blur-md rounded-full text-cream text-sm font-medium border border-cream/20"
                               >
                                 {tool}
                               </span>
@@ -272,7 +272,7 @@ export default function Portfolio() {
                           <div className="flex items-center gap-6">
                             <Link 
                               href={`/portfolio/${project.id}`}
-                              className="group/btn bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white px-8 py-4 rounded-full font-bold hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 transition-all duration-300 flex items-center gap-3 hover:scale-105"
+                              className="group/btn bg-lapis-lazuli text-cream px-8 py-4 rounded-full font-bold hover:bg-lapis-lazuli/90 transition-all duration-300 flex items-center gap-3 hover:scale-105"
                             >
                               View Case Study
                               <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -300,9 +300,9 @@ export default function Portfolio() {
                       index % 2 === 1 ? 'lg:col-start-1' : ''
                     }`}>
                       <div className="relative group/visual">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                        <div className="absolute -inset-4 bg-lapis-lazuli rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
                         <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 transition-all duration-500">
-                          <div className="aspect-video bg-gradient-to-br from-white/10 to-white/5 rounded-2xl overflow-hidden">
+                          <div className="aspect-video bg-cool-gray/20 rounded-2xl overflow-hidden">
                             {project.imageUrl ? (
                               <img 
                                 src={project.imageUrl}
@@ -338,20 +338,20 @@ export default function Portfolio() {
       </section>
       {/* Call to Action */}
       <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20" />
+        <div className="absolute inset-0 bg-lapis-lazuli/20" />
         
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
           <div className="space-y-12">
             <div className="space-y-8">
-              <h2 className="text-6xl lg:text-7xl font-black text-white leading-tight">
+              <h2 className="text-6xl lg:text-7xl font-black text-cream leading-tight">
                 YOUR PROJECT
                 <br />
-                <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+                <span className="text-cream/80">
                   COULD BE NEXT
                 </span>
               </h2>
               
-              <p className="text-2xl text-white/90 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-2xl text-cream/90 leading-relaxed max-w-2xl mx-auto">
                 Ready to create learning experiences that your audience will remember, 
                 apply, and share? Let's build something transformational together.
               </p>
@@ -360,7 +360,7 @@ export default function Portfolio() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <a 
                 href="/get-in-touch"
-                className="group bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white px-12 py-6 rounded-full font-bold text-lg hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 transition-all duration-300 flex items-center justify-center gap-3 hover:scale-105"
+                className="group bg-lapis-lazuli text-cream px-12 py-6 rounded-full font-bold text-lg hover:bg-lapis-lazuli/90 transition-all duration-300 flex items-center justify-center gap-3 hover:scale-105"
               >
                 Start Your Project
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />

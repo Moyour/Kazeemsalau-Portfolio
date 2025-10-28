@@ -125,7 +125,7 @@ export default function Navigation() {
           <div className="hidden md:block">
             <ScrollLink href="/get-in-touch">
               <Button 
-                className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 px-5 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap"
+                className="bg-lapis-lazuli text-cream hover:bg-lapis-lazuli/90 px-5 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap"
                 data-testid="contact-button"
               >
                 Get In Touch

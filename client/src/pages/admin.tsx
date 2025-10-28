@@ -347,7 +347,7 @@ export default function Admin() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex items-center justify-center">
+      <div className="min-h-screen bg-teal-dark flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
       </div>
     );
@@ -562,7 +562,7 @@ export default function Admin() {
                       <Button
                         type="submit"
                         disabled={createProjectMutation.isPending || updateProjectMutation.isPending}
-                        className="bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white"
+                        className="bg-teal-dark hover:bg-teal-medium text-white"
                         data-testid="button-save"
                       >
                         <Save className="w-4 h-4 mr-2" />
@@ -630,7 +630,7 @@ export default function Admin() {
                             </div>
                           )}
                           {project.scormUrl && (
-                            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
+                            <Badge className="bg-teal-dark/20 text-teal-light border-teal-dark/30">
                               Interactive Training Available
                             </Badge>
                           )}
@@ -668,7 +668,7 @@ export default function Admin() {
                 <h2 className="text-2xl font-bold text-white">Blog Posts Management</h2>
                 <Button
                   onClick={() => {setShowForm(true); setActiveTab("blog")}}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  className="bg-teal-dark hover:bg-teal-medium"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Blog Post
@@ -729,7 +729,7 @@ export default function Admin() {
                             variant="outline"
                             size="sm"
                             onClick={() => setShowPreview(!showPreview)}
-                            className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 bg-purple-500/5"
+                            className="border-teal-dark/30 text-teal-light hover:bg-teal-dark/10 bg-teal-dark/5"
                           >
                             {showPreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
                             {showPreview ? 'Hide Preview' : 'Show Preview'}
@@ -911,7 +911,7 @@ export default function Admin() {
                       <p className="text-white/60 mb-4">Create your first blog post to get started</p>
                       <Button
                         onClick={() => {setShowForm(true); setActiveTab("blog")}}
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                        className="bg-teal-dark hover:bg-teal-medium"
                         data-testid="button-create-first-blog"
                       >
                         <Plus className="w-4 h-4 mr-2" />
@@ -931,7 +931,7 @@ export default function Admin() {
                                 {post.category}
                               </Badge>
                               {post.published && (
-                                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
+                                <Badge className="bg-teal-dark/20 text-teal-light border-teal-dark/30">
                                   Published
                                 </Badge>
                               )}

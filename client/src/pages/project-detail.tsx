@@ -35,8 +35,8 @@ export default function ProjectDetail() {
     return (
       <div className="py-20">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-brand-slate mb-4">Project Not Found</h1>
-          <p className="text-slate-600 mb-8">The project you're looking for doesn't exist.</p>
+          <h1 className="text-2xl font-bold text-cream mb-4">Project Not Found</h1>
+          <p className="text-cream/90 mb-8">The project you're looking for doesn't exist.</p>
           <Link href="/portfolio">
             <Button>Back to Portfolio</Button>
           </Link>
@@ -46,7 +46,7 @@ export default function ProjectDetail() {
   }
 
   return (
-    <div className="py-20">
+    <div className="py-20 bg-cool-gray min-h-screen">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
         
         {/* Back Navigation */}
@@ -59,10 +59,10 @@ export default function ProjectDetail() {
 
         {/* Project Header */}
         <div className="mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold text-brand-slate mb-6" data-testid="project-title">
+          <h1 className="text-4xl lg:text-5xl font-bold text-cream mb-6" data-testid="project-title">
             {project.title}
           </h1>
-          <p className="text-xl text-slate-600 leading-relaxed mb-6" data-testid="project-description">
+          <p className="text-xl text-cream/90 leading-relaxed mb-6" data-testid="project-description">
             {project.description}
           </p>
           
@@ -84,7 +84,7 @@ export default function ProjectDetail() {
             {project.demoUrl && (
               <Button 
                 asChild
-                className="bg-brand-purple hover:bg-purple-600"
+                className="bg-lapis-lazuli text-cream hover:bg-lapis-lazuli/90"
                 data-testid="demo-button"
               >
                 <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
@@ -110,8 +110,8 @@ export default function ProjectDetail() {
 
         {/* Project Image */}
         <div className="mb-12">
-          <div className="relative bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl overflow-hidden shadow-lg">
-            <div className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200">
+          <div className="relative bg-almond/30 rounded-2xl overflow-hidden shadow-lg">
+            <div className="aspect-video bg-almond/20">
               {project.imageUrl ? (
                 <img 
                   src={project.imageUrl}
@@ -147,8 +147,8 @@ export default function ProjectDetail() {
 
         {/* Project Details */}
         <div className="prose prose-lg max-w-none">
-          <h2 className="text-2xl font-bold text-brand-slate mb-4">Project Overview</h2>
-          <p className="text-slate-600 leading-relaxed mb-8" data-testid="project-long-description">
+          <h2 className="text-2xl font-bold text-cream mb-4">Project Overview</h2>
+          <p className="text-cream/90 leading-relaxed mb-8" data-testid="project-long-description">
             {project.longDescription || project.description}
           </p>
 
@@ -157,32 +157,32 @@ export default function ProjectDetail() {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {project.challenge && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-brand-slate mb-4">Challenge</h3>
-                  <p className="text-slate-600" data-testid="project-challenge">
+                  <h3 className="text-xl font-bold text-cream mb-4">Challenge</h3>
+                  <p className="text-cream/90" data-testid="project-challenge">
                     {project.challenge}
                   </p>
                 </div>
               )}
               {project.solution && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-brand-slate mb-4">Solution</h3>
-                  <p className="text-slate-600" data-testid="project-solution">
+                  <h3 className="text-xl font-bold text-cream mb-4">Solution</h3>
+                  <p className="text-cream/90" data-testid="project-solution">
                     {project.solution}
                   </p>
                 </div>
               )}
               {project.process && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-brand-slate mb-4">Process</h3>
-                  <p className="text-slate-600" data-testid="project-process">
+                  <h3 className="text-xl font-bold text-cream mb-4">Process</h3>
+                  <p className="text-cream/90" data-testid="project-process">
                     {project.process}
                   </p>
                 </div>
               )}
               {project.results && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-brand-slate mb-4">Results</h3>
-                  <p className="text-slate-600" data-testid="project-results">
+                  <h3 className="text-xl font-bold text-cream mb-4">Results</h3>
+                  <p className="text-cream/90" data-testid="project-results">
                     {project.results}
                   </p>
                 </div>
@@ -195,8 +195,8 @@ export default function ProjectDetail() {
         {project.scormUrl && (
           <div className="border-t border-slate-200 pt-12 mb-12">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-brand-slate mb-4">Interactive Training Experience</h2>
-              <p className="text-slate-600">Experience the actual learning content from this project</p>
+              <h2 className="text-2xl font-bold text-cream mb-4">Interactive Training Experience</h2>
+              <p className="text-cream/90">Experience the actual learning content from this project</p>
             </div>
             
             <div className="text-center">
@@ -213,9 +213,9 @@ export default function ProjectDetail() {
                 </a>
               </div>
               <div className="mt-6 space-y-2">
-                <p className="text-slate-600 font-bold text-2xl">Try Interactive Training</p>
-                <p className="text-slate-500">Click the play button to experience the SCORM learning module</p>
-                <div className="flex items-center justify-center gap-2 text-slate-400 text-sm mt-2">
+                <p className="text-cream font-bold text-2xl">Try Interactive Training</p>
+                <p className="text-cream/80">Click the play button to experience the SCORM learning module</p>
+                <div className="flex items-center justify-center gap-2 text-cream/70 text-sm mt-2">
                   <ExternalLink className="w-4 h-4" />
                   <span>Opens in new tab</span>
                 </div>
@@ -226,12 +226,12 @@ export default function ProjectDetail() {
 
         {/* Related Projects */}
         <div className="border-t border-slate-200 pt-12">
-          <h2 className="text-2xl font-bold text-brand-slate mb-8 text-center">More Projects</h2>
+          <h2 className="text-2xl font-bold text-cream mb-8 text-center">More Projects</h2>
           <div className="text-center">
             <Link href="/portfolio">
               <Button 
                 variant="outline"
-                className="border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white"
+                className="border-lapis-lazuli text-lapis-lazuli hover:bg-lapis-lazuli hover:text-cream"
                 data-testid="view-more-projects"
               >
                 View All Projects

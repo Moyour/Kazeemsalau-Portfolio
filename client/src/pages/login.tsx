@@ -36,7 +36,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-teal-medium flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Card className="bg-white/10 backdrop-blur-md border-white/20">
           <CardHeader className="text-center">

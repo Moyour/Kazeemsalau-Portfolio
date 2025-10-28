@@ -82,7 +82,7 @@ export default function Home() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden pt-20">
         <div
-          className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400"
+          className="absolute inset-0 bg-cool-gray"
           style={{
             transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px)`,
             transition: "transform 0.3s ease-out",
@@ -98,19 +98,19 @@ export default function Home() {
 
         <div className="relative z-10 px-8 lg:px-16 py-20 flex items-center min-h-screen pt-32">
           <div className="max-w-2xl">
-            <h1 className="text-[15vw] lg:text-[12vw] xl:text-[10vw] font-black leading-[0.8] tracking-tighter mb-8 text-white drop-shadow-2xl">
+            <h1 className="text-[15vw] lg:text-[12vw] xl:text-[10vw] font-black leading-[0.8] tracking-tighter mb-8 text-cream drop-shadow-2xl">
               FOR<br />
-              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+              <span className="text-cream">
                 LEARNING
               </span>
               <br />
               DESIGN
             </h1>
-            <div className="text-white/90 text-xl lg:text-2xl font-bold tracking-wide mb-4">
+            <div className="text-cream text-xl lg:text-2xl font-bold tracking-wide mb-4">
               KAZEEM SALAU
             </div>
-            <div className="w-20 h-1.5 bg-white/70 rounded-full mb-8"></div>
-            <p className="text-xl lg:text-2xl leading-relaxed mb-12 text-white/95 font-light">
+            <div className="w-20 h-1.5 bg-cream rounded-full mb-8"></div>
+            <p className="text-xl lg:text-2xl leading-relaxed mb-12 text-cream/90 font-light">
               Professional eLearning Developer and Instructional Designer specializing in SCORM course development, Articulate Storyline & Rise courses, LMS integration, and custom digital learning solutions. I create engaging, interactive learning experiences that drive results.
             </p>
           </div>
@@ -136,13 +136,13 @@ export default function Home() {
       </section>
 
       {/* Featured Project Section */}
-      <section ref={projectsRef} className="py-32 bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400 relative">
+      <section ref={projectsRef} className="py-32 bg-cool-gray relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <div className="text-center mb-20">
-            <h2 className="text-5xl lg:text-6xl font-black text-white mb-8 drop-shadow-lg">
+            <h2 className="text-5xl lg:text-6xl font-black text-cream mb-8 drop-shadow-lg">
               Featured eLearning Project
             </h2>
-            <p className="text-xl text-white/90 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-xl text-cream/90 leading-relaxed max-w-3xl mx-auto">
               Professional SCORM course development and Articulate Storyline projects that deliver measurable learning outcomes.
             </p>
           </div>
@@ -190,7 +190,7 @@ export default function Home() {
                     </div>
                   )}
                   <Link href={`/portfolio/${featuredProject.id}`}>
-                    <Button className="mt-6 bg-gradient-to-r from-pink-400 to-purple-400 text-white px-6 py-3 rounded-full flex items-center gap-2">
+                    <Button className="mt-6 bg-lapis-lazuli text-cream font-bold px-6 py-3 rounded-full flex items-center gap-2 hover:bg-lapis-lazuli/90">
                       View Case Study <ArrowRight className="w-4 h-4" />
                     </Button>
                   </Link>
@@ -224,7 +224,7 @@ export default function Home() {
             <div className="bg-white/10 backdrop-blur-md rounded-3xl p-16 border border-white/20 text-center">
               <div className="text-white/60 text-xl mb-4">No projects available</div>
               <Link href="/portfolio">
-                <Button className="bg-gradient-to-r from-pink-400 to-purple-400 text-white px-6 py-3 rounded-full">
+                <Button className="bg-teal-dark text-white px-6 py-3 rounded-full hover:bg-teal-medium">
                   View All Projects
                 </Button>
               </Link>
@@ -243,12 +243,12 @@ export default function Home() {
         </p>
         <div className="flex justify-center gap-8">
           <Link href="/get-in-touch">
-            <Button className="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 px-12 py-6 rounded-full text-xl font-semibold">
+                <Button className="bg-lapis-lazuli text-cream px-12 py-6 rounded-full text-xl font-semibold hover:bg-lapis-lazuli/90">
               Get In Touch 
             </Button>
           </Link>
           <Link href="/portfolio">
-            <Button className="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 px-12 py-6 rounded-full text-xl font-semibold">
+                <Button className="bg-lapis-lazuli text-cream px-12 py-6 rounded-full text-xl font-semibold hover:bg-lapis-lazuli/90">
               View Portfolio
             </Button>
           </Link>

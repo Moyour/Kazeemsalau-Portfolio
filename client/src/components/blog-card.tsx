@@ -31,8 +31,9 @@ export default function BlogCard({ post }: BlogCardProps) {
           <div className="flex items-center gap-3">
             <span className="text-sm text-gray-700 font-medium">{author.name}</span>
             {author.verified && (
-              <div className="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
+              <div className="relative w-4 h-4">
+                <div className="absolute inset-0 border-2 border-lapis-lazuli rounded-full"></div>
+                <div className="absolute inset-1 bg-lapis-lazuli rounded-full"></div>
               </div>
             )}
           </div>

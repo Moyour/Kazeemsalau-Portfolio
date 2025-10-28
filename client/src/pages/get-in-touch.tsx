@@ -57,14 +57,14 @@ export default function GetInTouch() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-600 via-pink-500 to-amber-400">
+    <div className="min-h-screen bg-cool-gray">
       {/* Header Section */}
       <section className="py-12 pt-32 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
+          <h1 className="text-4xl lg:text-6xl font-bold text-cream mb-6 drop-shadow-lg">
             Let's make something great work together?
           </h1>
-          <p className="text-xl text-white/90 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-xl text-cream/90 leading-relaxed max-w-3xl mx-auto">
             Ready to transform your training programs? Let's discuss how we can create engaging learning experiences that drive real results.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function GetInTouch() {
           
           {/* Contact Header */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">Contact</h2>
+            <h2 className="text-4xl font-bold text-cream mb-4 drop-shadow-lg">Contact</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -86,24 +86,24 @@ export default function GetInTouch() {
               
               {/* Quick Contact */}
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <h4 className="text-xl font-semibold text-white mb-4">Quick contact</h4>
+                <h4 className="text-xl font-semibold text-cream mb-4">Quick contact</h4>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
-                    <Mail className="h-5 w-5 text-white/80" />
-                    <a href="mailto:kazeem.salau@yahoo.com" className="text-white/90 hover:text-white transition-colors">
+                    <Mail className="h-5 w-5 text-cream/80" />
+                    <a href="mailto:kazeem.salau@yahoo.com" className="text-cream/90 hover:text-cream transition-colors">
                       kazeem.salau@yahoo.com
                     </a>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <MapPin className="h-5 w-5 text-white/80" />
-                    <span className="text-white/90">United Kingdom</span>
+                    <MapPin className="h-5 w-5 text-cream/80" />
+                    <span className="text-cream/90">United Kingdom</span>
                   </div>
                 </div>
               </div>
 
               {/* Social Links */}
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <h4 className="text-xl font-semibold text-white mb-4">Follow me</h4>
+                <h4 className="text-xl font-semibold text-cream mb-4">Follow me</h4>
                 <div className="flex space-x-4">
                   <a
                     href="https://x.com/themoyoursalau?s=21"
@@ -113,7 +113,7 @@ export default function GetInTouch() {
                     title="Visit X profile"
                     data-testid="x-link"
                   >
-                    <X className="h-6 w-6 text-white" />
+                    <X className="h-6 w-6 text-cream" />
                   </a>
                   <a
                     href="https://www.youtube.com/@moyoursalau"
@@ -123,7 +123,7 @@ export default function GetInTouch() {
                     title="Visit YouTube channel"
                     data-testid="youtube-link"
                   >
-                    <Youtube className="h-6 w-6 text-white" />
+                    <Youtube className="h-6 w-6 text-cream" />
                   </a>
                   <a
                     href="https://www.linkedin.com/in/kazeem-salau-164b1087/"
@@ -133,7 +133,7 @@ export default function GetInTouch() {
                     title="Visit LinkedIn profile"
                     data-testid="linkedin-link"
                   >
-                    <Linkedin className="h-6 w-6 text-white" />
+                    <Linkedin className="h-6 w-6 text-cream" />
                   </a>
                 </div>
               </div>
@@ -141,17 +141,17 @@ export default function GetInTouch() {
               {/* Schedule Meeting */}
               <div className="flex flex-col items-center justify-center py-6">
                 <div className="text-center mb-6">
-                  <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mb-3 mx-auto shadow-lg">
-                    <Calendar className="h-6 w-6 text-white" />
+                  <div className="w-14 h-14 bg-lapis-lazuli rounded-full flex items-center justify-center mb-3 mx-auto shadow-lg">
+                    <Calendar className="h-6 w-6 text-cream" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Let's Create Magic!</h3>
-                  <p className="text-white/80 text-xs max-w-xs">
+                  <h3 className="text-xl font-bold text-cream mb-2">Let's Create Magic!</h3>
+                  <p className="text-cream/80 text-xs max-w-xs">
                     Book a 30-minute call to discuss your project.
                   </p>
                 </div>
                 <a href="https://cal.com/kazeem-salau-c5t2nj/30min" target="_blank" rel="noopener noreferrer">
                   <Button 
-                    className="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 px-6 py-3 text-base font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    className="bg-lapis-lazuli text-cream hover:bg-lapis-lazuli/90 px-6 py-3 text-base font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                     data-testid="schedule-call"
                   >
                     <Calendar className="mr-2 h-4 w-4" />
@@ -165,8 +165,8 @@ export default function GetInTouch() {
             <div className="md:col-span-2 lg:col-span-2">
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 shadow-lg">
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">Let's talk. Have a project in mind?</h3>
-                  <p className="text-white/80">We are committed to protecting your privacy. We will never collect information about you without your explicit consent.</p>
+                  <h3 className="text-2xl font-bold text-cream mb-2">Let's talk. Have a project in mind?</h3>
+                  <p className="text-cream/90">We are committed to protecting your privacy. We will never collect information about you without your explicit consent.</p>
                 </div>
 
                 <Form {...form}>
@@ -177,12 +177,12 @@ export default function GetInTouch() {
                         name="firstName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white font-medium">Your name*</FormLabel>
+                            <FormLabel className="text-cream font-medium">Your name*</FormLabel>
                             <FormControl>
                               <Input 
                                 placeholder="Your name" 
                                 {...field}
-                                className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white/50 focus:ring-white/50"
+                                className="bg-white/20 border-white/30 text-cream placeholder:text-cream/60 focus:border-cream/50 focus:ring-cream/50 focus-visible:ring-cream/50 focus-visible:ring-2 focus-visible:outline-none"
                                 data-testid="input-firstName"
                               />
                             </FormControl>
@@ -195,12 +195,12 @@ export default function GetInTouch() {
                         name="lastName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white font-medium">Last name</FormLabel>
+                            <FormLabel className="text-cream font-medium">Last name</FormLabel>
                             <FormControl>
                               <Input 
                                 placeholder="Your last name" 
                                 {...field}
-                                className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white/50 focus:ring-white/50"
+                                className="bg-white/20 border-white/30 text-cream placeholder:text-cream/60 focus:border-cream/50 focus:ring-cream/50 focus-visible:ring-cream/50 focus-visible:ring-2 focus-visible:outline-none"
                                 data-testid="input-lastName"
                               />
                             </FormControl>
@@ -216,13 +216,13 @@ export default function GetInTouch() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white font-medium">Your email address*</FormLabel>
+                            <FormLabel className="text-cream font-medium">Your email address*</FormLabel>
                             <FormControl>
                               <Input 
                                 type="email"
                                 placeholder="Your email address" 
                                 {...field}
-                                className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white/50 focus:ring-white/50"
+                                className="bg-white/20 border-white/30 text-cream placeholder:text-cream/60 focus:border-cream/50 focus:ring-cream/50 focus-visible:ring-cream/50 focus-visible:ring-2 focus-visible:outline-none"
                                 data-testid="input-email"
                               />
                             </FormControl>
@@ -235,13 +235,13 @@ export default function GetInTouch() {
                         name="projectType"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white font-medium">Your subject</FormLabel>
+                            <FormLabel className="text-cream font-medium">Your subject</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
                               <FormControl>
-                                <SelectTrigger className="bg-white/20 border-white/30 text-white focus:border-white/50 focus:ring-white/50" data-testid="select-projectType">
+                                <SelectTrigger className="bg-white/20 border-white/30 text-cream focus:border-cream/50 focus:ring-cream/50 focus-visible:ring-cream/50 focus-visible:ring-2 focus-visible:outline-none data-[placeholder]:text-cream/60" data-testid="select-projectType">
                                   <SelectValue
                                     placeholder="Your subject"
-                                    className="text-white data-[placeholder]:text-white/60"
+                                    className="text-cream data-[placeholder]:text-cream/60"
                                   />
                                 </SelectTrigger>
                               </FormControl>
@@ -264,12 +264,12 @@ export default function GetInTouch() {
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white font-medium">Your message</FormLabel>
+                          <FormLabel className="text-cream font-medium">Your message</FormLabel>
                           <FormControl>
                             <Textarea 
                               rows={6}
                               placeholder="Your message"
-                              className="resize-none bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white/50 focus:ring-white/50"
+                              className="resize-none bg-white/20 border-white/30 text-cream placeholder:text-cream/60 focus:border-cream/50 focus:ring-cream/50 focus-visible:ring-cream/50 focus-visible:ring-2 focus-visible:outline-none"
                               {...field}
                               data-testid="textarea-message"
                             />
@@ -281,7 +281,7 @@ export default function GetInTouch() {
 
                     <Button 
                       type="submit" 
-                      className="w-full bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 font-semibold py-3"
+                      className="w-full bg-lapis-lazuli text-cream hover:bg-lapis-lazuli/90 font-semibold py-3"
                       disabled={contactMutation.isPending}
                       data-testid="submit-contact-form"
                     >
