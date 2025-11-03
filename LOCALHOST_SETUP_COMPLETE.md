@@ -23,7 +23,7 @@ node final-server.js
 ## 🔑 **Admin Credentials**
 
 - **Username:** `kazeemsalau`
-- **Password:** `911Porsche@!`
+- **Password:** Set via `ADMIN_PASSWORD` environment variable (or defaults to config)
 - **Email:** `kaspersalau@gmail.com`
 
 ---
@@ -115,7 +115,7 @@ node final-server.js
 2. Update the credentials:
    ```javascript
    const newUsername = 'kazeemsalau';
-   const newPassword = '911Porsche@!';
+   const newPassword = process.env.ADMIN_PASSWORD || 'CHANGE_THIS';
    const newEmail = 'kaspersalau@gmail.com';
    ```
 3. Run: `node change-admin-password.js`

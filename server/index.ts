@@ -312,8 +312,15 @@ app.get("/api/setup-admin", async (req, res) => {
     const crypto = await import('crypto');
     
     const newUsername = 'kazeemsalau';
-    const newPassword = '911Porsche@!';
+    const newPassword = process.env.ADMIN_PASSWORD || 'CHANGE_THIS_IN_PRODUCTION';
     const newEmail = 'kaspersalau@gmail.com';
+    
+    if (newPassword === 'CHANGE_THIS_IN_PRODUCTION' && process.env.NODE_ENV === 'production') {
+      return res.status(500).json({ 
+        error: 'Admin password not configured', 
+        details: 'Set ADMIN_PASSWORD environment variable in production' 
+      });
+    }
     
     const passwordHash = await bcrypt.hash(newPassword, 12);
     
@@ -368,8 +375,8 @@ app.get("/api/setup-admin", async (req, res) => {
       success: true, 
       message: 'Admin credentials updated successfully!',
       username: newUsername,
-      password: newPassword,
-      email: newEmail
+      email: newEmail,
+      note: 'Password updated (not displayed for security)'
     });
   } catch (error) {
     console.error('Setup error:', error);

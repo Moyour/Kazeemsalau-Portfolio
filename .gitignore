@@ -75,3 +75,10 @@ vite.config.ts.*
 
 # Misc
 server/publichigh-quality-images/
+
+# Security files (may contain sensitive info)
+QUICK_PRODUCTION_CHECKLIST.md
+SECURITY_AUDIT_REPORT.md
+RAILWAY_PRODUCTION_SETUP.md
+DNS_SETUP_STEP_BY_STEP.md
+DNS_SETUP_GUIDE.md

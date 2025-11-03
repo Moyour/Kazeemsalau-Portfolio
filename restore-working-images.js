@@ -1,9 +1,18 @@
 import https from 'https';
+import 'dotenv/config';
 
-const railwayUrl = 'https://kazeemsalau-portfolio-production.up.railway.app';
+const railwayUrl = process.env.RAILWAY_URL || 'https://kazeemsalau-portfolio-production.up.railway.app';
+const adminUsername = process.env.ADMIN_USERNAME || 'kazeemsalau';
+const adminPassword = process.env.ADMIN_PASSWORD || process.env.TEMP_ADMIN_PASSWORD || '';
 
 async function restoreWorkingImages() {
   try {
+    if (!adminPassword) {
+      console.error('❌ ADMIN_PASSWORD environment variable not set!');
+      console.log('Set ADMIN_PASSWORD in .env file or export it before running this script.');
+      process.exit(1);
+    }
+    
     console.log('🔄 Restoring your working PostImages URLs...\n');
     
     // Step 1: Login as admin
@@ -12,8 +21,8 @@ async function restoreWorkingImages() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: 'kazeemsalau',
-        password: '911Porsche@!'
+        username: adminUsername,
+        password: adminPassword
       })
     });
     

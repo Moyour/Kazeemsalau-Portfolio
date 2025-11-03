@@ -47,7 +47,7 @@ npm run start:localhost
 
 ### **Admin Credentials:**
 - Username: `kazeemsalau`
-- Password: `911Porsche@!`
+- Password: Set via environment variable `ADMIN_PASSWORD`
 - Email: `kaspersalau@gmail.com`
 
 ---

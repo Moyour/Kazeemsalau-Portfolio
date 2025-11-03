@@ -382,8 +382,9 @@ if (GOOGLE_AUTH_ENABLED) {
         // Generate JWT token
         const token = generateToken(user);
         
-        // Redirect to frontend with token
-        res.redirect(`http://localhost:5173/auth/callback?token=${token}`);
+        // Redirect to frontend with token (use environment variable or detect from request)
+        const frontendUrl = process.env.FRONTEND_URL || process.env.PUBLIC_BASE_URL || (req.protocol + '://' + req.get('host'));
+        res.redirect(`${frontendUrl}/auth/callback?token=${token}`);
       } catch (error) {
         console.error('Google OAuth callback error:', error);
         res.redirect('/login?error=server_error');

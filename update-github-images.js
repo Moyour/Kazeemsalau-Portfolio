@@ -1,10 +1,19 @@
 import https from 'https';
 import http from 'http';
+import 'dotenv/config';
 
-const railwayUrl = 'http://localhost:5001';
+const railwayUrl = process.env.RAILWAY_URL || 'http://localhost:5001';
+const adminUsername = process.env.ADMIN_USERNAME || 'kazeemsalau';
+const adminPassword = process.env.ADMIN_PASSWORD || process.env.TEMP_ADMIN_PASSWORD || '';
 
 async function updateGitHubImages() {
   try {
+    if (!adminPassword) {
+      console.error('❌ ADMIN_PASSWORD environment variable not set!');
+      console.log('Set ADMIN_PASSWORD in .env file or export it before running this script.');
+      process.exit(1);
+    }
+    
     console.log('🖼️ Updating localhost with your GitHub high-quality images...\n');
     
     // Step 1: Login as admin
@@ -13,8 +22,8 @@ async function updateGitHubImages() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: 'kazeemsalau',
-        password: '911Porsche@!'
+        username: adminUsername,
+        password: adminPassword
       })
     });
     
