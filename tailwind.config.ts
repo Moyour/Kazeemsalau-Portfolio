@@ -63,12 +63,45 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
-        // Brand colors - Custom theme
-        'lapis-lazuli': '#586994',
-        'cool-gray': '#7d869c',
-        'cadet-gray': '#a2abab',
-        'ash-gray': '#b4c4ae',
-        'cream': '#e5e8b6',
+        // Current Theme - Creative Powerhouse
+        'royal-blue': '#0047AB',      // Deep, rich blue (primary)
+        'electric-purple': '#9D00FF',  // Vibrant purple (accent)
+        'golden-yellow': '#FFB800',    // Bold yellow (highlights)
+        'pure-white': '#FFFFFF',       // Clean white (text)
+        'deep-navy': '#001F3F',        // Dark navy (backgrounds)
+
+        // Variation 1: Ocean Breeze Theme
+        'ocean-blue': '#0077BE',       // Bright ocean blue
+        'coral-pink': '#FF6B9D',       // Vibrant coral
+        'mint-green': '#00D9A3',       // Fresh mint
+        'slate-gray': '#2F4858',       // Professional slate
+        'cloud-white': '#F8F9FA',      // Soft white
+
+        // Variation 2: Sunset Vibes Theme
+        'teal-blue': '#008C95',        // Deep teal
+        'burnt-orange': '#FF6347',     // Vibrant orange
+        'sunshine-gold': '#FFC700',    // Bright gold
+        'charcoal-black': '#1A1A2E',   // Rich charcoal
+        'ivory-white': '#FFFEF7',      // Warm ivory
+
+        // Variation 3: Tech Forward Theme
+        'cyber-blue': '#00B4D8',       // Bright cyan-blue
+        'magenta-pink': '#E91E63',     // Bold magenta
+        'lime-green': '#CDDC39',       // Electric lime
+        'midnight-blue': '#0A1929',    // Deep midnight
+
+        // Minimal White Canvas Theme
+        'canvas-white': '#FFFFFF',     // Pure white
+        'navy-text': '#0F2942',        // Deep navy for text
+        'coral-accent': '#FF6B6B',     // Warm coral accent
+        'soft-gray': '#64748B',        // Soft gray for body text
+        'light-border': '#E2E8F0',     // Very light border
+        'bg-subtle': '#F8FAFC',        // Subtle background
+
+        // Legacy colors (for backwards compatibility)
+        'lapis-lazuli': '#0047AB',
+        'cool-gray': '#001F3F',
+        'cream': '#FFFFFF',
       },
       fontFamily: {
         sans: ["Poppins", "var(--font-sans)", "sans-serif"],

@@ -45,25 +45,25 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="bg-cool-gray min-h-screen overflow-x-hidden">
-      {/* Interactive Cursor */}
-      <div 
-        className="fixed w-8 h-8 bg-white/20 rounded-full pointer-events-none z-50 mix-blend-difference"
+    <div className="bg-gray-50 min-h-screen overflow-x-hidden">
+      {/* Interactive Cursor - Desktop only */}
+      <div
+        className="fixed w-8 h-8 bg-white/20 rounded-full pointer-events-none z-50 mix-blend-difference hidden lg:block will-change-transform"
         style={{
           left: mousePosition.x - 16,
           top: mousePosition.y - 16,
-          transition: 'all 0.1s ease-out',
+          transition: 'transform 0.1s ease-out',
           transform: hoveredProject ? 'scale(2)' : 'scale(1)'
         }}
       />
       {/* Hero Section - Dramatic Impact Statement */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          {[...Array(15)].map((_, i) => (
+        {/* Animated Background - Desktop only, reduced count */}
+        <div className="absolute inset-0 hidden md:block">
+          {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-3 h-3 bg-white/10 rounded-full"
+              className="absolute w-3 h-3 bg-white/10 rounded-full will-change-transform"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -86,20 +86,20 @@ export default function Portfolio() {
                 transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
               }}
             >
-              <h1 className="text-7xl lg:text-9xl font-black text-cream leading-[0.8] tracking-tighter">
+              <h1 className="text-7xl lg:text-9xl font-black text-black leading-[0.8] tracking-tighter">
                 LEARNING
                 <br />
                 <span className="relative">
                   THAT
-                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-2 bg-cream rounded-full" />
+                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-2 bg-black rounded-full" />
                 </span>
                 <br />
-                <span className="text-cream">
+                <span className="text-black">
                   TRANSFORMS
                 </span>
               </h1>
               
-              <p className="text-2xl lg:text-3xl text-cream/90 max-w-4xl mx-auto leading-relaxed font-light">
+              <p className="text-2xl lg:text-3xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
                 Professional eLearning development portfolio showcasing SCORM course development, Articulate Storyline & Rise projects, LMS integration, and custom digital learning solutions. Every project delivers measurable learning outcomes.
               </p>
             </div>
@@ -115,11 +115,11 @@ export default function Portfolio() {
             >
               {impactStats.map((stat, index) => (
                 <div key={index} className="relative group impact-stat-card">
-                  <div className="absolute -inset-4 bg-lapis-lazuli rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500">
+                  <div className="absolute -inset-4 bg-black rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                  <div className="relative bg-white backdrop-blur-sm rounded-3xl p-8 border-2 border-gray-200 group-hover:bg-gray-50 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500">
                     <div className="text-center space-y-4">
-                      <stat.icon className="w-8 h-8 text-cream mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
-                      <div className="text-cream/90 font-medium text-sm group-hover:text-cream group-hover:translate-y-0.5 transition-all duration-300">{stat.label}</div>
+                      <stat.icon className="w-8 h-8 text-black mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
+                      <div className="text-gray-700 font-medium text-sm group-hover:text-black group-hover:translate-y-0.5 transition-all duration-300">{stat.label}</div>
                     </div>
                   </div>
                 </div>
@@ -150,34 +150,56 @@ export default function Portfolio() {
         `}</style>
       </section>
       {/* Project Categories - Creative Filter */}
-      <section className="py-20 bg-black/30 backdrop-blur-sm">
+      <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl lg:text-6xl font-black text-cream mb-6">
+            <h2 className="text-5xl lg:text-6xl font-black text-black mb-6">
               AREAS OF
               <br />
-              <span className="text-cream/70">IMPACT</span>
+              <span className="text-gray-500">IMPACT</span>
             </h2>
-            <p className="text-xl text-cream/90 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Where innovation meets impact. I craft learning experiences that don't just teach—they transform minds, ignite passion, and drive extraordinary results that last.
             </p>
+            <button
+              onClick={() => setActiveFilter("all")}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                activeFilter === "all"
+                  ? 'bg-black text-white'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+              }`}
+              data-testid="filter-all"
+            >
+              Show All Projects
+            </button>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category, index) => (
-              <div
+              <button
                 key={category.id}
-                className="relative group pointer-events-none select-none"
+                onClick={() => setActiveFilter(category.id)}
+                className={`relative group cursor-pointer ${
+                  activeFilter === category.id ? 'ring-2 ring-black' : ''
+                }`}
                 data-testid={`filter-${category.id}`}
               >
-                <div className="absolute -inset-4 bg-lapis-lazuli rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500">
+                <div className={`absolute -inset-4 bg-black rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 ${
+                  activeFilter === category.id ? 'opacity-50' : ''
+                }`} />
+                <div className={`relative bg-white backdrop-blur-sm rounded-3xl p-8 border-2 border-gray-200 group-hover:bg-gray-50 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-500 ${
+                  activeFilter === category.id ? 'bg-gray-100 border-black' : ''
+                }`}>
                   <div className="text-center space-y-4">
-                    <category.icon className="w-8 h-8 text-cream mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300" />
-                    <div className="text-cream/90 font-medium text-sm group-hover:text-cream group-hover:translate-y-0.5 transition-all duration-300">{category.label}</div>
+                    <category.icon className={`w-8 h-8 text-black mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-300 ${
+                      activeFilter === category.id ? 'scale-110' : ''
+                    }`} />
+                    <div className={`font-medium text-sm group-hover:text-black group-hover:translate-y-0.5 transition-all duration-300 ${
+                      activeFilter === category.id ? 'text-black font-bold' : 'text-gray-600'
+                    }`}>{category.label}</div>
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -195,30 +217,30 @@ export default function Portfolio() {
             </div>
           ) : projects.length === 0 ? (
             <div className="text-center py-20">
-              <Sparkles className="w-16 h-16 text-white/40 mx-auto mb-6" />
-              <h3 className="text-3xl font-bold text-cream mb-4">Projects Coming Soon!</h3>
-              <p className="text-xl text-cream/90 mb-8">I'm currently working on some amazing projects that will be showcased here soon.</p>
+              <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-6" />
+              <h3 className="text-3xl font-bold text-black mb-4">Projects Coming Soon!</h3>
+              <p className="text-xl text-gray-600 mb-8">I'm currently working on some amazing projects that will be showcased here soon.</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link 
+                <Link
                   href="/get-in-touch"
-                  className="bg-lapis-lazuli text-cream font-bold px-8 py-4 rounded-full hover:bg-lapis-lazuli/90 transition-all duration-300 flex items-center gap-3 hover:scale-105 justify-center"
+                  className="bg-black text-white font-bold px-8 py-4 rounded-full hover:bg-black/90 transition-all duration-300 flex items-center gap-3 hover:scale-105 justify-center"
                 >
                   Get In Touch
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link 
-                  href="/resume"
-                  className="bg-white/10 backdrop-blur-md text-white px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-all duration-300 flex items-center gap-3 justify-center"
+                <Link
+                  href="/about"
+                  className="bg-gray-100 border-2 border-gray-300 text-black px-8 py-4 rounded-full font-bold hover:bg-gray-200 transition-all duration-300 flex items-center gap-3 justify-center"
                 >
-                  View Resume
-                  <ExternalLink className="w-4 h-4" />
+                  Learn More About Me
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className="text-center py-20">
-              <Sparkles className="w-16 h-16 text-white/40 mx-auto mb-6" />
-              <p className="text-2xl text-white/60">No projects in this category yet.</p>
+              <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-6" />
+              <p className="text-2xl text-gray-600">No projects in this category yet.</p>
             </div>
           ) : (
             <div className="space-y-32">
@@ -239,17 +261,17 @@ export default function Portfolio() {
                     }`}>
                       <div className="space-y-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-3 h-3 bg-cream rounded-full group-hover:scale-150 transition-transform duration-300" />
-                          <span className="text-cream/80 text-sm uppercase tracking-wide font-medium">
+                          <div className="w-3 h-3 bg-black rounded-full group-hover:scale-150 transition-transform duration-300" />
+                          <span className="text-gray-600 text-sm uppercase tracking-wide font-medium">
                             {project.category?.replace('_', ' ') || 'Project'}
                           </span>
                         </div>
                         
-                        <h3 className="text-4xl lg:text-5xl font-black text-cream leading-tight group-hover:text-cream/90 transition-colors duration-300">
+                        <h3 className="text-4xl lg:text-5xl font-black text-black leading-tight group-hover:text-gray-600 transition-colors duration-300">
                           {project.title}
                         </h3>
                         
-                        <p className="text-xl text-cream/90 leading-relaxed max-w-2xl">
+                        <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
                           {project.description}
                         </p>
 
@@ -259,7 +281,7 @@ export default function Portfolio() {
                             {project.tools.map((tool: string, toolIndex: number) => (
                               <span 
                                 key={toolIndex}
-                                className="px-4 py-2 bg-cream/10 backdrop-blur-md rounded-full text-cream text-sm font-medium border border-cream/20"
+                                className="px-4 py-2 bg-black/10 backdrop-blur-md rounded-full text-black text-sm font-medium border border-gray-300/20"
                               >
                                 {tool}
                               </span>
@@ -272,18 +294,18 @@ export default function Portfolio() {
                           <div className="flex items-center gap-6">
                             <Link 
                               href={`/portfolio/${project.id}`}
-                              className="group/btn bg-lapis-lazuli text-cream px-8 py-4 rounded-full font-bold hover:bg-lapis-lazuli/90 transition-all duration-300 flex items-center gap-3 hover:scale-105"
+                              className="group/btn bg-black text-white px-8 py-4 rounded-full font-bold hover:bg-black/90 transition-all duration-300 flex items-center gap-3 hover:scale-105"
                             >
                               View Case Study
                               <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                             </Link>
                             
                             {project.scormUrl && (
-                              <a 
+                              <a
                                 href={project.scormUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 group/scorm"
+                                className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors duration-300 group/scorm"
                               >
                                 <Monitor className="w-4 h-4 group-hover/scorm:scale-110 transition-transform" />
                                 <span className="text-sm font-medium">Play SCORM Course</span>
@@ -300,11 +322,11 @@ export default function Portfolio() {
                       index % 2 === 1 ? 'lg:col-start-1' : ''
                     }`}>
                       <div className="relative group/visual">
-                        <div className="absolute -inset-4 bg-lapis-lazuli rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                        <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/10 transition-all duration-500">
-                          <div className="aspect-video bg-cool-gray/20 rounded-2xl overflow-hidden">
+                        <div className="absolute -inset-4 bg-black rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                        <div className="relative bg-white backdrop-blur-sm rounded-3xl p-8 border-2 border-gray-200 group-hover:bg-gray-50 transition-all duration-500">
+                          <div className="aspect-video bg-gray-100 rounded-2xl overflow-hidden">
                             {project.imageUrl ? (
-                              <img 
+                              <img
                                 src={project.imageUrl}
                                 alt={project.title}
                                 className="w-full h-full object-fill rounded-2xl group-hover/visual:scale-105 transition-transform duration-500"
@@ -317,12 +339,12 @@ export default function Portfolio() {
                                 }}
                               />
                             ) : null}
-                            <div 
+                            <div
                               className={`fallback-placeholder w-full h-full flex items-center justify-center ${project.imageUrl ? 'hidden' : 'flex'}`}
                             >
                               <div className="text-center space-y-4">
-                                <Sparkles className="w-12 h-12 text-white/60 mx-auto" />
-                                <p className="text-white/60 font-medium">Project Preview</p>
+                                <Sparkles className="w-12 h-12 text-gray-400 mx-auto" />
+                                <p className="text-gray-600 font-medium">Project Preview</p>
                               </div>
                             </div>
                           </div>
@@ -337,37 +359,37 @@ export default function Portfolio() {
         </div>
       </section>
       {/* Call to Action */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-lapis-lazuli/20" />
-        
+      <section className="py-32 relative overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-gray-50" />
+
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
           <div className="space-y-12">
             <div className="space-y-8">
-              <h2 className="text-6xl lg:text-7xl font-black text-cream leading-tight">
+              <h2 className="text-6xl lg:text-7xl font-black text-black leading-tight">
                 YOUR PROJECT
                 <br />
-                <span className="text-cream/80">
+                <span className="text-gray-600">
                   COULD BE NEXT
                 </span>
               </h2>
-              
-              <p className="text-2xl text-cream/90 leading-relaxed max-w-2xl mx-auto">
-                Ready to create learning experiences that your audience will remember, 
+
+              <p className="text-2xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                Ready to create learning experiences that your audience will remember,
                 apply, and share? Let's build something transformational together.
               </p>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <a 
+              <a
                 href="/get-in-touch"
-                className="group bg-lapis-lazuli text-cream px-12 py-6 rounded-full font-bold text-lg hover:bg-lapis-lazuli/90 transition-all duration-300 flex items-center justify-center gap-3 hover:scale-105"
+                className="group bg-black text-white px-12 py-6 rounded-full font-bold text-lg hover:bg-black/90 transition-all duration-300 flex items-center justify-center gap-3 hover:scale-105"
               >
                 Start Your Project
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
               </a>
-              <a 
+              <a
                 href="/about"
-                className="bg-white/10 text-white px-12 py-6 rounded-full font-bold text-lg border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:scale-105"
+                className="bg-gray-100 text-black px-12 py-6 rounded-full font-bold text-lg border-2 border-gray-300 hover:bg-gray-200 hover:border-gray-400 transition-all duration-300 hover:scale-105"
               >
                 Learn My Process
               </a>

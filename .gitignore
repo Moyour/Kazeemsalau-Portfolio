@@ -79,6 +79,17 @@ server/publichigh-quality-images/
 # Security files (may contain sensitive info)
 QUICK_PRODUCTION_CHECKLIST.md
 SECURITY_AUDIT_REPORT.md
+SECURITY_FIX_SUMMARY.md
 RAILWAY_PRODUCTION_SETUP.md
 DNS_SETUP_STEP_BY_STEP.md
 DNS_SETUP_GUIDE.md
+NEXT_STEPS.md
+RAILWAY_QUICK_SETUP.md
+RAILWAY_SETUP_VISUAL_GUIDE.md
+QUICK_ACTION_CARD.md
+railway-env-setup.sh
+test-site.sh
+
+# Screenshots (temporary, not needed in repo)
+Screenshot*.png
+what people sAY.png

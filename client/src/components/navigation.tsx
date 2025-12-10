@@ -63,32 +63,38 @@ export default function Navigation() {
   };
 
   // Determine if we're on a white background page
-  const isWhitePage = location.startsWith('/portfolio/') || 
-                     location.startsWith('/blog/') || 
+  const isWhitePage = location === '/' ||
+                     location === '/portfolio' ||
+                     location.startsWith('/portfolio/') ||
+                     location.startsWith('/blog/') ||
                      location === '/about';
 
   // Navigation styling based on page background and scroll state
   const shouldUseWhiteStyling = (isWhitePage && !isGradientPage) || (isGradientPage && isScrolledToWhiteSection);
-  
+
   const navClasses = shouldUseWhiteStyling
-    ? "bg-white/95 backdrop-blur-md border-slate-200/50 shadow-lg" 
-    : "bg-white/10 backdrop-blur-md border-white/20 shadow-xl";
-  
+    ? "bg-white/95 backdrop-blur-md border-slate-200/50 shadow-lg"
+    : "bg-gray-900/90 backdrop-blur-md border-white/30 shadow-xl";
+
   const textClasses = shouldUseWhiteStyling
-    ? "text-slate-800 hover:text-slate-600" 
-    : "text-white/80 hover:text-white";
-  
+    ? "text-slate-800 hover:text-slate-600"
+    : "text-white hover:text-gray-200";
+
   const logoClasses = shouldUseWhiteStyling
-    ? "text-slate-800 hover:text-slate-600" 
-    : "text-white hover:text-white/80";
-  
+    ? "text-slate-800 hover:text-slate-600"
+    : "text-white font-bold hover:text-gray-200";
+
   const mobileButtonClasses = shouldUseWhiteStyling
-    ? "text-slate-800 hover:bg-slate-100 hover:text-slate-600" 
-    : "text-white hover:bg-white/20 hover:text-white";
-  
+    ? "text-slate-800 hover:bg-slate-100 hover:text-slate-600"
+    : "text-white hover:bg-white/30 hover:text-white";
+
   const mobileBorderClasses = shouldUseWhiteStyling
-    ? "border-slate-200" 
-    : "border-white/20";
+    ? "border-slate-200"
+    : "border-white/30";
+
+  const buttonClasses = shouldUseWhiteStyling
+    ? "bg-black text-white hover:bg-black/90"
+    : "bg-white text-black hover:bg-white/90";
 
   return (
     <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
@@ -124,8 +130,8 @@ export default function Navigation() {
           {/* Get In Touch Button */}
           <div className="hidden md:block">
             <ScrollLink href="/get-in-touch">
-              <Button 
-                className="bg-lapis-lazuli text-cream hover:bg-lapis-lazuli/90 px-5 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap"
+              <Button
+                className={cn(buttonClasses, "px-5 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap")}
                 data-testid="contact-button"
               >
                 Get In Touch
@@ -176,8 +182,8 @@ export default function Navigation() {
               
               
               <ScrollLink href="/get-in-touch" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button 
-                  className="w-full bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 text-white hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 px-6 py-2 rounded-full font-medium transition-colors duration-200 mt-2"
+                <Button
+                  className={cn(buttonClasses, "w-full px-6 py-2 rounded-full font-medium transition-all duration-200 mt-2")}
                   data-testid="mobile-contact-button"
                 >
                   Get In Touch

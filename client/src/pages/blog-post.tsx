@@ -65,7 +65,7 @@ export default function BlogPostPage() {
   }
 
   return (
-    <div className="py-20">
+    <div className="py-20 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
         {/* Back Navigation */}
         <Link href="/blog">

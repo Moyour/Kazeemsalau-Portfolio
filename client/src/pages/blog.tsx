@@ -33,14 +33,14 @@ export default function Blog() {
   const filteredPosts = blogPosts;
 
   return (
-    <div className="py-20 bg-cool-gray min-h-screen">
+    <div className="py-20 bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <section className="py-20 relative">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold text-cream mb-6 drop-shadow-lg">
+          <h1 className="text-4xl lg:text-5xl font-bold text-black mb-6 drop-shadow-lg">
             Blog & Insights
           </h1>
-          <p className="text-xl text-cream/90 leading-relaxed">
+          <p className="text-xl text-gray-600 leading-relaxed">
             Thoughts on instructional design trends, learning technology, and creating effective educational experiences
           </p>
         </div>
@@ -99,8 +99,8 @@ export default function Blog() {
           ) : blogPosts.length === 0 ? (
             <div className="text-center py-20">
               <div className="max-w-md mx-auto">
-                <div className="w-16 h-16 bg-lapis-lazuli rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Search className="w-8 h-8 text-cream" />
+                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-8 h-8 text-black" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Blog Coming Soon!</h3>
                 <p className="text-lg text-gray-600 mb-8">
@@ -109,7 +109,7 @@ export default function Blog() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a 
                     href="/get-in-touch"
-                    className="bg-lapis-lazuli text-cream px-6 py-3 rounded-full font-semibold hover:bg-cool-gray transition-all duration-300 flex items-center gap-2 justify-center"
+                    className="bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-black/90 transition-all duration-300 flex items-center gap-2 justify-center"
                   >
                     Get In Touch
                   </a>

@@ -35,8 +35,8 @@ export default function ProjectDetail() {
     return (
       <div className="py-20">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-cream mb-4">Project Not Found</h1>
-          <p className="text-cream/90 mb-8">The project you're looking for doesn't exist.</p>
+          <h1 className="text-2xl font-bold text-black mb-4">Project Not Found</h1>
+          <p className="text-gray-600 mb-8">The project you're looking for doesn't exist.</p>
           <Link href="/portfolio">
             <Button>Back to Portfolio</Button>
           </Link>
@@ -46,7 +46,7 @@ export default function ProjectDetail() {
   }
 
   return (
-    <div className="py-20 bg-cool-gray min-h-screen">
+    <div className="py-20 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
         
         {/* Back Navigation */}
@@ -59,10 +59,10 @@ export default function ProjectDetail() {
 
         {/* Project Header */}
         <div className="mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold text-cream mb-6" data-testid="project-title">
+          <h1 className="text-4xl lg:text-5xl font-bold text-black mb-6" data-testid="project-title">
             {project.title}
           </h1>
-          <p className="text-xl text-cream/90 leading-relaxed mb-6" data-testid="project-description">
+          <p className="text-xl text-gray-600 leading-relaxed mb-6" data-testid="project-description">
             {project.description}
           </p>
           
@@ -84,7 +84,7 @@ export default function ProjectDetail() {
             {project.demoUrl && (
               <Button 
                 asChild
-                className="bg-lapis-lazuli text-cream hover:bg-lapis-lazuli/90"
+                className="bg-black text-white hover:bg-black/90"
                 data-testid="demo-button"
               >
                 <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
@@ -147,8 +147,8 @@ export default function ProjectDetail() {
 
         {/* Project Details */}
         <div className="prose prose-lg max-w-none">
-          <h2 className="text-2xl font-bold text-cream mb-4">Project Overview</h2>
-          <p className="text-cream/90 leading-relaxed mb-8" data-testid="project-long-description">
+          <h2 className="text-2xl font-bold text-black mb-4">Project Overview</h2>
+          <p className="text-gray-600 leading-relaxed mb-8" data-testid="project-long-description">
             {project.longDescription || project.description}
           </p>
 
@@ -157,32 +157,32 @@ export default function ProjectDetail() {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {project.challenge && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-cream mb-4">Challenge</h3>
-                  <p className="text-cream/90" data-testid="project-challenge">
+                  <h3 className="text-xl font-bold text-black mb-4">Challenge</h3>
+                  <p className="text-gray-600" data-testid="project-challenge">
                     {project.challenge}
                   </p>
                 </div>
               )}
               {project.solution && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-cream mb-4">Solution</h3>
-                  <p className="text-cream/90" data-testid="project-solution">
+                  <h3 className="text-xl font-bold text-black mb-4">Solution</h3>
+                  <p className="text-gray-600" data-testid="project-solution">
                     {project.solution}
                   </p>
                 </div>
               )}
               {project.process && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-cream mb-4">Process</h3>
-                  <p className="text-cream/90" data-testid="project-process">
+                  <h3 className="text-xl font-bold text-black mb-4">Process</h3>
+                  <p className="text-gray-600" data-testid="project-process">
                     {project.process}
                   </p>
                 </div>
               )}
               {project.results && (
                 <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-                  <h3 className="text-xl font-bold text-cream mb-4">Results</h3>
-                  <p className="text-cream/90" data-testid="project-results">
+                  <h3 className="text-xl font-bold text-black mb-4">Results</h3>
+                  <p className="text-gray-600" data-testid="project-results">
                     {project.results}
                   </p>
                 </div>
@@ -193,31 +193,40 @@ export default function ProjectDetail() {
 
         {/* Interactive Training Section */}
         {project.scormUrl && (
-          <div className="border-t border-slate-200 pt-12 mb-12">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-cream mb-4">Interactive Training Experience</h2>
-              <p className="text-cream/90">Experience the actual learning content from this project</p>
-            </div>
-            
-            <div className="text-center">
+          <div className="border-t border-gray-200 pt-12 mb-12">
+            <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl p-12 border-2 border-gray-300">
+              <div className="text-center mb-8">
+                <div className="inline-block bg-black/20 px-4 py-2 rounded-full mb-4">
+                  <span className="text-black font-semibold text-sm uppercase tracking-wide">Interactive Demo</span>
+                </div>
+                <h2 className="text-3xl lg:text-4xl font-bold text-black mb-4">Experience the Training</h2>
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                  Try the actual SCORM course from this project. See how learners interact with the content.
+                </p>
+              </div>
+
               <div className="flex justify-center">
                 <a
                   href={project.scormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative block"
+                  className="group relative inline-flex items-center gap-3 bg-black hover:bg-black/90 text-white px-10 py-6 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-2xl hover:shadow-black/50"
+                  data-testid="scorm-launch-button"
                 >
-                  <div className="relative bg-gray-600 rounded-full w-16 h-16 group-hover:scale-110 transition-all duration-300 shadow-2xl flex items-center justify-center">
-                    <PlayCircle className="w-8 h-8 text-white" />
-                  </div>
+                  <PlayCircle className="w-7 h-7 group-hover:scale-110 transition-transform" />
+                  <span>Launch Interactive Course</span>
+                  <ExternalLink className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               </div>
-              <div className="mt-6 space-y-2">
-                <p className="text-cream font-bold text-2xl">Try Interactive Training</p>
-                <p className="text-cream/80">Click the play button to experience the SCORM learning module</p>
-                <div className="flex items-center justify-center gap-2 text-cream/70 text-sm mt-2">
+
+              <div className="flex items-center justify-center gap-6 mt-8 text-black/80 text-sm">
+                <div className="flex items-center gap-2">
+                  <Monitor className="w-4 h-4" />
+                  <span>Full SCORM Experience</span>
+                </div>
+                <div className="flex items-center gap-2">
                   <ExternalLink className="w-4 h-4" />
-                  <span>Opens in new tab</span>
+                  <span>Opens in New Tab</span>
                 </div>
               </div>
             </div>
@@ -226,12 +235,12 @@ export default function ProjectDetail() {
 
         {/* Related Projects */}
         <div className="border-t border-slate-200 pt-12">
-          <h2 className="text-2xl font-bold text-cream mb-8 text-center">More Projects</h2>
+          <h2 className="text-2xl font-bold text-black mb-8 text-center">More Projects</h2>
           <div className="text-center">
             <Link href="/portfolio">
               <Button 
                 variant="outline"
-                className="border-lapis-lazuli text-lapis-lazuli hover:bg-lapis-lazuli hover:text-cream"
+                className="border-black text-black hover:bg-black hover:text-white"
                 data-testid="view-more-projects"
               >
                 View All Projects

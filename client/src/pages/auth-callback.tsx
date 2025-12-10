@@ -48,7 +48,7 @@ export default function AuthCallback() {
   }, [setLocation]);
 
   return (
-    <div className="min-h-screen bg-teal-medium flex items-center justify-center">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="text-white text-xl mb-4">Completing authentication...</div>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>

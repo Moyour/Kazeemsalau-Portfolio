@@ -74,20 +74,20 @@ export default function NewsletterSignup() {
 
   return (
     <div className="w-full max-w-lg mx-auto">
-        <div className="relative overflow-hidden rounded-3xl bg-teal-light border-2 border-teal-dark p-8 shadow-2xl">
+        <div className="relative overflow-hidden rounded-3xl bg-gray-50 border-2 border-black p-8 shadow-2xl">
         {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-40 h-40 bg-teal-medium/20 rounded-full -translate-y-20 translate-x-20"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-dark/15 rounded-full translate-y-16 -translate-x-16"></div>
-        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-teal-medium/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-0 right-0 w-40 h-40 bg-gray-800/20 rounded-full -translate-y-20 translate-x-20"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/15 rounded-full translate-y-16 -translate-x-16"></div>
+        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-gray-800/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
         
         <div className="relative">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-dark rounded-2xl mb-4 shadow-lg">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-2xl mb-4 shadow-lg">
               <Sparkles className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-3">
-              Join the <span className="text-teal-dark">Inner Circle</span>
+              Join the <span className="text-black">Inner Circle</span>
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto">
               Get exclusive access to my latest projects, design insights, and career opportunities. 
@@ -106,14 +106,14 @@ export default function NewsletterSignup() {
                 placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-teal-dark focus:ring-4 focus:ring-teal-dark/20 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-black focus:ring-4 focus:ring-teal-dark/20 transition-all duration-300 bg-white/80 backdrop-blur-sm"
                 required
               />
             </div>
             
             <Button 
               type="submit" 
-              className="w-full bg-teal-dark hover:bg-teal-medium text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-lg"
+              className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-lg"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -134,9 +134,9 @@ export default function NewsletterSignup() {
           <div className="text-center mt-6">
             <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 mb-2">
               <div className="flex -space-x-2">
-                <div className="w-6 h-6 bg-teal-dark rounded-full border-2 border-white"></div>
-                <div className="w-6 h-6 bg-teal-medium rounded-full border-2 border-white"></div>
-                <div className="w-6 h-6 bg-teal-light rounded-full border-2 border-white"></div>
+                <div className="w-6 h-6 bg-black rounded-full border-2 border-white"></div>
+                <div className="w-6 h-6 bg-gray-800 rounded-full border-2 border-white"></div>
+                <div className="w-6 h-6 bg-gray-50 rounded-full border-2 border-white"></div>
               </div>
               <span>500+ developers already joined</span>
             </div>

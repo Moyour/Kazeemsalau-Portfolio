@@ -39,60 +39,60 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   };
 
   return (
-    <div 
-      className="group bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden p-8 min-h-[400px] flex flex-col"
+    <div
+      className="group bg-white backdrop-blur-md border-2 border-gray-200 rounded-3xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden p-8 min-h-[400px] flex flex-col"
       data-testid={`project-card-${project.id}`}
     >
       {/* Icon Section */}
       <div className="flex justify-center mb-6">
-        <div className="w-24 h-24 bg-white/20 rounded-2xl flex items-center justify-center text-white">
+        <div className="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center text-black">
           {getCategoryIcon(project.category)}
         </div>
       </div>
-      
+
       {/* Category Label */}
       <div className="text-center mb-4">
-        <span className="text-white/70 text-sm font-medium tracking-wider">
+        <span className="text-gray-600 text-sm font-medium tracking-wider">
           {getCategoryLabel(project.category)}
         </span>
       </div>
-      
+
       {/* Title */}
-      <h3 className="text-2xl font-bold text-white text-center mb-4 leading-tight" data-testid={`project-title-${project.id}`}>
+      <h3 className="text-2xl font-bold text-black text-center mb-4 leading-tight" data-testid={`project-title-${project.id}`}>
         {project.title}
       </h3>
-      
+
       {/* Description */}
-      <p className="text-white/80 text-center mb-6 flex-grow leading-relaxed" data-testid={`project-description-${project.id}`}>
+      <p className="text-gray-600 text-center mb-6 flex-grow leading-relaxed" data-testid={`project-description-${project.id}`}>
         {project.description}
       </p>
-      
+
       {/* Tools */}
       <div className="flex flex-wrap gap-2 justify-center mb-6">
         {project.tools?.slice(0, 3).map((tool, index) => (
-          <Badge 
-            key={index} 
-            className="bg-white/20 text-white border-white/30 text-xs hover:bg-white/30"
+          <Badge
+            key={index}
+            className="bg-gray-100 text-black border-gray-300 text-xs hover:bg-gray-200"
             data-testid={`project-tool-${project.id}-${index}`}
           >
             {tool}
           </Badge>
         ))}
         {project.tools && project.tools.length > 3 && (
-          <Badge className="bg-white/20 text-white border-white/30 text-xs">
+          <Badge className="bg-gray-100 text-black border-gray-300 text-xs">
             +{project.tools.length - 3} more
           </Badge>
         )}
       </div>
-      
+
       {/* Action Button */}
       <div className="text-center">
         <Link href={`/projects/${project.id}`}>
-          <button 
-            className="inline-flex items-center px-6 py-3 bg-white text-indigo-900 hover:bg-white/90 font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+          <button
+            className="inline-flex items-center px-6 py-3 bg-black text-white hover:bg-black/90 font-semibold rounded-xl transition-all duration-300 hover:scale-105"
             data-testid={`project-link-${project.id}`}
           >
-            View Case Study 
+            View Case Study
             <ArrowRight className="ml-2 h-4 w-4" />
           </button>
         </Link>
