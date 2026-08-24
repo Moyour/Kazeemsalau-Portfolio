@@ -93,3 +93,4 @@ test-site.sh
 # Screenshots (temporary, not needed in repo)
 Screenshot*.png
 what people sAY.png
+.vercel
