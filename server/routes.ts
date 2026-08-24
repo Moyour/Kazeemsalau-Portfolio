@@ -27,8 +27,19 @@ export function setDatabaseConnection(database: any) {
 const router = Router();
 
 // Health check endpoint for Render
-router.get("/api/health", (req, res) => {
+router.get("/health", (req, res) => {
   res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
+});
+
+// CV Builder health check - verify API key is configured
+router.get("/cv/health", (req, res) => {
+  const apiKey = process.env.OPENAI_API_KEY;
+  res.status(200).json({ 
+    status: "OK", 
+    apiKeyConfigured: !!apiKey,
+    apiKeyLength: apiKey ? apiKey.length : 0,
+    message: apiKey ? "OpenAI API key is configured" : "OpenAI API key is NOT configured. Add OPENAI_API_KEY to .env file and restart server."
+  });
 });
 
 // Preview image endpoint with proper headers for social media
@@ -1153,6 +1164,266 @@ router.post("/upload/project-image", ...adminRoute, projectImageUpload.single("i
   } catch (error) {
     console.error("Error uploading project image:", error);
     res.status(500).json({ error: "Failed to upload project image" });
+  }
+});
+
+// CV Builder API Endpoints
+console.log("[Routes] Registering CV Builder routes...");
+router.post("/cv/parse", async (req, res) => {
+  try {
+    console.log("[CV Parse] Request received at /api/cv/parse");
+    const { cvText } = req.body;
+    
+    if (!cvText || typeof cvText !== "string") {
+      console.log("[CV Parse] Error: CV text missing or invalid type", { hasCvText: !!cvText, type: typeof cvText });
+      return res.status(400).json({ error: "CV text is required" });
+    }
+
+    console.log("[CV Parse] CV text length:", cvText.length);
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      console.log("[CV Parse] Error: OpenAI API key not configured");
+      console.log("[CV Parse] Available env vars:", Object.keys(process.env).filter(k => k.includes('OPENAI')));
+      return res.status(500).json({ 
+        error: "OpenAI API key not configured on server. Please add OPENAI_API_KEY to your .env file and restart the server." 
+      });
+    }
+
+    console.log("[CV Parse] API key found (length:", apiKey.length, "starts with:", apiKey.substring(0, 7) + "...)");
+    console.log("[CV Parse] Calling OpenAI API...");
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: `You are an expert at parsing CVs. Extract structured information from this CV text.
+Return ONLY valid JSON in this exact format:
+{
+  "personal_info": {
+    "name": "",
+    "email": "",
+    "phone": "",
+    "location": "",
+    "linkedin": "",
+    "portfolio": ""
+  },
+  "summary": "",
+  "experience": [{
+    "title": "",
+    "company": "",
+    "location": "",
+    "start_date": "",
+    "end_date": "",
+    "achievements": [""]
+  }],
+  "education": [{
+    "degree": "",
+    "institution": "",
+    "year": "",
+    "details": ""
+  }],
+  "skills": {
+    "technical": [],
+    "soft": [],
+    "tools": []
+  },
+  "certifications": [],
+  "additional": []
+}
+
+Be precise. Extract dates exactly as shown. Group skills logically.`,
+          },
+          {
+            role: "user",
+            content: `CV TEXT:\n${cvText}`,
+          },
+        ],
+        response_format: { type: "json_object" },
+        temperature: 0.3,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.log("[CV Parse] OpenAI API error:", { status: response.status, error });
+      return res.status(response.status).json({ 
+        error: error.error?.message || "Failed to parse CV" 
+      });
+    }
+
+    const data = await response.json();
+    console.log("[CV Parse] OpenAI response received, parsing...");
+    const parsed = JSON.parse(data.choices[0].message.content);
+    console.log("[CV Parse] Successfully parsed CV");
+    res.json(parsed);
+  } catch (error: any) {
+    console.error("[CV Parse] Error:", error);
+    res.status(500).json({ error: error.message || "Failed to parse CV" });
+  }
+});
+
+router.post("/cv/analyze-job", async (req, res) => {
+  try {
+    const { jobDescription } = req.body;
+    
+    if (!jobDescription || typeof jobDescription !== "string") {
+      return res.status(400).json({ error: "Job description is required" });
+    }
+
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ error: "OpenAI API key not configured on server" });
+    }
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: `Analyze this job description and extract key information.
+Return ONLY valid JSON:
+{
+  "title": "",
+  "company": "",
+  "seniority_level": "entry|mid|senior|lead",
+  "required_skills": {
+    "technical": [],
+    "soft": [],
+    "domain": []
+  },
+  "preferred_skills": [],
+  "key_responsibilities": [],
+  "keywords": [],
+  "culture_indicators": []
+}
+
+Categorize skills accurately. Extract ATS keywords.`,
+          },
+          {
+            role: "user",
+            content: `JOB DESCRIPTION:\n${jobDescription}`,
+          },
+        ],
+        response_format: { type: "json_object" },
+        temperature: 0.3,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return res.status(response.status).json({ 
+        error: error.error?.message || "Failed to analyze job" 
+      });
+    }
+
+    const data = await response.json();
+    const analysis = JSON.parse(data.choices[0].message.content);
+    res.json(analysis);
+  } catch (error: any) {
+    console.error("Error analyzing job:", error);
+    res.status(500).json({ error: error.message || "Failed to analyze job description" });
+  }
+});
+
+router.post("/cv/tailor", async (req, res) => {
+  try {
+    const { parsedCV, jobDescription, jobAnalysis } = req.body;
+    
+    if (!parsedCV || !jobDescription) {
+      return res.status(400).json({ error: "Parsed CV and job description are required" });
+    }
+
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ error: "OpenAI API key not configured on server" });
+    }
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: `You are a professional CV writer. Tailor this CV for the job description.
+
+CRITICAL RULES:
+- Use ONLY real experience from the CV - never fabricate
+- Rephrase achievements to mirror job language
+- Include job keywords naturally
+- Quantify impact where possible
+- Use strong action verbs
+- Keep bullets 1-2 lines maximum
+- Maintain truthfulness and authenticity
+
+Return valid JSON:
+{
+  "tailored_summary": "",
+  "updated_experience": [{
+    "title": "",
+    "company": "",
+    "achievements": [{
+      "original": "",
+      "tailored": "",
+      "keywords_added": [],
+      "reasoning": ""
+    }]
+  }],
+  "prioritized_skills": [],
+  "gap_analysis": {
+    "missing_required": [],
+    "underutilized_relevant": [],
+    "suggestions": []
+  },
+  "match_score": 85,
+  "match_explanation": "",
+  "ats_optimization": {
+    "score": 90,
+    "issues": [],
+    "recommendations": []
+  }
+}`,
+          },
+          {
+            role: "user",
+            content: `MASTER CV:\n${JSON.stringify(parsedCV, null, 2)}\n\nJOB DESCRIPTION:\n${jobDescription}\n\nJOB ANALYSIS:\n${JSON.stringify(jobAnalysis || {}, null, 2)}`,
+          },
+        ],
+        response_format: { type: "json_object" },
+        temperature: 0.7,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return res.status(response.status).json({ 
+        error: error.error?.message || "Failed to tailor CV" 
+      });
+    }
+
+    const data = await response.json();
+    const tailored = JSON.parse(data.choices[0].message.content);
+    res.json(tailored);
+  } catch (error: any) {
+    console.error("Error tailoring CV:", error);
+    res.status(500).json({ error: error.message || "Failed to tailor CV" });
   }
 });
 

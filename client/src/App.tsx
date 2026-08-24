@@ -1,70 +1,56 @@
 import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/contexts/AuthContext";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import About from "@/pages/about";
-import Portfolio from "@/pages/portfolio";
-import ProjectDetail from "@/pages/project-detail";
-import Blog from "@/pages/blog";
-import BlogPost from "@/pages/blog-post";
-import GetInTouch from "@/pages/get-in-touch";
-// import Resume from "@/pages/resume"; // Removed resume functionality
-import Admin from "@/pages/admin";
-import Login from "@/pages/login";
-import LoginMagic from "@/pages/login-magic";
-import AuthCallback from "@/pages/auth-callback";
+import Work from "@/pages/work";
+import CaseBusinessWriting from "@/pages/case-business-writing";
+import CaseTheFixer from "@/pages/case-the-fixer";
+import CaseEmotionalIntelligence from "@/pages/case-emotional-intelligence";
+import Apps from "@/pages/apps";
+import Contact from "@/pages/contact";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
-import LiveChatWidget from "@/components/live-chat-widget";
 
 function Router() {
-  // Router component for client-side routing
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navigation />
-      <main className="flex-1">
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/portfolio" component={Portfolio} />
-          <Route path="/portfolio/:id" component={ProjectDetail} />
-          <Route path="/blog" component={Blog} />
-          <Route path="/blog/:id" component={BlogPost} />
-          <Route path="/get-in-touch" component={GetInTouch} />
-          {/* <Route path="/resume" component={Resume} /> */}
-          <Route path="/login" component={Login} />
-          <Route path="/login-magic" component={LoginMagic} />
-          <Route path="/auth/callback" component={AuthCallback} />
-          <Route path="/admin">
-            <ProtectedRoute requireAdmin>
-              <Admin />
-            </ProtectedRoute>
-          </Route>
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-      <Footer />
-      <LiveChatWidget />
+    <div
+      style={{
+        fontFamily: "Newsreader, Georgia, serif",
+        color: "#14120F",
+        background: "#E8E4D9",
+        minHeight: "100vh",
+        padding: "clamp(0px, 2.2vw, 28px)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1180,
+          margin: "0 auto",
+          background: "#F4F1EA",
+          border: "1px solid #14120F",
+          boxShadow: "0 18px 44px rgba(20, 18, 15, 0.13)",
+        }}
+      >
+        <Navigation />
+        <main>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/work" component={Work} />
+            <Route path="/work/business-writing" component={CaseBusinessWriting} />
+            <Route path="/work/the-fixer" component={CaseTheFixer} />
+            <Route path="/work/emotional-intelligence" component={CaseEmotionalIntelligence} />
+            <Route path="/about" component={About} />
+            <Route path="/apps" component={Apps} />
+            <Route path="/contact" component={Contact} />
+            <Route component={NotFound} />
+          </Switch>
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </AuthProvider>
-    </QueryClientProvider>
-  );
+export default function App() {
+  return <Router />;
 }
-
-export default App;

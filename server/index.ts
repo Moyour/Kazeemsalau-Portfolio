@@ -463,9 +463,25 @@ app.post("/api/import-data", async (req, res) => {
 
 // Mount the API routes (BEFORE static files to avoid conflicts)
 app.use("/api", router);
+// Log registered routes for debugging
+console.log("[Server] API router mounted at /api");
+console.log("[Server] CV routes should be available at:");
+console.log("  - POST /api/cv/parse");
+console.log("  - POST /api/cv/analyze-job");
+console.log("  - POST /api/cv/tailor");
+console.log("  - GET /api/cv/health");
 
 // Serve static files and handle client-side routing
-app.use(express.static("client/dist"));
+// Only serve static files for non-API routes
+const staticMiddleware = express.static("client/dist");
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    console.log(`[Static] Skipping static file serving for API route: ${req.path}`);
+    return next(); // Skip static file serving for API routes - let router handle it
+  }
+  // For non-API routes, try to serve static files
+  staticMiddleware(req, res, next);
+});
 
 // Catch-all for client-side routing
 app.get("/*", (req, res) => {

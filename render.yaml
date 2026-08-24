@@ -1,21 +1,8 @@
 services:
   - type: web
-    name: kazeem-portfolio-backend
-    env: node
-    plan: starter
-    buildCommand: npm install
-    startCommand: npm run start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
-    healthCheckPath: /api/health
-
-  - type: web
-    name: kazeem-portfolio-frontend
+    name: kazeem-portfolio
     env: static
-    buildCommand: npm run build
+    buildCommand: npm install && npm run build
     staticPublishPath: ./client/dist
     routes:
       - type: rewrite
@@ -24,11 +11,3 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-
-databases:
-  - name: kazeem-portfolio-db
-    plan: starter
-    databaseName: kazeem_portfolio
-    user: kazeem_user
-
-

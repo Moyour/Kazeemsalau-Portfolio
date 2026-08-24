@@ -1,198 +1,230 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
-// Reusable link wrapper with scroll-to-top
-function ScrollLink({ href, children, onClick, ...props }: any) {
-  return (
-    <Link
-      href={href}
-      {...props}
-      onClick={(e) => {
-        if (onClick) onClick(e);
-        requestAnimationFrame(() => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-      }}
-    >
-      {children}
-    </Link>
-  );
+const NAV_LINKS = [
+  { label: "Front page", href: "/" },
+  { label: "Case studies", href: "/work" },
+  { label: "App development", href: "/apps" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 export default function Navigation() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
-  const [isScrolledToWhiteSection, setIsScrolledToWhiteSection] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Special case: blog listing page and get-in-touch page have gradient backgrounds, not white
-  const isGradientPage = location === '/blog' || location === '/get-in-touch';
+  const handleScroll = useCallback(() => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    setProgress(docHeight > 0 ? scrollTop / docHeight : 0);
+  }, []);
 
-  // Scroll detection for gradient pages (blog and get-in-touch)
   useEffect(() => {
-    if (isGradientPage) {
-      const handleScroll = () => {
-        const whiteSection = document.querySelector('[data-section="white"]');
-        if (whiteSection) {
-          const rect = whiteSection.getBoundingClientRect();
-          // Check if we've scrolled to the white section (when it's visible in viewport)
-          setIsScrolledToWhiteSection(rect.top <= 100); // 100px offset for nav bar
-        }
-      };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
-      window.addEventListener('scroll', handleScroll);
-      // Check initial state
-      handleScroll();
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
 
-      return () => window.removeEventListener('scroll', handleScroll);
-    } else {
-      setIsScrolledToWhiteSection(false);
-    }
-  }, [location, isGradientPage]);
-
-  const navigation = [
-    { name: "Projects", href: "/portfolio" },
-    { name: "About", href: "/about" },
-    { name: "Blog", href: "/blog" },
-  ];
-  const isActive = (href: string) => {
-    if (href === "/") return location === "/";
-    return location.startsWith(href);
-  };
-
-  // Determine if we're on a white background page
-  const isWhitePage = location === '/' ||
-                     location === '/portfolio' ||
-                     location.startsWith('/portfolio/') ||
-                     location.startsWith('/blog/') ||
-                     location === '/about';
-
-  // Navigation styling based on page background and scroll state
-  const shouldUseWhiteStyling = (isWhitePage && !isGradientPage) || (isGradientPage && isScrolledToWhiteSection);
-
-  const navClasses = shouldUseWhiteStyling
-    ? "bg-white/95 backdrop-blur-md border-slate-200/50 shadow-lg"
-    : "bg-gray-900/90 backdrop-blur-md border-white/30 shadow-xl";
-
-  const textClasses = shouldUseWhiteStyling
-    ? "text-slate-800 hover:text-slate-600"
-    : "text-white hover:text-gray-200";
-
-  const logoClasses = shouldUseWhiteStyling
-    ? "text-slate-800 hover:text-slate-600"
-    : "text-white font-bold hover:text-gray-200";
-
-  const mobileButtonClasses = shouldUseWhiteStyling
-    ? "text-slate-800 hover:bg-slate-100 hover:text-slate-600"
-    : "text-white hover:bg-white/30 hover:text-white";
-
-  const mobileBorderClasses = shouldUseWhiteStyling
-    ? "border-slate-200"
-    : "border-white/30";
-
-  const buttonClasses = shouldUseWhiteStyling
-    ? "bg-black text-white hover:bg-black/90"
-    : "bg-white text-black hover:bg-white/90";
+  const dateline = new Date().toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
-    <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
-      <nav className={cn("backdrop-blur-md rounded-2xl px-6 py-3", navClasses)}>
-        <div className="flex items-center justify-between gap-6">
-          {/* Logo */}
-          <ScrollLink href="/" data-testid="logo-link">
-            <div className={cn("font-semibold text-lg transition-colors duration-200 whitespace-nowrap", logoClasses)}>
-              Kazeem.
-            </div>
-          </ScrollLink>
+    <>
+      {/* Progress bar */}
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: 3,
+          background: "#C0281B",
+          transform: `scaleX(${progress})`,
+          transformOrigin: "left",
+          zIndex: 60,
+          pointerEvents: "none",
+        }}
+      />
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            {navigation.map((item) => (
-              <ScrollLink
-                key={item.name}
-                href={item.href}
-                data-testid={`nav-${item.name.toLowerCase()}`}
-                className={cn(
-                  "transition-colors duration-200 font-medium flex items-center gap-1 whitespace-nowrap",
-                  textClasses,
-                  isActive(item.href) && (shouldUseWhiteStyling ? "text-slate-900 font-semibold" : "text-white")
-                )}
-              >
-                <span>{item.name}</span>
-                {item.external && <ExternalLink className="w-3 h-3" />}
-              </ScrollLink>
-            ))}
-            
-          </div>
+      {/* Top bar */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px 20px",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px clamp(16px, 2.6vw, 30px)",
+          borderBottom: "1px solid #14120F",
+          fontFamily: "Archivo, sans-serif",
+          fontSize: 10,
+          fontWeight: 600,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase" as const,
+          color: "#5F5A50",
+        }}
+      >
+        <span>Instructional design &amp; eLearning development</span>
+        <span>{dateline}</span>
+        <span>Portfolio edition &middot; No. 01</span>
+      </div>
 
-          {/* Get In Touch Button */}
-          <div className="hidden md:block">
-            <ScrollLink href="/get-in-touch">
-              <Button
-                className={cn(buttonClasses, "px-5 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap")}
-                data-testid="contact-button"
-              >
-                Get In Touch
-              </Button>
-            </ScrollLink>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              data-testid="mobile-menu-toggle"
-              className={mobileButtonClasses}
+      {/* Masthead */}
+      <div style={{ padding: "clamp(18px, 3vw, 34px) clamp(16px, 2.6vw, 30px) 0", textAlign: "center" }}>
+        <Link href="/" onClick={scrollToTop} style={{ display: "block", color: "#14120F", textDecoration: "none" }}>
+          <span style={{ display: "block", overflow: "hidden" }}>
+            <span
+              className="ks-anim"
+              style={{
+                display: "block",
+                fontFamily: "Archivo, sans-serif",
+                fontWeight: 900,
+                fontSize: "clamp(38px, 9.4vw, 132px)",
+                lineHeight: 0.86,
+                letterSpacing: "-0.045em",
+                textTransform: "uppercase" as const,
+                animation: "ks-rise 1s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both",
+              }}
             >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
-          </div>
-        </div>
+              Kazeem Salau
+            </span>
+          </span>
+        </Link>
+        <div
+          className="ks-anim"
+          style={{
+            height: 1,
+            background: "#14120F",
+            margin: "14px 0 0",
+            transformOrigin: "left",
+            animation: "ks-rule 0.9s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
+          }}
+        />
+        <div
+          className="ks-anim"
+          style={{
+            height: 4,
+            background: "#14120F",
+            margin: "2px 0 0",
+            transformOrigin: "left",
+            animation: "ks-rule 0.9s 0.58s cubic-bezier(0.16, 1, 0.3, 1) both",
+          }}
+        />
+      </div>
 
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className={cn("md:hidden mt-4 pt-4 border-t", mobileBorderClasses)}>
-            <div className="flex flex-col gap-4">
-              {navigation.map((item) => (
-                <ScrollLink
-                  key={item.name}
-                  href={item.href}
-                  data-testid={`mobile-nav-${item.name.toLowerCase()}`}
-                  className={cn(
-                    "block transition-colors duration-200 font-medium",
-                    textClasses,
-                    isActive(item.href) && (isWhitePage ? "text-slate-900 font-semibold" : "text-white")
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <div className="flex items-center gap-2">
-                    <span>{item.name}</span>
-                    {item.external && <ExternalLink className="w-3 h-3" />}
-                  </div>
-                </ScrollLink>
-              ))}
-              
-              
-              <ScrollLink href="/get-in-touch" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button
-                  className={cn(buttonClasses, "w-full px-6 py-2 rounded-full font-medium transition-all duration-200 mt-2")}
-                  data-testid="mobile-contact-button"
-                >
-                  Get In Touch
-                </Button>
-              </ScrollLink>
-            </div>
-          </div>
-        )}
+      {/* Sticky nav */}
+      <nav
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 30,
+          background: "#F4F1EA",
+          borderBottom: "1px solid #14120F",
+        }}
+      >
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setMobileOpen((o) => !o)}
+          style={{
+            display: "none",
+            width: "100%",
+            padding: "11px 22px",
+            fontFamily: "Archivo, sans-serif",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase" as const,
+            color: "#14120F",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
+          className="ks-mobile-toggle"
+        >
+          {mobileOpen ? "Close" : "Menu"}
+        </button>
+
+        <div
+          className={`ks-nav-links ${mobileOpen ? "ks-nav-open" : ""}`}
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "stretch",
+            justifyContent: "center",
+            fontFamily: "Archivo, sans-serif",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase" as const,
+          }}
+        >
+          {NAV_LINKS.map((link, i) => {
+            const isActive = link.href === "/" ? location === "/" : location.startsWith(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={scrollToTop}
+                className="ks-nav-link"
+                style={{
+                  padding: "11px 22px",
+                  color: isActive ? "#F4F1EA" : "#14120F",
+                  background: isActive ? "#C0281B" : "transparent",
+                  borderRight: i < NAV_LINKS.length - 1 ? "1px solid #CFC9BB" : "none",
+                  textDecoration: "none",
+                  transition: "background 0.2s, color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    (e.target as HTMLElement).style.background = "#C0281B";
+                    (e.target as HTMLElement).style.color = "#F4F1EA";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    (e.target as HTMLElement).style.background = "transparent";
+                    (e.target as HTMLElement).style.color = "#14120F";
+                  }
+                }}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
       </nav>
-    </div>
+
+      <style>{`
+        @media (max-width: 700px) {
+          .ks-mobile-toggle {
+            display: block !important;
+          }
+          .ks-nav-links {
+            display: none !important;
+            flex-direction: column;
+          }
+          .ks-nav-links.ks-nav-open {
+            display: flex !important;
+          }
+          .ks-nav-link {
+            border-right: none !important;
+            border-bottom: 1px solid #CFC9BB;
+            text-align: center;
+          }
+        }
+      `}</style>
+    </>
   );
 }

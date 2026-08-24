@@ -1,10 +1,8 @@
 {
-  "include": ["client/src", "shared", "server"],
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
+  "include": ["client/src"],
+  "exclude": ["node_modules", "build", "dist"],
   "compilerOptions": {
     "target": "es2020",
-    "incremental": true,
-    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
     "noEmit": true,
     "module": "es2020",
     "strict": true,
@@ -14,12 +12,9 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "moduleResolution": "bundler",
-    "allowJs": true,
     "baseUrl": ".",
-    "types": ["node", "jest", "supertest", "@libsql/client"],
     "paths": {
-      "@/*": ["./client/src/*"],
-      "@shared/*": ["./shared/*"]
+      "@/*": ["./client/src/*"]
     }
   }
 }
