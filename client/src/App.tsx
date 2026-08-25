@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Switch, Route } from "wouter";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
@@ -10,6 +11,71 @@ import Apps from "@/pages/apps";
 import Contact from "@/pages/contact";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+
+function CustomCursor() {
+  const dotRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    const dot = dotRef.current;
+    if (!dot) return;
+
+    let x = 0, y = 0, cx = 0, cy = 0, big = false, raf: number;
+
+    const onMove = (e: MouseEvent) => {
+      x = e.clientX;
+      y = e.clientY;
+      dot.style.opacity = "1";
+      const t = (e.target as Element)?.closest?.("a,button");
+      if (!!t !== big) {
+        big = !!t;
+        dot.style.width = big ? "46px" : "16px";
+        dot.style.height = big ? "46px" : "16px";
+      }
+    };
+
+    const onLeave = () => { dot.style.opacity = "0"; };
+
+    const loop = () => {
+      cx += (x - cx) * 0.18;
+      cy += (y - cy) * 0.18;
+      dot.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+      raf = requestAnimationFrame(loop);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseout", onLeave);
+    raf = requestAnimationFrame(loop);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseout", onLeave);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={dotRef}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: 16,
+        height: 16,
+        borderRadius: "50%",
+        background: "#C0281B",
+        pointerEvents: "none",
+        zIndex: 9999,
+        mixBlendMode: "multiply",
+        opacity: 0,
+        transform: "translate(-50%, -50%)",
+        transition: "opacity 0.25s, width 0.25s, height 0.25s",
+      }}
+    />
+  );
+}
 
 function Router() {
   return (
@@ -52,5 +118,10 @@ function Router() {
 }
 
 export default function App() {
-  return <Router />;
+  return (
+    <>
+      <CustomCursor />
+      <Router />
+    </>
+  );
 }
