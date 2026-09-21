@@ -1,9 +1,10 @@
 [phases.setup]
-nixPkgs = ["nodejs_18", "npm-9_x", "chromium"]
+nixPkgs = ["nodejs_22", "npm-10_x", "chromium"]
 
 [phases.install]
 cmds = ["npm ci --include=dev"]
 
 [variables]
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
+PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium"
 CI = "true"

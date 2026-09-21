@@ -97,15 +97,19 @@ async function prerender() {
   console.log("Starting prerender...");
   const server = await startServer();
 
-  // Try to find system chromium (Railway/CI install it via apt/nix)
-  const { execSync } = await import("node:child_process");
-  let executablePath;
-  for (const bin of ["chromium", "chromium-browser", "google-chrome-stable", "google-chrome"]) {
-    try {
-      executablePath = execSync(`which ${bin}`, { encoding: "utf8" }).trim();
-      console.log(`Using system browser: ${executablePath}`);
-      break;
-    } catch { /* try next */ }
+  // Find Chrome: env var > system chromium > puppeteer bundled
+  let executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (executablePath) {
+    console.log(`Using PUPPETEER_EXECUTABLE_PATH: ${executablePath}`);
+  } else {
+    const { execSync } = await import("node:child_process");
+    for (const bin of ["chromium", "chromium-browser", "google-chrome-stable", "google-chrome"]) {
+      try {
+        executablePath = execSync(`which ${bin}`, { encoding: "utf8" }).trim();
+        console.log(`Using system browser: ${executablePath}`);
+        break;
+      } catch { /* try next */ }
+    }
   }
 
   let browser;
