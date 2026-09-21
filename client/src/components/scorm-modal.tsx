@@ -112,7 +112,7 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
                 (e.currentTarget as HTMLElement).style.color = "#14120F";
               }}
             >
-              Open in new tab
+              Open in new tab &#8599;
             </a>
             <button
               onClick={onClose}

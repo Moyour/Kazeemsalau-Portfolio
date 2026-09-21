@@ -97,9 +97,28 @@ async function prerender() {
   console.log("Starting prerender...");
   const server = await startServer();
 
+  // On Railway/CI, system chromium is installed via Nix — find it
+  let executablePath;
+  if (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD === "true") {
+    const { execSync } = await import("node:child_process");
+    try {
+      executablePath = execSync("which chromium", { encoding: "utf8" }).trim();
+      console.log(`Using system chromium: ${executablePath}`);
+    } catch {
+      console.warn("PUPPETEER_SKIP_CHROMIUM_DOWNLOAD is set but no system chromium found.");
+      server.close();
+      copyFallback();
+      return;
+    }
+  }
+
   let browser;
   try {
-    browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      ...(executablePath && { executablePath }),
+    });
   } catch (err) {
     console.warn("Could not launch browser:", err.message);
     server.close();

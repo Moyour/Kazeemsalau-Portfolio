@@ -1,0 +1,9 @@
+[phases.setup]
+nixPkgs = ["nodejs_18", "npm-9_x", "chromium"]
+
+[phases.install]
+cmds = ["npm ci --include=dev"]
+
+[variables]
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
+CI = "true"

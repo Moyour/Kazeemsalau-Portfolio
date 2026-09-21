@@ -8,6 +8,7 @@ import CaseBusinessWriting from "@/pages/case-business-writing";
 import CaseTheFixer from "@/pages/case-the-fixer";
 import CaseEmotionalIntelligence from "@/pages/case-emotional-intelligence";
 import Apps from "@/pages/apps";
+import Design from "@/pages/design";
 import Contact from "@/pages/contact";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
@@ -107,6 +108,7 @@ function Router() {
             <Route path="/work/emotional-intelligence" component={CaseEmotionalIntelligence} />
             <Route path="/about" component={About} />
             <Route path="/apps" component={Apps} />
+            <Route path="/design" component={Design} />
             <Route path="/contact" component={Contact} />
             <Route component={NotFound} />
           </Switch>
