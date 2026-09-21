@@ -1,6 +1,8 @@
 import CaseStudyLayout from "@/components/case-study-layout";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function CaseTheFixer() {
+  useSEO("/work/the-fixer");
   return (
     <CaseStudyLayout
       pageNum="3"

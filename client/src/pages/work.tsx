@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import ScormModal from "@/components/scorm-modal";
+import { useSEO } from "@/hooks/use-seo";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -49,6 +50,7 @@ const COURSES = [
 ];
 
 export default function Work() {
+  useSEO("/work");
   const [filter, setFilter] = useState<"all" | "corporate" | "scenario">("all");
   const [playing, setPlaying] = useState<(typeof COURSES)[number] | null>(null);
   const revealRefs = useRef<HTMLElement[]>([]);
@@ -99,7 +101,7 @@ export default function Work() {
             margin: "0 0 14px",
           }}
         >
-          Demo the evidence.
+          eLearning courses &amp; SCORM demos.
         </h1>
         <p
           style={{
@@ -114,7 +116,7 @@ export default function Work() {
           Built in Articulate Storyline, packaged as SCORM, delivered through an LMS. Click through the decisions
           yourself, then read how each one was made.
         </p>
-        <div style={{ height: 3, background: "#14120F", marginTop: "clamp(16px, 2vw, 24px)" }} />
+        <div style={{ height: 4, background: "#14120F", marginTop: "clamp(16px, 2vw, 24px)" }} />
       </div>
 
       {/* Filter chips */}
@@ -150,16 +152,30 @@ export default function Work() {
             data-chip={filter === chip.value ? "on" : undefined}
             style={{
               fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: 700,
-              letterSpacing: "0.15em",
+              letterSpacing: "0.14em",
               textTransform: "uppercase" as const,
-              padding: "7px 16px",
+              padding: "9px 16px",
               border: "1px solid #14120F",
               background: filter === chip.value ? "#14120F" : "transparent",
               color: filter === chip.value ? "#F4F1EA" : "#14120F",
               cursor: "pointer",
-              transition: "background 0.2s, color 0.2s",
+              transition: "background 0.2s, color 0.2s, border-color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              if (filter !== chip.value) {
+                (e.currentTarget as HTMLElement).style.background = "#C0281B";
+                (e.currentTarget as HTMLElement).style.borderColor = "#C0281B";
+                (e.currentTarget as HTMLElement).style.color = "#F4F1EA";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (filter !== chip.value) {
+                (e.currentTarget as HTMLElement).style.background = "transparent";
+                (e.currentTarget as HTMLElement).style.borderColor = "#14120F";
+                (e.currentTarget as HTMLElement).style.color = "#14120F";
+              }
             }}
           >
             {chip.label}
@@ -172,7 +188,7 @@ export default function Work() {
         className="ks-work-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))",
           gap: "clamp(16px, 2vw, 24px)",
         }}
       >
@@ -188,7 +204,7 @@ export default function Work() {
             }}
           >
             {/* Image */}
-            <div style={{ aspectRatio: "4/3", overflow: "hidden", background: "#14120F" }}>
+            <div style={{ height: 220, overflow: "hidden", background: "#14120F" }}>
               <img
                 src={course.image}
                 alt={course.title}

@@ -1,6 +1,8 @@
 import CaseStudyLayout from "@/components/case-study-layout";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function CaseBusinessWriting() {
+  useSEO("/work/business-writing");
   return (
     <CaseStudyLayout
       pageNum="2"

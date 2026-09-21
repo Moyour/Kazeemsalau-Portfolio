@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { useSEO } from "@/hooks/use-seo";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 export default function Apps() {
+  useSEO("/apps");
   const revealRefs = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function Apps() {
             maxWidth: "20ch",
           }}
         >
-          The side project that shipped.
+          Apps &amp; side projects.
         </h1>
         <p
           style={{

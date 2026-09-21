@@ -1,6 +1,8 @@
 import CaseStudyLayout from "@/components/case-study-layout";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function CaseEmotionalIntelligence() {
+  useSEO("/work/emotional-intelligence");
   return (
     <CaseStudyLayout
       pageNum="4"

@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { useSEO } from "@/hooks/use-seo";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 export default function Contact() {
+  useSEO("/contact");
   const revealRefs = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function Contact() {
           margin: "0 0 14px",
         }}
       >
-        Say hello
+        Hire an eLearning developer
       </h1>
       <p
         style={{
@@ -67,7 +69,7 @@ export default function Contact() {
       >
         Email is the quickest way to reach me. I read everything and I usually reply the same day.
       </p>
-      <div style={{ height: 3, background: "#14120F", marginBottom: "clamp(22px, 3vw, 36px)" }} />
+      <div style={{ height: 4, background: "#14120F", marginBottom: "clamp(22px, 3vw, 36px)" }} />
 
       {/* Two column */}
       <div
@@ -254,6 +256,8 @@ export default function Contact() {
                 textTransform: "uppercase" as const,
                 color: "#C0281B",
                 textDecoration: "none",
+                borderBottom: "1px solid #C0281B",
+                paddingBottom: 3,
               }}
             >
               The case studies &rarr;

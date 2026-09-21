@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function About() {
+  useSEO("/about");
   const revealRefs = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function About() {
           maxWidth: "22ch",
         }}
       >
-        The guy who builds it.
+        Instructional designer &amp; learning developer.
       </h1>
 
       {/* Byline */}

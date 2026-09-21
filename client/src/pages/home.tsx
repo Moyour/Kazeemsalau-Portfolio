@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { useSEO } from "@/hooks/use-seo";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -74,6 +75,7 @@ function SkillsMarquee() {
 }
 
 export default function Home() {
+  useSEO("/");
   const revealRefs = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
@@ -146,7 +148,7 @@ export default function Home() {
                   className="ks-anim"
                   style={{ display: "block", animation: "ks-rise 0.95s 0.58s cubic-bezier(0.16, 1, 0.3, 1) both" }}
                 >
-                  Craft
+                  eLearning
                 </span>
               </span>
               <span style={{ display: "block", overflow: "hidden" }}>
@@ -158,7 +160,7 @@ export default function Home() {
                     color: "#C0281B",
                   }}
                 >
-                  epic
+                  developer
                 </span>
               </span>
               <span style={{ display: "block", overflow: "hidden" }}>
@@ -166,7 +168,7 @@ export default function Home() {
                   className="ks-anim"
                   style={{ display: "block", animation: "ks-rise 0.95s 0.78s cubic-bezier(0.16, 1, 0.3, 1) both" }}
                 >
-                  learning
+                  &amp; instructional designer
                 </span>
               </span>
             </h1>
@@ -673,9 +675,9 @@ export default function Home() {
             style={{
               fontFamily: "Archivo, sans-serif",
               fontWeight: 900,
-              fontSize: "clamp(24px, 4vw, 42px)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.03em",
+              fontSize: "clamp(26px, 4.2vw, 54px)",
+              lineHeight: 0.98,
+              letterSpacing: "-0.035em",
               margin: "0 0 14px",
             }}
           >
@@ -699,11 +701,11 @@ export default function Home() {
             style={{
               display: "inline-block",
               fontFamily: "Archivo, sans-serif",
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: 12,
               letterSpacing: "0.18em",
               textTransform: "uppercase" as const,
-              padding: "12px 32px",
+              padding: "16px 30px",
               background: "#F4F1EA",
               color: "#14120F",
               textDecoration: "none",
@@ -767,11 +769,17 @@ function CourseCard({
       }}
     >
       <div style={{ overflow: "hidden", background: "#14120F", height: "clamp(200px, 22vw, 260px)", border: "1px solid #14120F", order: reverse ? 2 : undefined }}>
-        <img
-          src={image}
-          alt={title}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
+        <div
+          style={{ width: "100%", height: "100%", transition: "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.05)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
+        >
+          <img
+            src={image}
+            alt={title}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
       </div>
       <div style={{ minWidth: 0, order: reverse ? 1 : undefined }}>
         <div
