@@ -97,19 +97,15 @@ async function prerender() {
   console.log("Starting prerender...");
   const server = await startServer();
 
-  // On Railway/CI, system chromium is installed via Nix — find it
+  // Try to find system chromium (Railway/CI install it via apt/nix)
+  const { execSync } = await import("node:child_process");
   let executablePath;
-  if (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD === "true") {
-    const { execSync } = await import("node:child_process");
+  for (const bin of ["chromium", "chromium-browser", "google-chrome-stable", "google-chrome"]) {
     try {
-      executablePath = execSync("which chromium", { encoding: "utf8" }).trim();
-      console.log(`Using system chromium: ${executablePath}`);
-    } catch {
-      console.warn("PUPPETEER_SKIP_CHROMIUM_DOWNLOAD is set but no system chromium found.");
-      server.close();
-      copyFallback();
-      return;
-    }
+      executablePath = execSync(`which ${bin}`, { encoding: "utf8" }).trim();
+      console.log(`Using system browser: ${executablePath}`);
+      break;
+    } catch { /* try next */ }
   }
 
   let browser;
