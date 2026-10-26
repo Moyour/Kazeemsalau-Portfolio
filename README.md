@@ -1,175 +1,42 @@
-# LearnFlow - Portfolio & Learning Management System
+# Kazeem Salau — Portfolio
 
-A modern, full-stack portfolio website built with React, Express, and SQLite. Features a blog system, project showcase, contact form, and admin panel for content management.
+Static portfolio site for Kazeem Salau, learning experience designer & product designer. Live at https://www.kazeemsalau.com.
 
-## 🚀 Features
+## Stack
 
-- **Portfolio Showcase**: Display projects with detailed descriptions, SCORM integration, and case studies
-- **Blog System**: Markdown-based blog with image uploads and categorization
-- **Contact Form**: Email notifications with form validation
-- **Admin Panel**: Secure content management with authentication
-- **Responsive Design**: Mobile-first design with smooth animations
-- **File Uploads**: Image and document upload functionality
-- **Authentication**: JWT-based auth with Google OAuth support
+- React 18 + TypeScript, built with Vite
+- Wouter for routing
+- Prerendered to static HTML with Puppeteer (`scripts/prerender.mjs`) for SEO
+- Served with `serve` from `client/dist`
 
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **Wouter** for routing
-- **TanStack Query** for data fetching
-- **Tailwind CSS** for styling
-- **Radix UI** for accessible components
-- **Lucide React** for icons
-
-### Backend
-- **Express.js** with TypeScript
-- **SQLite** with Drizzle ORM
-- **JWT** authentication
-- **Multer** for file uploads
-- **Nodemailer** for email notifications
-- **Passport.js** for OAuth
-
-## 📦 Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd LearnFlow
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Set up the database**
-   ```bash
-   npm run db:push
-   ```
-
-5. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-## 🔧 Development
-
-### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run check` - TypeScript type checking
-- `npm test` - Run tests
-- `npm run db:push` - Push database schema
-
-### Project Structure
-```
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── pages/          # Page components
-│   │   ├── contexts/       # React contexts
-│   │   └── lib/           # Utilities and helpers
-├── server/                # Express backend
-│   ├── routes.ts          # API routes
-│   ├── storage.ts         # Database operations
-│   ├── auth.ts           # Authentication logic
-│   └── emailService.ts   # Email functionality
-├── shared/               # Shared types and schemas
-└── uploads/              # File uploads directory
-```
-
-## 🔐 Authentication
-
-The application supports multiple authentication methods:
-
-- **JWT Tokens**: For API authentication
-- **Google OAuth**: For social login
-- **Session Management**: For admin panel access
-
-### Admin Access
-- Default admin credentials are set during database initialization
-- Change admin password via the admin panel or database directly
-- Admin can manage all content through the admin interface
-
-## 📝 Content Management
-
-### Blog Posts
-- Create and edit blog posts with Markdown support
-- Upload and manage images
-- Categorize posts
-- Set read time and publication status
-
-### Projects
-- Showcase portfolio projects
-- Add SCORM content integration
-- Include case studies and demos
-- Organize by categories
-
-### Contact Form
-- Collect visitor inquiries
-- Email notifications to admin
-- Form validation and error handling
-
-## 🚀 Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-### Quick Deploy
-1. Set up environment variables
-2. Build the application: `npm run build`
-3. Start the server: `npm start`
-4. Configure reverse proxy and SSL
-
-## 🔧 Configuration
-
-### Environment Variables
-- `JWT_SECRET`: Secret key for JWT tokens
-- `GOOGLE_CLIENT_ID/SECRET`: Google OAuth credentials
-- `SMTP_*`: Email configuration
-- `SQLITE_DATABASE_PATH`: Database file location
-
-### File Uploads
-- Images are stored in `uploads/blog-images/`
-- Files are served statically by Express
-- Configure file size limits in multer setup
-
-## 🧪 Testing
+## Develop
 
 ```bash
-# Run tests
-npm test
-
-# Run with coverage
-npm run test -- --coverage
+npm install
+npm run dev        # http://localhost:5173
 ```
 
-## 📄 License
+## Build
 
-MIT License - see LICENSE file for details.
+```bash
+npm run build      # vite build + prerender every route in scripts/prerender.mjs
+npm start          # serve client/dist on $PORT (default 3000)
+```
 
-## 🤝 Contributing
+When adding a page: add its route in `client/src/App.tsx`, its metadata in `client/src/lib/seo-data.ts`, the path to `ROUTES` in `scripts/prerender.mjs`, and an entry in `client/public/sitemap.xml`.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+## Where things live
 
-## 📞 Support
+| Path | What |
+|---|---|
+| `client/src/pages/` | One file per page (home, work, case studies, products, about, contact) |
+| `client/src/components/` | Navigation, footer, case study layout, SCORM player modal, contact form, phone carousel |
+| `client/src/lib/track.ts` | GA4 event tracking for email, CV, LinkedIn, hire buttons and course plays |
+| `client/public/images/` | Course thumbnails, GrubShelf and Mai Shara screens |
+| `client/public/files/` | CV (PDF) |
 
-For support and questions:
-- Create an issue in the repository
-- Contact: [your-email@domain.com]
+The contact form posts to [Web3Forms](https://web3forms.com); the public access key is in `client/src/components/contact-form.tsx`.
 
----
+## Deploy
 
-Built with ❤️ by Kazeem Salau
+Railway project **kazeem-portfolio**, service **web**, builds from `main` using `railway.toml` (`npm run build`, then `npm start`).
