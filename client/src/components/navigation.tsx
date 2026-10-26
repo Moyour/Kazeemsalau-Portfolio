@@ -86,7 +86,7 @@ export default function Navigation() {
           color: "#5F5A50",
         }}
       >
-        <span>Instructional design &middot; eLearning &middot; Product design</span>
+        <span>Learning experience design &middot; Product design</span>
         <span>{dateline}</span>
         <span>Portfolio edition &middot; No. 01</span>
       </div>

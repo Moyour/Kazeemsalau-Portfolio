@@ -199,7 +199,7 @@ export default function Home() {
                   className="ks-anim"
                   style={{ display: "block", animation: "ks-rise 0.95s 0.58s cubic-bezier(0.16, 1, 0.3, 1) both" }}
                 >
-                  Instructional designer
+                  Learning experience designer
                 </span>
               </span>
               <span style={{ display: "block", overflow: "hidden" }}>
@@ -211,22 +211,7 @@ export default function Home() {
                     color: "#C0281B",
                   }}
                 >
-                  &amp; eLearning developer
-                </span>
-              </span>
-              <span style={{ display: "block", overflow: "hidden" }}>
-                <span
-                  className="ks-anim"
-                  style={{
-                    display: "block",
-                    animation: "ks-rise 0.95s 0.78s cubic-bezier(0.16, 1, 0.3, 1) both",
-                    fontSize: "0.42em",
-                    letterSpacing: "-0.02em",
-                    lineHeight: 1.1,
-                    paddingTop: "0.35em",
-                  }}
-                >
-                  &mdash; and product designer
+                  &amp; product designer
                 </span>
               </span>
             </h1>
@@ -329,7 +314,7 @@ export default function Home() {
             >
               <span style={{ color: "#14120F" }}>By Kazeem Salau</span>
               <span>&middot;</span>
-              <span>Learning design &middot; Product design</span>
+              <span>Learning experience designer &middot; Product designer</span>
             </div>
             <div className="ks-cols" style={{ columns: 2, columnGap: 34, columnRule: "1px solid #CFC9BB" }}>
               <p style={{ fontSize: 17, lineHeight: 1.6, margin: "0 0 14px" }}>
@@ -545,7 +530,7 @@ export default function Home() {
               margin: 0,
             }}
           >
-            Learning design
+            Learning experience design
           </h2>
           <span
             style={{

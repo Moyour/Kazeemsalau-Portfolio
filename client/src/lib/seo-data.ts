@@ -12,13 +12,13 @@ export interface SEOData {
 export const seoData: Record<string, SEOData> = {
   "/": {
     title:
-      "Kazeem Salau - Instructional Designer, eLearning Developer & Product Designer | London",
+      "Kazeem Salau - Learning Experience Designer & Product Designer | London",
     description:
-      "Instructional designer and eLearning developer building SCORM courses in Articulate Storyline 360 & Rise, and product designer of iOS apps and websites. Based in London, working worldwide.",
+      "Learning experience designer building SCORM courses in Articulate Storyline 360 & Rise, and product designer of iOS apps and websites. Based in London, working worldwide.",
     url: BASE_URL,
     image: DEFAULT_IMAGE,
     imageAlt:
-      "Kazeem Salau - eLearning Developer & Instructional Designer Portfolio",
+      "Kazeem Salau - Learning Experience Designer & Product Designer Portfolio",
   },
   "/work": {
     title: "eLearning Case Studies - SCORM Course Demos | Kazeem Salau",
@@ -56,12 +56,12 @@ export const seoData: Record<string, SEOData> = {
     imageAlt: "Emotional Intelligence eLearning course in Articulate Storyline 360",
   },
   "/about": {
-    title: "About Kazeem Salau - Instructional Designer & Product Designer | London",
+    title: "About Kazeem Salau - Learning Experience Designer & Product Designer | London",
     description:
-      "Instructional designer, eLearning developer and product designer based in London. Twelve years across learning design, Articulate Storyline 360 and Rise, user research, UI design and SwiftUI.",
+      "Learning experience designer and product designer based in London. Twelve years across learning design, Articulate Storyline 360 and Rise, user research, UI design and SwiftUI.",
     url: `${BASE_URL}/about`,
     image: DEFAULT_IMAGE,
-    imageAlt: "Kazeem Salau, freelance eLearning developer",
+    imageAlt: "Kazeem Salau, learning experience designer and product designer",
   },
   "/products": {
     title: "App & Design - GrubShelf & Mai Shara | Kazeem Salau",
@@ -113,7 +113,7 @@ export const seoData: Record<string, SEOData> = {
   },
   "/contact": {
     title:
-      "Hire Kazeem Salau - Instructional Designer, eLearning Developer & Product Designer",
+      "Hire Kazeem Salau - Learning Experience Designer & Product Designer",
     description:
       "Get in touch to discuss your eLearning project. Freelance SCORM course development, Articulate Storyline & Rise, instructional design, and LMS integration services.",
     url: `${BASE_URL}/contact`,

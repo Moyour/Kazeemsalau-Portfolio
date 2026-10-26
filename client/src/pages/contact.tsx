@@ -91,7 +91,7 @@ export default function Contact() {
           margin: "0 0 14px",
         }}
       >
-        Hire a learning &amp; product designer
+        Hire a learning experience &amp; product designer
       </h1>
       <p
         style={{

@@ -36,7 +36,7 @@ const h2Style: CSSProperties = {
 const DISCIPLINES = [
   {
     num: "01",
-    title: "Learning design",
+    title: "Learning experience design",
     lead: "Courses people finish, built around what the job actually asks of them.",
     practice: [
       "Learning needs analysis with SMEs and business leaders",
@@ -172,7 +172,7 @@ export default function About() {
             maxWidth: "22ch",
           }}
         >
-          Instructional designer &amp; eLearning developer.
+          Learning experience designer &amp; product designer.
         </h1>
         <p
           style={{
@@ -205,7 +205,7 @@ export default function About() {
         >
           <span style={{ color: "#14120F" }}>Kazeem Salau</span>
           <span>&middot;</span>
-          <span>Instructional designer &amp; eLearning developer</span>
+          <span>Learning experience designer</span>
           <span>&middot;</span>
           <span>Product designer</span>
           <span>&middot;</span>
