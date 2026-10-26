@@ -95,6 +95,14 @@ export const seoData: Record<string, SEOData> = {
     image: `${BASE_URL}/images/grubshelf-og.jpg`,
     imageAlt: "GrubShelf Meals Lite product design case study",
   },
+  "/design/grubshelf/screens": {
+    title: "GrubShelf - Every Screen of the App Mockup | Kazeem Salau",
+    description:
+      "All 70 screens of the GrubShelf iOS meal planner mockup, grouped by flow: onboarding, weekly planning, pots, meals, list and shopping, and profile.",
+    url: `${BASE_URL}/design/grubshelf/screens`,
+    image: `${BASE_URL}/images/grubshelf-og.jpg`,
+    imageAlt: "GrubShelf app screens",
+  },
   "/design/grubshelf-website": {
     title: "GrubShelf Website - Landing Page Design | Kazeem Salau",
     description:

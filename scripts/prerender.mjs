@@ -18,6 +18,7 @@ const ROUTES = [
   "/design/grubshelf",
   "/design/mai-shara",
   "/design/grubshelf-website",
+  "/design/grubshelf/screens",
   "/contact",
 ];
 

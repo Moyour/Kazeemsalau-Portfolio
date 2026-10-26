@@ -8,7 +8,6 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-const MOCKUP_URL = "https://claude.ai/artifact/7BjbMhy6GniK1G1538wQsh";
 
 const kicker: CSSProperties = {
   fontFamily: "Archivo, sans-serif",
@@ -353,6 +352,16 @@ export default function CaseGrubShelf() {
         </p>
         <div ref={addRevealRef} data-reveal="off" style={{ marginTop: 18 }}>
           <PhoneCarousel screens={GRUBSHELF_SCREENS} name="GrubShelf" accent="#0A4D3E" />
+          <div style={{ textAlign: "center", marginTop: 14 }}>
+            <Link
+              href="/design/grubshelf/screens"
+              onClick={scrollToTop}
+              data-track="grubshelf_carousel_all"
+              style={{ ...kicker, fontSize: 11, color: "#C0281B", textDecoration: "none", borderBottom: "1px solid #C0281B", paddingBottom: 2 }}
+            >
+              See all 70 screens &rarr;
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -505,10 +514,9 @@ export default function CaseGrubShelf() {
             alignItems: "center",
           }}
         >
-          <a
-            href={MOCKUP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/design/grubshelf/screens"
+            onClick={scrollToTop}
             data-track="grubshelf_mockup"
             style={{
               fontFamily: "Archivo, sans-serif",
@@ -522,8 +530,8 @@ export default function CaseGrubShelf() {
               textDecoration: "none",
             }}
           >
-            Open the 53-screen mockup &#8599;
-          </a>
+            See every screen &rarr;
+          </Link>
           <a
             href="https://grubshelf.app"
             target="_blank"

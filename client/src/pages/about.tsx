@@ -91,21 +91,22 @@ const CAREER = [
   {
     dates: "Dec 2019 – Jun 2022",
     org: "Leadway Assurance",
-    role: "Learning Design Manager",
+    role: "Learning Design Manager & Product Designer",
     track: "Learning",
     points: [
       "Designed and delivered a curriculum of 50+ courses: engagement up 25%, completion up 20%.",
       "Learning needs analysis with SMEs and business leaders, lifting employee satisfaction by 40% while cutting training costs.",
-      "Designed instructional graphics and interfaces, and ran several projects at once to deadline.",
+      "Designed Leadway’s apps and web products, including the Leadway Health website, alongside the instructional graphics and interfaces for courses.",
     ],
   },
   {
     dates: "Dec 2017 – Nov 2019",
     org: "Leadway Assurance",
-    role: "Instructional Design Specialist",
+    role: "Instructional Design Specialist & UI/UX Designer",
     track: "Learning",
     points: [
       "Scripted course dialogue in a conversational tone so new concepts landed.",
+      "UI/UX design for Leadway’s digital products alongside the courses.",
       "Ran adult learning programmes in sales, health management, insurance, business acumen and policy, improving job performance by 15%.",
     ],
   },
@@ -230,9 +231,9 @@ export default function About() {
                 SCORM package.
               </p>
               <p style={body}>
-                Alongside that I design and build products. GrubShelf, an iOS meal planner I founded, went from spec to a
-                53-screen prototype to a SwiftUI build. Mai Shara, a waste pick-up app, went from user interviews to a full
-                prototype.
+                Product design runs alongside it. At Leadway I designed the company’s apps and websites as well as its
+                courses. Since then, GrubShelf, an iOS meal planner I founded, went from spec to a 53-screen prototype to a
+                SwiftUI build, and Mai Shara, a waste pick-up app, went from user interviews to a full prototype.
               </p>
               <p style={body}>
                 The two feed each other. Courses taught me to write plainly and test with real people; product work taught
@@ -461,6 +462,87 @@ export default function About() {
                 ))}
               </ul>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section
+        ref={addRevealRef}
+        data-reveal="off"
+        style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(30px, 4vw, 52px)" }}
+      >
+        <div
+          style={{
+            borderTop: "4px solid #14120F",
+            paddingTop: 10,
+            marginBottom: 22,
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(22px, 2.8vw, 34px)",
+              lineHeight: 1,
+              letterSpacing: "-0.03em",
+              textTransform: "uppercase" as const,
+              margin: 0,
+            }}
+          >
+            What people say
+          </h2>
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "clamp(20px, 2.6vw, 34px)",
+          }}
+        >
+          {[
+            {
+              quote:
+                "Kazeem is a highly talented instructional designer and eLearning developer who consistently delivers exceptional results. I wholeheartedly recommend Kazeem for any project or role that requires top-notch eLearning development and instructional design skills.",
+              name: "Ruby",
+              role: "Global Talent Leader",
+            },
+            {
+              quote:
+                "Kazeem is a good leader. He is a good communicator, a listener, dedicated to his work and a teacher. He is always ensuring everyone around him gets better.",
+              name: "Habeeb",
+              role: "Senior HR Analyst",
+            },
+            {
+              quote: "Kazeem is the best Product Designer I have ever worked with in my career.",
+              name: "Damilola",
+              role: "Senior Software Developer",
+            },
+          ].map((t, i, arr) => (
+            <blockquote
+              key={i}
+              style={{
+                margin: 0,
+                paddingRight: i < arr.length - 1 ? "clamp(0px, 2vw, 24px)" : 0,
+                borderRight: i < arr.length - 1 ? "1px solid #CFC9BB" : "none",
+              }}
+            >
+              <p style={{ fontSize: 17, lineHeight: 1.55, margin: "0 0 12px" }}>
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <div
+                style={{
+                  fontFamily: "Archivo, sans-serif",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase" as const,
+                  color: "#5F5A50",
+                }}
+              >
+                {t.name} &middot; {t.role}
+              </div>
+            </blockquote>
           ))}
         </div>
       </section>

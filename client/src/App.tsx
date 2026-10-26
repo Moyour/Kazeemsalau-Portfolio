@@ -11,6 +11,7 @@ import Products from "@/pages/products";
 import CaseGrubShelf from "@/pages/case-grubshelf";
 import CaseMaiShara from "@/pages/case-mai-shara";
 import CaseGrubShelfWebsite from "@/pages/case-grubshelf-website";
+import CaseGrubShelfScreens from "@/pages/case-grubshelf-screens";
 import Contact from "@/pages/contact";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
@@ -116,6 +117,7 @@ function Router() {
             <Route path="/design/grubshelf" component={CaseGrubShelf} />
             <Route path="/design/mai-shara" component={CaseMaiShara} />
             <Route path="/design/grubshelf-website" component={CaseGrubShelfWebsite} />
+            <Route path="/design/grubshelf/screens" component={CaseGrubShelfScreens} />
             <Route path="/contact" component={Contact} />
             <Route component={NotFound} />
           </Switch>

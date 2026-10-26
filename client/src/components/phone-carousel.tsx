@@ -81,10 +81,10 @@ export default function PhoneCarousel({
         {/* Phone */}
         <div
           style={{
-            width: "clamp(220px, 62vw, 280px)",
+            width: "clamp(190px, 54vw, 232px)",
             aspectRatio: "390 / 844",
             background: "#14120F",
-            borderRadius: 40,
+            borderRadius: 34,
             padding: 9,
             boxShadow: `10px 10px 0 ${accent}`,
             flexShrink: 0,
@@ -98,7 +98,7 @@ export default function PhoneCarousel({
             style={{
               width: "100%",
               height: "100%",
-              borderRadius: 32,
+              borderRadius: 27,
               overflowX: "auto",
               overflowY: "hidden",
               display: "flex",

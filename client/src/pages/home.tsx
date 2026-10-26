@@ -37,32 +37,14 @@ const STATS = [
   { value: "2014", label: "Designing since" },
 ];
 
-const PRODUCTS = [
-  {
-    href: "/design/grubshelf",
-    title: "GrubShelf app",
-    tags: "iOS · Product & UI design",
-    description: "A meal planner for UK households: pick your meals, get a list split by shop, know what it costs.",
-    image: "/images/grubshelf-app/this-week.jpg",
-    bg: "#0A4D3E",
-  },
-  {
-    href: "/design/grubshelf-website",
-    title: "GrubShelf website",
-    tags: "Marketing site · Design & build",
-    description: "A problem-first landing page with one job: waiting-list sign-ups.",
-    image: "/images/grubshelf-web/hero.jpg",
-    bg: "#E9EFEA",
-  },
-  {
-    href: "/design/mai-shara",
-    title: "Mai Shara",
-    tags: "Mobile · UX research & UI",
-    description: "Schedule, pay for and track waste pick-up. From user interviews to a full prototype.",
-    image: "/images/mai-shara/home.jpg",
-    bg: "#FF8A4C",
-  },
-];
+const sectionNote = {
+  fontFamily: "Archivo, sans-serif",
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: "0.18em",
+  textTransform: "uppercase" as const,
+  color: "#5F5A50",
+};
 
 const ctaStyle = {
   display: "inline-block",
@@ -408,12 +390,11 @@ export default function Home() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 16 }}>
                 {[
-                  { label: "Business Writing", page: "P. 2", href: "/work/business-writing" },
-                  { label: "The Fixer", page: "P. 3", href: "/work/the-fixer" },
-                  { label: "Emotional Intelligence", page: "P. 4", href: "/work/emotional-intelligence" },
-                  { label: "GrubShelf, an iOS app", page: "P. 5", href: "/design/grubshelf" },
-                  { label: "Mai Shara, a waste pick-up app", page: "P. 5", href: "/design/mai-shara" },
-                  { label: "About the designer", page: "P. 6", href: "/about" },
+                  { label: "Learning case studies", page: "P. 2", href: "/work" },
+                  { label: "The Fixer, featured course", page: "P. 3", href: "/work/the-fixer" },
+                  { label: "App and design work", page: "P. 5", href: "/products" },
+                  { label: "GrubShelf, featured app", page: "P. 5", href: "/design/grubshelf" },
+                  { label: "About, and what people say", page: "P. 6", href: "/about" },
                 ].map((item) => (
                   <Link
                     key={item.href}
@@ -503,93 +484,7 @@ export default function Home() {
       {/* Skills marquee */}
       <SkillsMarquee />
 
-      {/* Selected Work */}
-      <section style={{ padding: "clamp(26px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) 0" }}>
-        <div
-          ref={addRevealRef}
-          data-reveal="off"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "10px 20px",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            borderBottom: "4px solid #14120F",
-            paddingBottom: 10,
-            marginBottom: 24,
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(22px, 2.8vw, 34px)",
-              lineHeight: 1,
-              letterSpacing: "-0.03em",
-              textTransform: "uppercase" as const,
-              margin: 0,
-            }}
-          >
-            Learning experience design
-          </h2>
-          <span
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 10,
-              fontWeight: 600,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase" as const,
-              color: "#5F5A50",
-            }}
-          >
-            Three courses &middot; each playable in full
-          </span>
-        </div>
-
-        {/* Card 1: Business Writing */}
-        <CourseCard
-          addRevealRef={addRevealRef}
-          num="01"
-          tags={["Corporate", "Storyline 360"]}
-          title="Business Writing"
-          description="Planning, structuring and editing emails, reports, proposals and executive summaries, plus persuasive writing that moves a decision."
-          href="/work/business-writing"
-          page="2"
-          image="/images/business-writing-hq.jpg"
-          reverse={false}
-          last={false}
-        />
-
-        {/* Card 2: The Fixer */}
-        <CourseCard
-          addRevealRef={addRevealRef}
-          num="02"
-          tags={["Scenario", "Storyline, illustration"]}
-          title="The Fixer"
-          description="A branching special assignment: the learner is sent to close the policy knowledge gaps that are costing an agency its service delivery."
-          href="/work/the-fixer"
-          page="3"
-          image="/images/the-fixer-hq.jpg"
-          reverse={true}
-          last={false}
-        />
-
-        {/* Card 3: Emotional Intelligence */}
-        <CourseCard
-          addRevealRef={addRevealRef}
-          num="03"
-          tags={["Corporate", "Storyline 360"]}
-          title="Emotional Intelligence"
-          description="Recognising triggers and regulating response, built around situations where the pressure changes the decision."
-          href="/work/emotional-intelligence"
-          page="4"
-          image="/images/emotional-intelligence-hq.jpg"
-          reverse={false}
-          last={true}
-        />
-      </section>
-
-      {/* Apps & product design */}
+      {/* Featured work: one project per discipline */}
       <section style={{ padding: "clamp(26px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) clamp(30px, 4vw, 52px)" }}>
         <div
           ref={addRevealRef}
@@ -616,73 +511,37 @@ export default function Home() {
               margin: 0,
             }}
           >
-            Apps &amp; product design
+            Featured work
           </h2>
-          <Link
-            href="/products"
-            onClick={scrollToTop}
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase" as const,
-              color: "#C0281B",
-              textDecoration: "none",
-            }}
-          >
-            All app and design work &rarr;
-          </Link>
+          <span style={sectionNote}>One project from each side of the work</span>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "clamp(16px, 2vw, 24px)" }}>
-          {PRODUCTS.map((p) => (
-            <Link
-              key={p.href}
-              href={p.href}
-              onClick={scrollToTop}
-              ref={addRevealRef}
-              data-reveal="off"
-              style={{ border: "1px solid #14120F", color: "#14120F", textDecoration: "none", display: "flex", flexDirection: "column" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "5px 5px 0 #C0281B";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
-              }}
-            >
-              <div style={{ height: 170, overflow: "hidden", borderBottom: "1px solid #14120F", background: p.bg }}>
-                <img src={p.image} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", display: "block" }} />
-              </div>
-              <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 6 }}>
-                <span
-                  style={{
-                    fontFamily: "Archivo, sans-serif",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase" as const,
-                    color: "#5F5A50",
-                  }}
-                >
-                  {p.tags}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "Archivo, sans-serif",
-                    fontWeight: 900,
-                    fontSize: 22,
-                    letterSpacing: "-0.03em",
-                    textTransform: "uppercase" as const,
-                    lineHeight: 1,
-                  }}
-                >
-                  {p.title}
-                </span>
-                <span style={{ fontSize: 15, lineHeight: 1.5, color: "#3A362F" }}>{p.description}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+
+        <CourseCard
+          addRevealRef={addRevealRef}
+          num="01"
+          tags={["Learning experience design", "Branching scenario"]}
+          title="The Fixer"
+          description="A branching special assignment: the learner is sent to close the policy knowledge gaps that are costing an agency its service delivery. Playable in full."
+          href="/work/the-fixer"
+          page="3"
+          image="/images/the-fixer-hq.jpg"
+          reverse={false}
+          last={false}
+          more={{ label: "All learning case studies", href: "/work" }}
+        />
+        <CourseCard
+          addRevealRef={addRevealRef}
+          num="02"
+          tags={["Product design", "iOS app"]}
+          title="GrubShelf"
+          description="A meal planner for UK households: pick your meals, get a list split by shop, know what it costs. Taken from spec to a 53-screen prototype to a SwiftUI build."
+          href="/design/grubshelf"
+          page="5"
+          phones={["/images/grubshelf-app/this-week.jpg", "/images/grubshelf-app/welcome.jpg", "/images/grubshelf-app/list.jpg"]}
+          reverse={true}
+          last={true}
+          more={{ label: "All app and design work", href: "/products" }}
+        />
       </section>
 
       {/* Opinion + How I build */}
@@ -814,87 +673,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section
-        ref={addRevealRef}
-        data-reveal="off"
-        style={{ padding: "clamp(30px, 4vw, 52px) clamp(16px, 2.6vw, 30px)" }}
-      >
-        <div
-          style={{
-            borderTop: "4px solid #14120F",
-            paddingTop: 10,
-            marginBottom: 22,
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(22px, 2.8vw, 34px)",
-              lineHeight: 1,
-              letterSpacing: "-0.03em",
-              textTransform: "uppercase" as const,
-              margin: 0,
-            }}
-          >
-            What people say
-          </h2>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "clamp(20px, 2.6vw, 34px)",
-          }}
-        >
-          {[
-            {
-              quote:
-                "Kazeem is a highly talented instructional designer and eLearning developer who consistently delivers exceptional results. I wholeheartedly recommend Kazeem for any project or role that requires top-notch eLearning development and instructional design skills.",
-              name: "Ruby",
-              role: "Global Talent Leader",
-            },
-            {
-              quote:
-                "Kazeem is a good leader. He is a good communicator, a listener, dedicated to his work and a teacher. He is always ensuring everyone around him gets better.",
-              name: "Habeeb",
-              role: "Senior HR Analyst",
-            },
-            {
-              quote: "Kazeem is the best Product Designer I have ever worked with in my career.",
-              name: "Damilola",
-              role: "Senior Software Developer",
-            },
-          ].map((t, i, arr) => (
-            <blockquote
-              key={i}
-              style={{
-                margin: 0,
-                paddingRight: i < arr.length - 1 ? "clamp(0px, 2vw, 24px)" : 0,
-                borderRight: i < arr.length - 1 ? "1px solid #CFC9BB" : "none",
-              }}
-            >
-              <p style={{ fontSize: 17, lineHeight: 1.55, margin: "0 0 12px" }}>
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase" as const,
-                  color: "#5F5A50",
-                }}
-              >
-                {t.name} &middot; {t.role}
-              </div>
-            </blockquote>
-          ))}
-        </div>
-      </section>
-
       {/* CTA */}
       <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(30px, 4vw, 52px)" }}>
         <div
@@ -987,8 +765,10 @@ function CourseCard({
   href,
   page,
   image,
+  phones,
   reverse,
   last,
+  more,
 }: {
   addRevealRef: (el: HTMLElement | null) => void;
   num: string;
@@ -997,89 +777,150 @@ function CourseCard({
   description: string;
   href: string;
   page: string;
-  image: string;
+  image?: string;
+  phones?: string[];
   reverse: boolean;
   last: boolean;
+  more?: { label: string; href: string };
 }) {
   return (
-    <Link
+    <div
       ref={addRevealRef}
       data-reveal="off"
-      href={href}
-      onClick={scrollToTop}
       style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-        gap: "clamp(20px, 2.6vw, 34px)",
         paddingBottom: 26,
         marginBottom: last ? 0 : 26,
         borderBottom: last ? "4px solid #14120F" : "1px solid #14120F",
-        color: "#14120F",
-        textDecoration: "none",
       }}
     >
-      <div style={{ overflow: "hidden", background: "#14120F", height: "clamp(200px, 22vw, 260px)", border: "1px solid #14120F", order: reverse ? 2 : undefined }}>
-        <div
-          style={{ width: "100%", height: "100%", transition: "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.05)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
-        >
-          <img
-            src={image}
-            alt={title}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
-        </div>
-      </div>
-      <div style={{ minWidth: 0, order: reverse ? 1 : undefined }}>
+      <Link
+        href={href}
+        onClick={scrollToTop}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "clamp(20px, 2.6vw, 34px)",
+          color: "#14120F",
+          textDecoration: "none",
+        }}
+      >
         <div
           style={{
-            display: "flex",
-            gap: 12,
-            alignItems: "baseline",
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase" as const,
-            color: "#5F5A50",
-            marginBottom: 12,
+            overflow: "hidden",
+            background: phones ? "#0A4D3E" : "#14120F",
+            height: "clamp(220px, 24vw, 280px)",
+            border: "1px solid #14120F",
+            order: reverse ? 2 : undefined,
           }}
         >
-          <span style={{ color: "#C0281B" }}>{num}</span>
-          <span>{tags[0]}</span>
-          <span>&middot;</span>
-          <span>{tags[1]}</span>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              transition: "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
+              display: "flex",
+              justifyContent: "center",
+              gap: 12,
+              padding: phones ? "22px 16px 0" : 0,
+              boxSizing: "border-box",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.05)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
+          >
+            {phones ? (
+              phones.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt=""
+                  loading="lazy"
+                  style={{
+                    width: "28%",
+                    height: "auto",
+                    alignSelf: "flex-start",
+                    borderRadius: "14px 14px 0 0",
+                    border: "3px solid #14120F",
+                    borderBottom: "none",
+                    marginTop: i === 1 ? 0 : 22,
+                    boxShadow: "0 10px 24px rgba(0,0,0,0.3)",
+                  }}
+                />
+              ))
+            ) : (
+              <img src={image} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            )}
+          </div>
         </div>
-        <h3
-          style={{
-            fontFamily: "Archivo, sans-serif",
-            fontWeight: 900,
-            fontSize: "clamp(24px, 2.9vw, 36px)",
-            lineHeight: 1,
-            letterSpacing: "-0.035em",
-            textTransform: "uppercase" as const,
-            margin: "0 0 12px",
-          }}
-        >
-          {title}
-        </h3>
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: "#3A362F", margin: "0 0 14px", maxWidth: "52ch" }}>{description}</p>
-        <span
-          style={{
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase" as const,
-            borderBottom: "1px solid #C0281B",
-            paddingBottom: 3,
-            color: "#C0281B",
-          }}
-        >
-          Continued on page {page} &rarr;
-        </span>
-      </div>
-    </Link>
+        <div style={{ minWidth: 0, order: reverse ? 1 : undefined }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "4px 12px",
+              alignItems: "baseline",
+              fontFamily: "Archivo, sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase" as const,
+              color: "#5F5A50",
+              marginBottom: 12,
+            }}
+          >
+            <span style={{ color: "#C0281B" }}>{num}</span>
+            <span>{tags[0]}</span>
+            <span>&middot;</span>
+            <span>{tags[1]}</span>
+          </div>
+          <h3
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(24px, 2.9vw, 36px)",
+              lineHeight: 1,
+              letterSpacing: "-0.035em",
+              textTransform: "uppercase" as const,
+              margin: "0 0 12px",
+            }}
+          >
+            {title}
+          </h3>
+          <p style={{ fontSize: 16, lineHeight: 1.6, color: "#3A362F", margin: "0 0 14px", maxWidth: "52ch" }}>{description}</p>
+          <span
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase" as const,
+              borderBottom: "1px solid #C0281B",
+              paddingBottom: 3,
+              color: "#C0281B",
+            }}
+          >
+            Continued on page {page} &rarr;
+          </span>
+        </div>
+      </Link>
+      {more && (
+        <div style={{ display: "flex", justifyContent: reverse ? "flex-start" : "flex-end", marginTop: 16 }}>
+          <Link
+            href={more.href}
+            onClick={scrollToTop}
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase" as const,
+              color: "#14120F",
+              textDecoration: "none",
+            }}
+          >
+            {more.label} &rarr;
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }
