@@ -12,9 +12,9 @@ export interface SEOData {
 export const seoData: Record<string, SEOData> = {
   "/": {
     title:
-      "Kazeem Salau - eLearning Developer & Instructional Designer | London",
+      "Kazeem Salau - Instructional Designer, eLearning Developer & Product Designer | London",
     description:
-      "Freelance eLearning developer and instructional designer specializing in SCORM course development, Articulate Storyline 360 & Rise, LMS integration, and corporate training. Based in London, working worldwide.",
+      "Instructional designer and eLearning developer building SCORM courses in Articulate Storyline 360 & Rise, and product designer of iOS apps and websites. Based in London, working worldwide.",
     url: BASE_URL,
     image: DEFAULT_IMAGE,
     imageAlt:
@@ -56,12 +56,20 @@ export const seoData: Record<string, SEOData> = {
     imageAlt: "Emotional Intelligence eLearning course in Articulate Storyline 360",
   },
   "/about": {
-    title: "About Kazeem Salau - Freelance eLearning Developer | London",
+    title: "About Kazeem Salau - Instructional Designer & Product Designer | London",
     description:
-      "Freelance eLearning developer and instructional designer based in London. Specialising in Articulate Storyline 360, Rise, SCORM development, and learning experience design.",
+      "Instructional designer, eLearning developer and product designer based in London. Twelve years across learning design, Articulate Storyline 360 and Rise, user research, UI design and SwiftUI.",
     url: `${BASE_URL}/about`,
     image: DEFAULT_IMAGE,
     imageAlt: "Kazeem Salau, freelance eLearning developer",
+  },
+  "/products": {
+    title: "App & Design - GrubShelf & Mai Shara | Kazeem Salau",
+    description:
+      "Products designed and built by Kazeem Salau: the GrubShelf iOS meal planner and its website, and Mai Shara, a waste pick-up app taken from user research to prototype.",
+    url: `${BASE_URL}/products`,
+    image: `${BASE_URL}/images/grubshelf-og.jpg`,
+    imageAlt: "GrubShelf and Mai Shara product design by Kazeem Salau",
   },
   "/apps": {
     title: "Apps & Side Projects | Kazeem Salau",
@@ -79,9 +87,33 @@ export const seoData: Record<string, SEOData> = {
     image: DEFAULT_IMAGE,
     imageAlt: "Design work by Kazeem Salau",
   },
+  "/design/grubshelf": {
+    title: "GrubShelf Meals Lite - Product Design Case Study | Kazeem Salau",
+    description:
+      "How I designed and built GrubShelf Meals Lite, an iOS meal planner for African and diaspora households in the UK, using an LLM-first spec, a 53-screen prototype and Claude Code.",
+    url: `${BASE_URL}/design/grubshelf`,
+    image: `${BASE_URL}/images/grubshelf-og.jpg`,
+    imageAlt: "GrubShelf Meals Lite product design case study",
+  },
+  "/design/grubshelf-website": {
+    title: "GrubShelf Website - Landing Page Design | Kazeem Salau",
+    description:
+      "Design and build of grubshelf.app, a problem-first landing page for the GrubShelf meal planner with one goal: waiting-list sign-ups.",
+    url: `${BASE_URL}/design/grubshelf-website`,
+    image: `${BASE_URL}/images/grubshelf-web/hero.jpg`,
+    imageAlt: "The grubshelf.app landing page",
+  },
+  "/design/mai-shara": {
+    title: "Mai Shara - Waste Management App UX Case Study | Kazeem Salau",
+    description:
+      "UX research and UI/UX design for Mai Shara, a mobile app that lets residents and businesses schedule and track waste pick-up, pay for the service and report incidents.",
+    url: `${BASE_URL}/design/mai-shara`,
+    image: DEFAULT_IMAGE,
+    imageAlt: "Mai Shara waste management app case study",
+  },
   "/contact": {
     title:
-      "Hire Kazeem Salau - eLearning Developer & Instructional Designer",
+      "Hire Kazeem Salau - Instructional Designer, eLearning Developer & Product Designer",
     description:
       "Get in touch to discuss your eLearning project. Freelance SCORM course development, Articulate Storyline & Rise, instructional design, and LMS integration services.",
     url: `${BASE_URL}/contact`,

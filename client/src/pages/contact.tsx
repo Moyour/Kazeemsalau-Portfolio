@@ -1,14 +1,50 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
+import { track } from "@/lib/track";
+import ContactForm from "@/components/contact-form";
+
+const EMAIL = "kazeem.salau@yahoo.com";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+const btnStyle = {
+  fontFamily: "Archivo, sans-serif",
+  fontSize: 12,
+  fontWeight: 800,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase" as const,
+  padding: "12px 20px",
+  textDecoration: "none",
+};
+
+const boxLabelStyle = {
+  fontFamily: "Archivo, sans-serif",
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: "0.2em",
+  textTransform: "uppercase" as const,
+  borderBottom: "1px solid #14120F",
+  paddingBottom: 9,
+};
+
 export default function Contact() {
   useSEO("/contact");
   const revealRefs = useRef<HTMLElement[]>([]);
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      window.prompt("Copy my email address:", EMAIL);
+    }
+    track("contact_email_copy");
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,7 +91,7 @@ export default function Contact() {
           margin: "0 0 14px",
         }}
       >
-        Hire an eLearning developer
+        Hire a learning &amp; product designer
       </h1>
       <p
         style={{
@@ -67,7 +103,7 @@ export default function Contact() {
           margin: "0 0 clamp(22px, 3vw, 36px)",
         }}
       >
-        Email is the quickest way to reach me. I read everything and I usually reply the same day.
+        Tell me a little about what you need. I read everything and I usually reply the same day.
       </p>
       <div style={{ height: 4, background: "#14120F", marginBottom: "clamp(22px, 3vw, 36px)" }} />
 
@@ -80,34 +116,27 @@ export default function Contact() {
           gap: "clamp(24px, 3vw, 40px)",
         }}
       >
-        {/* Left: Write to me */}
-        <div style={{ minWidth: 0 }}>
+        {/* Left: Form + email */}
+        <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
           <div style={{ border: "1px solid #14120F", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 18 }}>
-            <div
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase" as const,
-                borderBottom: "1px solid #14120F",
-                paddingBottom: 9,
-              }}
-            >
-              Write to me
-            </div>
+            <div style={boxLabelStyle}>Send a message</div>
+            <ContactForm fallbackEmail={EMAIL} />
+          </div>
+
+          <div style={{ border: "1px solid #14120F", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 14 }}>
+            <div style={boxLabelStyle}>Or write to me directly</div>
             <a
-              href="mailto:kazeem.salau@yahoo.com"
+              href={`mailto:${EMAIL}?subject=${encodeURIComponent("Project enquiry")}`}
+              data-track="contact_email_heading"
               style={{
                 display: "block",
                 fontFamily: "Archivo, sans-serif",
                 fontWeight: 900,
-                fontSize: "clamp(22px, 3.6vw, 42px)",
+                fontSize: "clamp(20px, 2.8vw, 32px)",
                 lineHeight: 1.1,
                 letterSpacing: "-0.035em",
                 color: "#14120F",
                 textDecoration: "none",
-                marginBottom: 18,
                 wordBreak: "break-all",
               }}
               onMouseEnter={(e) => {
@@ -117,12 +146,20 @@ export default function Contact() {
                 (e.currentTarget as HTMLElement).style.color = "#14120F";
               }}
             >
-              kazeem.salau@yahoo.com
+              {EMAIL}
             </a>
-            <p style={{ fontSize: 17, lineHeight: 1.65, color: "#3A362F", margin: "0 0 18px" }}>
-              A line or two is plenty to start. Who is it for, and what is going wrong? If a course is not the right
-              fix, I will tell you that too, and we can work out what is.
-            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+              <a
+                href={`mailto:${EMAIL}?subject=${encodeURIComponent("Project enquiry")}`}
+                data-track="contact_email_button"
+                style={{ ...btnStyle, background: "transparent", color: "#14120F", border: "2px solid #14120F" }}
+              >
+                Open email &rarr;
+              </a>
+              <button onClick={copyEmail} style={{ ...btnStyle, background: "transparent", color: "#14120F", border: "2px solid #14120F", cursor: "pointer" }}>
+                {copied ? "Copied \u2713" : "Copy email address"}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -213,8 +250,8 @@ export default function Contact() {
               Right now
             </div>
             <p style={{ fontSize: 15, lineHeight: 1.6, margin: "0 0 10px", color: "#CFC9BB" }}>
-              I am happy to take on full-time instructional design and learning experience roles, and freelance work
-              alongside them.
+              I am happy to take on full-time instructional design, learning experience and product design roles, and
+              freelance work alongside them.
             </p>
             <p style={{ fontSize: 14, lineHeight: 1.5, margin: 0, fontStyle: "italic", color: "#9C968C" }}>
               In London, happy to work with teams anywhere.
@@ -242,8 +279,8 @@ export default function Contact() {
               Have a look first
             </div>
             <p style={{ fontSize: 15, lineHeight: 1.6, color: "#3A362F", margin: "0 0 12px" }}>
-              All three courses here are playable in full, so you can see how I build before you write. It is the
-              fastest way to tell whether we would get on.
+              All three courses are playable in full, and the app work has clickable screens, so you can see how I build
+              before you write.
             </p>
             <Link
               href="/work"

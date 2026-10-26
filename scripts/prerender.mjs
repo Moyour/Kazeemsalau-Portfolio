@@ -12,8 +12,12 @@ const ROUTES = [
   "/work/the-fixer",
   "/work/emotional-intelligence",
   "/about",
+  "/products",
   "/apps",
   "/design",
+  "/design/grubshelf",
+  "/design/mai-shara",
+  "/design/grubshelf-website",
   "/contact",
 ];
 

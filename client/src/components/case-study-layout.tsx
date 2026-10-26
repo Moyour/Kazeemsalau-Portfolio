@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import ScormModal from "@/components/scorm-modal";
+import { track } from "@/lib/track";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -27,6 +28,7 @@ interface CaseStudyProps {
 
 export default function CaseStudyLayout(props: CaseStudyProps) {
   const [playing, setPlaying] = useState(false);
+  const [played, setPlayed] = useState(false);
   const revealRefs = useRef<HTMLElement[]>([]);
 
   useEffect(() => {
@@ -146,7 +148,10 @@ export default function CaseStudyLayout(props: CaseStudyProps) {
         >
           <span style={{ color: "#14120F" }}>By Kazeem Salau</span>
           <button
-            onClick={() => setPlaying(true)}
+            onClick={() => {
+              setPlaying(true);
+              track("course_play", { course: props.title });
+            }}
             style={{
               fontFamily: "Archivo, sans-serif",
               fontSize: 13,
@@ -295,8 +300,30 @@ export default function CaseStudyLayout(props: CaseStudyProps) {
               {props.nextLabel} &rarr;
             </Link>
           </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
           <a
-            href="mailto:kazeem.salau@yahoo.com"
+            href="/files/KazeemSalau-InstructionalDesign.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="case_footer_cv"
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase" as const,
+              padding: "12px 22px",
+              border: "2px solid #14120F",
+              color: "#14120F",
+              textDecoration: "none",
+            }}
+          >
+            Download CV
+          </a>
+          <Link
+            href="/contact"
+            onClick={scrollToTop}
+            data-track="case_footer_hire"
             style={{
               fontFamily: "Archivo, sans-serif",
               fontSize: 11,
@@ -316,17 +343,91 @@ export default function CaseStudyLayout(props: CaseStudyProps) {
               (e.currentTarget as HTMLElement).style.background = "#C0281B";
             }}
           >
-            Get in touch
-          </a>
+            Hire me for a course like this
+          </Link>
+          </div>
         </div>
       </section>
+
+      {played && !playing && (
+        <div
+          role="status"
+          style={{
+            position: "fixed",
+            left: "50%",
+            bottom: 20,
+            transform: "translateX(-50%)",
+            width: "min(560px, calc(100vw - 32px))",
+            zIndex: 50,
+            background: "#14120F",
+            color: "#F4F1EA",
+            border: "1px solid #14120F",
+            boxShadow: "6px 6px 0 #C0281B",
+            padding: "16px 18px",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: 12,
+          }}
+        >
+          <div style={{ flex: "1 1 220px", fontSize: 16, lineHeight: 1.4 }}>
+            Want a course like this for your team?
+          </div>
+          <Link
+            href="/contact"
+            onClick={scrollToTop}
+            data-track="post_play_hire"
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase" as const,
+              padding: "11px 16px",
+              background: "#C0281B",
+              color: "#F4F1EA",
+              textDecoration: "none",
+            }}
+          >
+            Let&rsquo;s talk &rarr;
+          </Link>
+          <a
+            href="/files/KazeemSalau-InstructionalDesign.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="post_play_cv"
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase" as const,
+              color: "#F4F1EA",
+              textDecoration: "none",
+              borderBottom: "1px solid #F4F1EA",
+            }}
+          >
+            CV
+          </a>
+          <button
+            onClick={() => setPlayed(false)}
+            aria-label="Dismiss"
+            style={{ background: "none", border: "none", color: "#9C968C", fontSize: 20, cursor: "pointer", padding: "0 4px" }}
+          >
+            &times;
+          </button>
+        </div>
+      )}
 
       {playing && (
         <ScormModal
           url={props.playUrl}
           title={props.title}
           kicker={props.playKicker}
-          onClose={() => setPlaying(false)}
+          onClose={() => {
+            setPlaying(false);
+            setPlayed(true);
+          }}
         />
       )}
     </div>

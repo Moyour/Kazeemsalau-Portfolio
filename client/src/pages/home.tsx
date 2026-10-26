@@ -23,7 +23,58 @@ const SKILLS = [
   "UX design",
   "Learning theory",
   "Agile project management",
+  "Figma",
+  "User research",
+  "Prototyping",
+  "Design systems",
+  "SwiftUI",
 ];
+
+const STATS = [
+  { value: "50+", label: "Courses in one curriculum" },
+  { value: "3", label: "Apps & sites designed" },
+  { value: "+20%", label: "Course completion" },
+  { value: "2014", label: "Designing since" },
+];
+
+const PRODUCTS = [
+  {
+    href: "/design/grubshelf",
+    title: "GrubShelf app",
+    tags: "iOS · Product & UI design",
+    description: "A meal planner for UK households: pick your meals, get a list split by shop, know what it costs.",
+    image: "/images/grubshelf-app/this-week.jpg",
+    bg: "#0A4D3E",
+  },
+  {
+    href: "/design/grubshelf-website",
+    title: "GrubShelf website",
+    tags: "Marketing site · Design & build",
+    description: "A problem-first landing page with one job: waiting-list sign-ups.",
+    image: "/images/grubshelf-web/hero.jpg",
+    bg: "#E9EFEA",
+  },
+  {
+    href: "/design/mai-shara",
+    title: "Mai Shara",
+    tags: "Mobile · UX research & UI",
+    description: "Schedule, pay for and track waste pick-up. From user interviews to a full prototype.",
+    image: "/images/mai-shara/home.jpg",
+    bg: "#FF8A4C",
+  },
+];
+
+const ctaStyle = {
+  display: "inline-block",
+  fontFamily: "Archivo, sans-serif",
+  fontWeight: 800,
+  fontSize: 12,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase" as const,
+  padding: "14px 22px",
+  textDecoration: "none",
+  transition: "background 0.2s, color 0.2s",
+};
 
 function SkillsMarquee() {
   const items = SKILLS.map((s, i) => (
@@ -148,7 +199,7 @@ export default function Home() {
                   className="ks-anim"
                   style={{ display: "block", animation: "ks-rise 0.95s 0.58s cubic-bezier(0.16, 1, 0.3, 1) both" }}
                 >
-                  eLearning
+                  Instructional designer
                 </span>
               </span>
               <span style={{ display: "block", overflow: "hidden" }}>
@@ -160,15 +211,22 @@ export default function Home() {
                     color: "#C0281B",
                   }}
                 >
-                  developer
+                  &amp; eLearning developer
                 </span>
               </span>
               <span style={{ display: "block", overflow: "hidden" }}>
                 <span
                   className="ks-anim"
-                  style={{ display: "block", animation: "ks-rise 0.95s 0.78s cubic-bezier(0.16, 1, 0.3, 1) both" }}
+                  style={{
+                    display: "block",
+                    animation: "ks-rise 0.95s 0.78s cubic-bezier(0.16, 1, 0.3, 1) both",
+                    fontSize: "0.42em",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.1,
+                    paddingTop: "0.35em",
+                  }}
                 >
-                  &amp; instructional designer
+                  &mdash; and product designer
                 </span>
               </span>
             </h1>
@@ -185,9 +243,71 @@ export default function Home() {
                 animation: "ks-fade 0.8s 0.85s both",
               }}
             >
-              The needs analysis, the script and the build, done by the same person from the first conversation to the
-              SCORM package.
+              Courses people finish and apps people use. From the needs analysis to the SCORM package, and from the
+              first user interview to a working build.
             </p>
+            <div
+              className="ks-anim"
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: 12,
+                marginBottom: 14,
+                animation: "ks-fade 0.8s 0.9s both",
+              }}
+            >
+              <Link
+                href="/contact"
+                onClick={scrollToTop}
+                data-track="hero_hire"
+                style={{ ...ctaStyle, background: "#C0281B", color: "#F4F1EA", boxShadow: "4px 4px 0 #14120F" }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#14120F";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#C0281B";
+                }}
+              >
+                Hire me for a project &rarr;
+              </Link>
+              <a
+                href="/files/KazeemSalau-InstructionalDesign.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="hero_cv"
+                style={{ ...ctaStyle, background: "transparent", color: "#14120F", border: "2px solid #14120F", padding: "12px 20px" }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#14120F";
+                  (e.currentTarget as HTMLElement).style.color = "#F4F1EA";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                  (e.currentTarget as HTMLElement).style.color = "#14120F";
+                }}
+              >
+                Download CV (PDF)
+              </a>
+            </div>
+            <div
+              className="ks-anim"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                fontFamily: "Archivo, sans-serif",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase" as const,
+                color: "#3A362F",
+                marginBottom: 22,
+                animation: "ks-fade 0.8s 0.92s both",
+              }}
+            >
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#2E7D32", flexShrink: 0 }} />
+              Available now for full-time roles &amp; freelance &middot; London / remote
+            </div>
             <div
               className="ks-anim"
               style={{
@@ -209,7 +329,7 @@ export default function Home() {
             >
               <span style={{ color: "#14120F" }}>By Kazeem Salau</span>
               <span>&middot;</span>
-              <span>Instructional designer &amp; eLearning developer</span>
+              <span>Learning design &middot; Product design</span>
             </div>
             <div className="ks-cols" style={{ columns: 2, columnGap: 34, columnRule: "1px solid #CFC9BB" }}>
               <p style={{ fontSize: 17, lineHeight: 1.6, margin: "0 0 14px" }}>
@@ -236,9 +356,9 @@ export default function Home() {
                 dialogue in conversational tones, so a new concept arrives the way a colleague would explain it.
               </p>
               <p style={{ fontSize: 17, lineHeight: 1.6, margin: 0 }}>
-                I make the videos and learning assets that carry the difficult ideas myself, in Articulate 360, Camtasia,
-                Vyond, Synthesia and the Adobe suite, and package the result for the LMS. Subjects have ranged from sales
-                and insurance to health management, business acumen and policy.
+                The same habits carry into product design. I started out as a graphic designer, hold a B.Sc. in Computer
+                Science, and now research, design and build apps: GrubShelf, a meal planner for UK households built in
+                SwiftUI, and Mai Shara, a waste pick-up app taken from user interviews to prototype.
               </p>
             </div>
           </div>
@@ -303,11 +423,12 @@ export default function Home() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 16 }}>
                 {[
-                  { label: "Business Writing", page: "P. 1", href: "/work/business-writing" },
-                  { label: "The Fixer", page: "P. 2", href: "/work/the-fixer" },
-                  { label: "Emotional Intelligence", page: "P. 3", href: "/work/emotional-intelligence" },
-                  { label: "About the designer", page: "P. 4", href: "/about" },
-                  { label: "GrubShelf, an iOS app", page: "P. 5", href: "/apps" },
+                  { label: "Business Writing", page: "P. 2", href: "/work/business-writing" },
+                  { label: "The Fixer", page: "P. 3", href: "/work/the-fixer" },
+                  { label: "Emotional Intelligence", page: "P. 4", href: "/work/emotional-intelligence" },
+                  { label: "GrubShelf, an iOS app", page: "P. 5", href: "/design/grubshelf" },
+                  { label: "Mai Shara, a waste pick-up app", page: "P. 5", href: "/design/mai-shara" },
+                  { label: "About the designer", page: "P. 6", href: "/about" },
                 ].map((item) => (
                   <Link
                     key={item.href}
@@ -346,6 +467,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Proof numbers */}
+      <section style={{ padding: "clamp(26px, 3.4vw, 40px) clamp(16px, 2.6vw, 30px) 0" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            borderTop: "4px solid #14120F",
+            borderBottom: "1px solid #14120F",
+          }}
+        >
+          {STATS.map((s, i) => (
+            <div
+              key={s.label}
+              style={{
+                padding: "16px 14px",
+                borderLeft: i > 0 ? "1px solid #CFC9BB" : "none",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "Archivo, sans-serif",
+                  fontWeight: 900,
+                  fontSize: "clamp(30px, 3.6vw, 44px)",
+                  lineHeight: 1,
+                  letterSpacing: "-0.04em",
+                  color: "#C0281B",
+                  marginBottom: 6,
+                }}
+              >
+                {s.value}
+              </div>
+              <div
+                style={{
+                  fontFamily: "Archivo, sans-serif",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase" as const,
+                  color: "#5F5A50",
+                }}
+              >
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Skills marquee */}
       <SkillsMarquee />
 
@@ -376,7 +545,7 @@ export default function Home() {
               margin: 0,
             }}
           >
-            Selected work
+            Learning design
           </h2>
           <span
             style={{
@@ -400,7 +569,7 @@ export default function Home() {
           title="Business Writing"
           description="Planning, structuring and editing emails, reports, proposals and executive summaries, plus persuasive writing that moves a decision."
           href="/work/business-writing"
-          page="1"
+          page="2"
           image="/images/business-writing-hq.jpg"
           reverse={false}
           last={false}
@@ -414,7 +583,7 @@ export default function Home() {
           title="The Fixer"
           description="A branching special assignment: the learner is sent to close the policy knowledge gaps that are costing an agency its service delivery."
           href="/work/the-fixer"
-          page="2"
+          page="3"
           image="/images/the-fixer-hq.jpg"
           reverse={true}
           last={false}
@@ -428,11 +597,107 @@ export default function Home() {
           title="Emotional Intelligence"
           description="Recognising triggers and regulating response, built around situations where the pressure changes the decision."
           href="/work/emotional-intelligence"
-          page="3"
+          page="4"
           image="/images/emotional-intelligence-hq.jpg"
           reverse={false}
           last={true}
         />
+      </section>
+
+      {/* Apps & product design */}
+      <section style={{ padding: "clamp(26px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) clamp(30px, 4vw, 52px)" }}>
+        <div
+          ref={addRevealRef}
+          data-reveal="off"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px 20px",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            borderBottom: "4px solid #14120F",
+            paddingBottom: 10,
+            marginBottom: 24,
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(22px, 2.8vw, 34px)",
+              lineHeight: 1,
+              letterSpacing: "-0.03em",
+              textTransform: "uppercase" as const,
+              margin: 0,
+            }}
+          >
+            Apps &amp; product design
+          </h2>
+          <Link
+            href="/products"
+            onClick={scrollToTop}
+            style={{
+              fontFamily: "Archivo, sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase" as const,
+              color: "#C0281B",
+              textDecoration: "none",
+            }}
+          >
+            All app and design work &rarr;
+          </Link>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "clamp(16px, 2vw, 24px)" }}>
+          {PRODUCTS.map((p) => (
+            <Link
+              key={p.href}
+              href={p.href}
+              onClick={scrollToTop}
+              ref={addRevealRef}
+              data-reveal="off"
+              style={{ border: "1px solid #14120F", color: "#14120F", textDecoration: "none", display: "flex", flexDirection: "column" }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow = "5px 5px 0 #C0281B";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow = "none";
+              }}
+            >
+              <div style={{ height: 170, overflow: "hidden", borderBottom: "1px solid #14120F", background: p.bg }}>
+                <img src={p.image} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", display: "block" }} />
+              </div>
+              <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 6 }}>
+                <span
+                  style={{
+                    fontFamily: "Archivo, sans-serif",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase" as const,
+                    color: "#5F5A50",
+                  }}
+                >
+                  {p.tags}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "Archivo, sans-serif",
+                    fontWeight: 900,
+                    fontSize: 22,
+                    letterSpacing: "-0.03em",
+                    textTransform: "uppercase" as const,
+                    lineHeight: 1,
+                  }}
+                >
+                  {p.title}
+                </span>
+                <span style={{ fontSize: 15, lineHeight: 1.5, color: "#3A362F" }}>{p.description}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* Opinion + How I build */}
@@ -507,7 +772,7 @@ export default function Home() {
                 marginBottom: 18,
               }}
             >
-              How I build a course
+              How I work, courses or apps
             </div>
             <div
               className="ks-steps-grid"
@@ -516,18 +781,18 @@ export default function Home() {
               {[
                 {
                   num: "01",
-                  title: "Analyse with the SMEs",
-                  desc: "The learning needs analysis with subject matter experts and business leaders, then observable, measurable outcomes before anything gets built.",
+                  title: "Start with the people",
+                  desc: "A needs analysis with subject matter experts, or interviews with the people who will use the app. Clear, measurable outcomes before anything gets built.",
                 },
                 {
                   num: "02",
-                  title: "Storyboard and script",
-                  desc: "Dialogue in conversational tones, with case studies, activities and assessments that mirror the job.",
+                  title: "Script and prototype",
+                  desc: "Storyboards and conversational scripts for courses; flows, wireframes and clickable prototypes for apps. Both get tested before they get built.",
                 },
                 {
                   num: "03",
-                  title: "Build, package, improve",
-                  desc: "Produced in Storyline 360, Rise and Camtasia, packaged for the LMS, then reviewed and improved once it is live.",
+                  title: "Build, ship, improve",
+                  desc: "Storyline 360, Rise and Camtasia packaged for the LMS, or SwiftUI shipped to a phone. Then reviewed and improved once real people use it.",
                 },
               ].map((step) => (
                 <div key={step.num}>
@@ -681,7 +946,7 @@ export default function Home() {
               margin: "0 0 14px",
             }}
           >
-            Got a course that needs to actually work?
+            Got a course or an app that needs to actually work?
           </h2>
           <p
             style={{
@@ -693,7 +958,7 @@ export default function Home() {
             }}
           >
             Send me a couple of lines about who it is for and what is going wrong. I will come back with what I would
-            build and how long it would take.
+            build and how long it would take, whether that is a course, an app or both.
           </p>
           <Link
             href="/contact"

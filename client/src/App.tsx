@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect } from "wouter";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import About from "@/pages/about";
@@ -7,11 +7,14 @@ import Work from "@/pages/work";
 import CaseBusinessWriting from "@/pages/case-business-writing";
 import CaseTheFixer from "@/pages/case-the-fixer";
 import CaseEmotionalIntelligence from "@/pages/case-emotional-intelligence";
-import Apps from "@/pages/apps";
-import Design from "@/pages/design";
+import Products from "@/pages/products";
+import CaseGrubShelf from "@/pages/case-grubshelf";
+import CaseMaiShara from "@/pages/case-mai-shara";
+import CaseGrubShelfWebsite from "@/pages/case-grubshelf-website";
 import Contact from "@/pages/contact";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import { trackLinkClick } from "@/lib/track";
 
 function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -107,8 +110,12 @@ function Router() {
             <Route path="/work/the-fixer" component={CaseTheFixer} />
             <Route path="/work/emotional-intelligence" component={CaseEmotionalIntelligence} />
             <Route path="/about" component={About} />
-            <Route path="/apps" component={Apps} />
-            <Route path="/design" component={Design} />
+            <Route path="/products" component={Products} />
+            <Route path="/apps"><Redirect to="/design/grubshelf" replace /></Route>
+            <Route path="/design"><Redirect to="/products" replace /></Route>
+            <Route path="/design/grubshelf" component={CaseGrubShelf} />
+            <Route path="/design/mai-shara" component={CaseMaiShara} />
+            <Route path="/design/grubshelf-website" component={CaseGrubShelfWebsite} />
             <Route path="/contact" component={Contact} />
             <Route component={NotFound} />
           </Switch>
@@ -120,6 +127,11 @@ function Router() {
 }
 
 export default function App() {
+  useEffect(() => {
+    document.addEventListener("click", trackLinkClick, true);
+    return () => document.removeEventListener("click", trackLinkClick, true);
+  }, []);
+
   return (
     <>
       <CustomCursor />

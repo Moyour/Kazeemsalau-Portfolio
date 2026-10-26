@@ -1,13 +1,22 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 
-const NAV_LINKS = [
+type NavLink = {
+  label: string;
+  href: string;
+  match?: string[];
+};
+
+const NAV_LINKS: NavLink[] = [
   { label: "Front page", href: "/" },
-  { label: "Case studies", href: "/work" },
-  { label: "App development", href: "/apps" },
-  { label: "Product design", href: "/design" },
+  { label: "Learning case studies", href: "/work" },
+  {
+    label: "App and design",
+    href: "/products",
+    match: ["/products", "/design"],
+  },
   { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "Hire", href: "/contact" },
 ];
 
 function scrollToTop() {
@@ -77,7 +86,7 @@ export default function Navigation() {
           color: "#5F5A50",
         }}
       >
-        <span>Instructional design &amp; eLearning development</span>
+        <span>Instructional design &middot; eLearning &middot; Product design</span>
         <span>{dateline}</span>
         <span>Portfolio edition &middot; No. 01</span>
       </div>
@@ -136,6 +145,7 @@ export default function Navigation() {
         }}
       >
         {/* Mobile toggle */}
+        <div className="ks-mobile-bar" style={{ display: "none" }}>
         <button
           onClick={() => setMobileOpen((o) => !o)}
           style={{
@@ -156,6 +166,26 @@ export default function Navigation() {
         >
           {mobileOpen ? "Close" : "Menu"}
         </button>
+        <Link
+          href="/contact"
+          onClick={scrollToTop}
+          data-track="nav_hire_mobile"
+          style={{
+            flexShrink: 0,
+            padding: "11px 22px",
+            fontFamily: "Archivo, sans-serif",
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase" as const,
+            background: "#C0281B",
+            color: "#F4F1EA",
+            textDecoration: "none",
+          }}
+        >
+          Hire
+        </Link>
+        </div>
 
         <div
           className={`ks-nav-links ${mobileOpen ? "ks-nav-open" : ""}`}
@@ -172,7 +202,11 @@ export default function Navigation() {
           }}
         >
           {NAV_LINKS.map((link, i) => {
-            const isActive = link.href === "/" ? location === "/" : location.startsWith(link.href);
+            const isActive =
+              link.href === "/"
+                ? location === "/"
+                : (link.match ?? [link.href]).some((m) => location.startsWith(m));
+            const isCta = link.href === "/contact";
             return (
               <Link
                 key={link.href}
@@ -181,8 +215,9 @@ export default function Navigation() {
                 className="ks-nav-link"
                 style={{
                   padding: "11px 22px",
-                  color: isActive ? "#F4F1EA" : "#14120F",
-                  background: isActive ? "#C0281B" : "transparent",
+                  color: isActive || isCta ? "#F4F1EA" : "#14120F",
+                  background: isActive ? "#C0281B" : isCta ? "#14120F" : "transparent",
+                  fontWeight: isCta ? 800 : undefined,
                   borderRight: i < NAV_LINKS.length - 1 ? "1px solid #CFC9BB" : "none",
                   textDecoration: "none",
                   transition: "background 0.2s, color 0.2s",
@@ -195,8 +230,8 @@ export default function Navigation() {
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
-                    (e.target as HTMLElement).style.background = "transparent";
-                    (e.target as HTMLElement).style.color = "#14120F";
+                    (e.target as HTMLElement).style.background = isCta ? "#14120F" : "transparent";
+                    (e.target as HTMLElement).style.color = isCta ? "#F4F1EA" : "#14120F";
                   }
                 }}
               >
@@ -209,8 +244,12 @@ export default function Navigation() {
 
       <style>{`
         @media (max-width: 700px) {
+          .ks-mobile-bar {
+            display: flex !important;
+          }
           .ks-mobile-toggle {
             display: block !important;
+            text-align: left;
           }
           .ks-nav-links {
             display: none !important;
