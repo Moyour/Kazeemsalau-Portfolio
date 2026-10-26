@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { GRUBSHELF_MOCKUP } from "@/lib/grubshelf-mockup";
 import { track } from "@/lib/track";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -82,8 +83,10 @@ function Viewer({ index, onClose, onGo }: { index: number; onClose: () => void; 
           &larr;
         </button>
         <div
+          key={index}
           onClick={(e) => e.stopPropagation()}
           style={{
+            animation: "ks-pop 0.4s var(--ks-spring) both",
             background: "#14120F",
             borderRadius: 34,
             padding: 8,
@@ -156,7 +159,7 @@ export default function CaseGrubShelfScreens() {
             margin: "0 0 18px",
           }}
         >
-          GrubShelf, every screen
+          <Words text="GrubShelf, every screen" />
         </h1>
         <p style={{ fontSize: "clamp(18px, 2vw, 23px)", lineHeight: 1.4, fontStyle: "italic", color: "#3A362F", maxWidth: "56ch", margin: "0 0 20px" }}>
           The full mockup the app was built from, grouped by flow. Tap any screen to see it full size.

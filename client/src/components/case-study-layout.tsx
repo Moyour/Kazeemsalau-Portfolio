@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import ScormModal from "@/components/scorm-modal";
 import { track } from "@/lib/track";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -28,6 +29,7 @@ interface CaseStudyProps {
 
 export default function CaseStudyLayout(props: CaseStudyProps) {
   const [playing, setPlaying] = useState(false);
+  const [location] = useLocation();
   const [played, setPlayed] = useState(false);
   const revealRefs = useRef<HTMLElement[]>([]);
 
@@ -111,7 +113,7 @@ export default function CaseStudyLayout(props: CaseStudyProps) {
             margin: "0 0 18px",
           }}
         >
-          {props.title}
+          <Words text={props.title} />
         </h1>
 
         {/* Tagline */}
@@ -186,6 +188,7 @@ export default function CaseStudyLayout(props: CaseStudyProps) {
         <div
           style={{
             height: "clamp(240px, 36vw, 480px)",
+            viewTransitionName: `media-${location.split("/").pop()}`,
             background: "#14120F",
             border: "1px solid #14120F",
             marginTop: 22,

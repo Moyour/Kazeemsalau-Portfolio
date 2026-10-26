@@ -1,6 +1,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -173,7 +174,7 @@ export default function About() {
             maxWidth: "22ch",
           }}
         >
-          Learning experience designer &amp; product designer.
+          <Words text="Learning experience designer & product designer." />
         </h1>
         <p
           style={{
@@ -406,7 +407,7 @@ export default function About() {
             marginBottom: 6,
           }}
         >
-          <h2 style={h2Style}>Career</h2>
+          <h2 style={h2Style}><Words text="Career" /></h2>
           <div style={{ ...kicker, display: "flex", gap: 16, color: "#5F5A50" }}>
             {Object.entries(TRACK_COLOR).map(([t, c]) => (
               <span key={t} style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -490,7 +491,7 @@ export default function About() {
               margin: 0,
             }}
           >
-            What people say
+            <Words text="What people say" />
           </h2>
         </div>
         <div

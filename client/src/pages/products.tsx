@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -146,7 +147,7 @@ export default function Products() {
             maxWidth: "20ch",
           }}
         >
-          Products, designed &amp; built.
+          <Words text="Products, designed & built." />
         </h1>
         <p style={{ ...standfirst, maxWidth: "56ch" }}>
           Same instinct as a good course: watch what people actually do, then take away everything standing between them
@@ -185,7 +186,9 @@ export default function Products() {
               }}
             >
               <div
+                className="ks-lift"
                 style={{
+                  viewTransitionName: `media-${p.href.split("/").pop()}`,
                   background: p.bg,
                   borderBottom: "1px solid #14120F",
                   height: "clamp(220px, 24vw, 280px)",

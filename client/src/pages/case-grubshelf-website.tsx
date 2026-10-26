@@ -1,6 +1,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -65,7 +66,7 @@ function SectionHead({ num, title }: { num: string; title: string }) {
   return (
     <div style={{ borderTop: "4px solid #14120F", paddingTop: 14, marginBottom: 18, display: "flex", gap: 14, alignItems: "baseline" }}>
       <span style={{ ...kicker, color: "#C0281B" }}>{num}</span>
-      <h2 style={h2Style}>{title}</h2>
+      <h2 style={h2Style}><Words text={title} /></h2>
     </div>
   );
 }
@@ -115,7 +116,7 @@ export default function CaseGrubShelfWebsite() {
             margin: "0 0 18px",
           }}
         >
-          GrubShelf website
+          <Words text="GrubShelf website" />
         </h1>
         <p
           style={{
@@ -136,7 +137,7 @@ export default function CaseGrubShelfWebsite() {
             target="_blank"
             rel="noopener noreferrer"
             data-track="grubshelf_web_hero"
-            style={{ display: "block", border: "1px solid #14120F", background: "#14120F", textDecoration: "none" }}
+            style={{ display: "block", border: "1px solid #14120F", background: "#14120F", textDecoration: "none", viewTransitionName: "media-grubshelf-website" }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px" }}>
               {["#C0281B", "#F0B442", "#2AB88A"].map((c) => (

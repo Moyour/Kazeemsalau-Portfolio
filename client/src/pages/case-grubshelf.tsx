@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import PhoneCarousel from "@/components/phone-carousel";
 import { GRUBSHELF_SCREENS } from "@/lib/product-screens";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -151,7 +152,7 @@ export default function CaseGrubShelf() {
             margin: "0 0 18px",
           }}
         >
-          GrubShelf: Meals Lite
+          <Words text="GrubShelf: Meals Lite" />
         </h1>
 
         <p
@@ -189,6 +190,7 @@ export default function CaseGrubShelf() {
         {/* Hero screens */}
         <div
           style={{
+            viewTransitionName: "media-grubshelf",
             background: "#04342C",
             border: "1px solid #14120F",
             marginTop: 22,

@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import PhoneCarousel from "@/components/phone-carousel";
 import { MAI_SHARA_SCREENS } from "@/lib/product-screens";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -90,7 +91,7 @@ export default function CaseMaiShara() {
                 margin: "0 0 14px",
               }}
             >
-              Mai Shara
+              <Words text="Mai Shara" />
             </h1>
             <p
               style={{

@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
+import { flushSync } from "react-dom";
 import { Switch, Route, Redirect } from "wouter";
+import { navigate } from "wouter/use-browser-location";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import About from "@/pages/about";
@@ -128,10 +130,35 @@ function Router() {
   );
 }
 
+// Runs internal link clicks through the View Transitions API so the page
+// change animates (shared images grow into the next page's hero). Browsers
+// without it, modified clicks and reduced-motion users get a normal jump.
+function animatePageChange(e: MouseEvent) {
+  if (!document.startViewTransition) return;
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const a = (e.target as Element)?.closest?.("a");
+  if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+  const url = new URL(a.href, location.href);
+  if (url.origin !== location.origin || url.pathname.match(/\.\w+$/)) return;
+  if (url.pathname === location.pathname) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+  document.startViewTransition(() => {
+    flushSync(() => navigate(url.pathname + url.search + url.hash));
+    window.scrollTo(0, 0);
+  });
+}
+
 export default function App() {
   useEffect(() => {
-    document.addEventListener("click", trackLinkClick, true);
-    return () => document.removeEventListener("click", trackLinkClick, true);
+    const onClick = (e: MouseEvent) => {
+      trackLinkClick(e);
+      animatePageChange(e);
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
   return (

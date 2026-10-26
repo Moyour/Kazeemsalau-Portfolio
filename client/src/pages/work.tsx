@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import ScormModal from "@/components/scorm-modal";
 import { useSEO } from "@/hooks/use-seo";
+import { Words } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -101,7 +102,7 @@ export default function Work() {
             margin: "0 0 14px",
           }}
         >
-          eLearning courses &amp; SCORM demos.
+          <Words text="eLearning courses & SCORM demos." />
         </h1>
         <p
           style={{
@@ -204,7 +205,10 @@ export default function Work() {
             }}
           >
             {/* Image */}
-            <div style={{ height: 220, overflow: "hidden", background: "#14120F" }}>
+            <div
+              className="ks-lift"
+              style={{ height: 220, overflow: "hidden", background: "#14120F", viewTransitionName: `media-${course.href.split("/").pop()}` }}
+            >
               <img
                 src={course.image}
                 alt={course.title}

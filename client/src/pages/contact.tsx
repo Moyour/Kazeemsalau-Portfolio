@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { track } from "@/lib/track";
 import ContactForm from "@/components/contact-form";
+import { Words } from "@/components/motion";
 
 const EMAIL = "kazeem.salau@yahoo.com";
 
@@ -91,7 +92,7 @@ export default function Contact() {
           margin: "0 0 14px",
         }}
       >
-        Hire a learning experience &amp; product designer
+        <Words text="Hire a learning experience & product designer" />
       </h1>
       <p
         style={{

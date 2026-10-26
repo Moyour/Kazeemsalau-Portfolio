@@ -108,3 +108,104 @@ a:hover {
   background: var(--ks-text-dark) !important;
   color: var(--ks-bg-paper) !important;
 }
+
+/* ── V2 motion ─────────────────────────────────────────────
+   One spring feel everywhere: a fast settle with a tiny overshoot. */
+:root {
+  --ks-spring: cubic-bezier(0.34, 1.32, 0.64, 1);
+  --ks-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Headlines build word by word: each word rises 16px out of a 12px blur. */
+.ks-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(12px);
+}
+.ks-words[data-in="1"] .ks-word {
+  animation: ks-word 0.5s var(--ks-ease-out) forwards;
+  animation-delay: calc(var(--i) * 60ms);
+}
+@keyframes ks-word {
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* Media lifts up toward the reader as it scrolls into view. */
+@supports (animation-timeline: view()) {
+  .ks-lift {
+    animation: ks-lift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+    transform-origin: 50% 100%;
+  }
+  @keyframes ks-lift {
+    from {
+      transform: perspective(1400px) rotateX(10deg) translateY(36px) scale(0.97);
+      box-shadow: 0 0 0 rgba(20, 18, 15, 0);
+    }
+    to {
+      transform: none;
+      box-shadow: 0 18px 40px -24px rgba(20, 18, 15, 0.45);
+    }
+  }
+}
+
+/* Buttons and cards answer on the same spring. */
+.ks-press {
+  transition: transform 0.35s var(--ks-spring), box-shadow 0.35s var(--ks-spring), background 0.2s, color 0.2s;
+}
+.ks-press:hover {
+  transform: translateY(-2px);
+}
+.ks-press:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.08s;
+}
+
+/* Page changes: the clicked image grows into the next page's hero;
+   everything else slides through a short cross-fade. */
+::view-transition-old(root) {
+  animation: ks-vt-out 0.22s var(--ks-ease-out) both;
+}
+::view-transition-new(root) {
+  animation: ks-vt-in 0.38s var(--ks-ease-out) both;
+}
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: var(--ks-spring);
+}
+@keyframes ks-vt-out {
+  to { opacity: 0; transform: translateY(-10px); }
+}
+@keyframes ks-vt-in {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+/* Screen viewer opens on the spring. */
+@keyframes ks-pop {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ks-word {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+  }
+  .ks-lift,
+  .ks-press,
+  .ks-press:hover,
+  .ks-press:active {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

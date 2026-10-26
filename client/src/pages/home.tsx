@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
+import { Words, CountUp } from "@/components/motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -55,7 +56,6 @@ const ctaStyle = {
   textTransform: "uppercase" as const,
   padding: "14px 22px",
   textDecoration: "none",
-  transition: "background 0.2s, color 0.2s",
 };
 
 function SkillsMarquee() {
@@ -228,6 +228,7 @@ export default function Home() {
                 href="/contact"
                 onClick={scrollToTop}
                 data-track="hero_hire"
+                className="ks-press"
                 style={{ ...ctaStyle, background: "#C0281B", color: "#F4F1EA", boxShadow: "4px 4px 0 #14120F" }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.background = "#14120F";
@@ -243,6 +244,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-track="hero_cv"
+                className="ks-press"
                 style={{ ...ctaStyle, background: "transparent", color: "#14120F", border: "2px solid #14120F", padding: "12px 20px" }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.background = "#14120F";
@@ -462,7 +464,7 @@ export default function Home() {
                   marginBottom: 6,
                 }}
               >
-                {s.value}
+                <CountUp value={s.value} />
               </div>
               <div
                 style={{
@@ -511,7 +513,7 @@ export default function Home() {
               margin: 0,
             }}
           >
-            Featured work
+            <Words text="Featured work" />
           </h2>
           <span style={sectionNote}>One project from each side of the work</span>
         </div>
@@ -709,7 +711,7 @@ export default function Home() {
               margin: "0 0 14px",
             }}
           >
-            Got a course or an app that needs to actually work?
+            <Words text="Got a course or an app that needs to actually work?" />
           </h2>
           <p
             style={{
@@ -805,7 +807,9 @@ function CourseCard({
         }}
       >
         <div
+          className="ks-lift"
           style={{
+            viewTransitionName: `media-${href.split("/").pop()}`,
             overflow: "hidden",
             background: phones ? "#0A4D3E" : "#14120F",
             height: "clamp(220px, 24vw, 280px)",
