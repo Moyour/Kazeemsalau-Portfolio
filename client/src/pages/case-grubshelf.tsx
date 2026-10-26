@@ -1,9 +1,9 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
-import PhoneCarousel from "@/components/phone-carousel";
 import { GRUBSHELF_SCREENS } from "@/lib/product-screens";
 import { Words } from "@/components/motion";
+import { PhoneStory } from "@/components/news-motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -352,8 +352,8 @@ export default function CaseGrubShelf() {
           Pick meals &rarr; the list builds itself, split by shop &rarr; shop one shop at a time &rarr; log what it came
           to &rarr; cook a pot &rarr; use it up during the week. Each week should take about a minute of picking.
         </p>
-        <div ref={addRevealRef} data-reveal="off" style={{ marginTop: 18 }}>
-          <PhoneCarousel screens={GRUBSHELF_SCREENS} name="GrubShelf" accent="#0A4D3E" />
+        <div style={{ marginTop: 18, marginLeft: "calc(-1 * clamp(16px, 2.6vw, 30px))", marginRight: "calc(-1 * clamp(16px, 2.6vw, 30px))" }}>
+          <PhoneStory screens={GRUBSHELF_SCREENS} name="GrubShelf" kicker="The core loop" headline="Pick · List · Shop · Cook · Repeat" accent="#0A4D3E" />
           <div style={{ textAlign: "center", marginTop: 14 }}>
             <Link
               href="/design/grubshelf/screens"

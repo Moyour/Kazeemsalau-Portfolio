@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { Words } from "@/components/motion";
+import { NewsPhoto, LivingPhones, LiveSite, toReels } from "@/components/news-motion";
+import { GRUBSHELF_SCREENS, MAI_SHARA_SCREENS } from "@/lib/product-screens";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -42,7 +44,7 @@ const PRODUCTS = [
     tags: "iOS app · Product & UI design",
     description: "A meal planner for African and diaspora households in the UK. Pick your meals, get a list split by shop, know what it costs.",
     bg: "#0A4D3E",
-    phones: ["/images/grubshelf-app/this-week.jpg", "/images/grubshelf-app/welcome.jpg", "/images/grubshelf-app/list.jpg"],
+    reels: toReels(GRUBSHELF_SCREENS.map((x) => x.src)),
   },
   {
     num: "02",
@@ -51,7 +53,7 @@ const PRODUCTS = [
     tags: "Marketing site · Design & build",
     description: "The landing page for GrubShelf, built to do one thing: get people onto the waiting list.",
     bg: "#E9EFEA",
-    image: "/images/grubshelf-web/hero.jpg",
+    image: "/images/grubshelf-web/full.jpg",
   },
   {
     num: "03",
@@ -60,7 +62,7 @@ const PRODUCTS = [
     tags: "Mobile app · UX research & UI",
     description: "Schedule and track waste pick-up, pay for it and report problems. Taken from user interviews to a full prototype.",
     bg: "#FF8A4C",
-    phones: ["/images/mai-shara/register.jpg", "/images/mai-shara/home.jpg", "/images/mai-shara/wallet.jpg"],
+    reels: toReels(MAI_SHARA_SCREENS.map((x) => x.src)),
   },
 ];
 
@@ -189,43 +191,16 @@ export default function Products() {
                 className="ks-lift"
                 style={{
                   viewTransitionName: `media-${p.href.split("/").pop()}`,
+                  position: "relative",
                   background: p.bg,
                   borderBottom: "1px solid #14120F",
                   height: "clamp(220px, 24vw, 280px)",
                   overflow: "hidden",
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: 10,
-                  padding: p.phones ? "22px 16px 0" : 0,
                 }}
               >
-                {p.phones ? (
-                  p.phones.map((src, i) => (
-                    <img
-                      key={src}
-                      src={src}
-                      alt=""
-                      loading="lazy"
-                      style={{
-                        width: "31%",
-                        height: "auto",
-                        alignSelf: "flex-start",
-                        borderRadius: "14px 14px 0 0",
-                        border: "3px solid #14120F",
-                        borderBottom: "none",
-                        marginTop: i === 1 ? 0 : 22,
-                        boxShadow: "0 10px 24px rgba(0,0,0,0.3)",
-                      }}
-                    />
-                  ))
-                ) : (
-                  <img
-                    src={p.image}
-                    alt=""
-                    loading="lazy"
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", display: "block" }}
-                  />
-                )}
+                <NewsPhoto style={{ position: "absolute", inset: 0 }}>
+                  {p.reels ? <LivingPhones reels={p.reels} bg={p.bg} /> : <LiveSite src={p.image!} />}
+                </NewsPhoto>
               </div>
               <div style={{ padding: "clamp(16px, 2vw, 22px)", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
                 <span style={kicker}>

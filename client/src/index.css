@@ -209,3 +209,28 @@ a:hover {
     animation: none !important;
   }
 }
+
+/* Opening a product: the old page turns away from its left edge like a
+   newspaper page while the new one settles in underneath. */
+html[data-turn] ::view-transition-old(root) {
+  z-index: 2;
+  mix-blend-mode: normal;
+  transform-origin: 0% 50%;
+  animation: ks-turn-out 0.8s cubic-bezier(0.55, 0, 0.35, 1) both;
+}
+html[data-turn] ::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation: ks-turn-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes ks-turn-out {
+  0% { transform: perspective(2000px) rotateY(0deg); filter: brightness(1); }
+  100% { transform: perspective(2000px) rotateY(-88deg); filter: brightness(0.7); }
+}
+@keyframes ks-turn-in {
+  0% { transform: translateX(3%) scale(0.97); filter: brightness(0.8); }
+  100% { transform: none; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-turn] ::view-transition-old(root),
+  html[data-turn] ::view-transition-new(root) { animation: none !important; }
+}

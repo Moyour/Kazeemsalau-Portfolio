@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { Words, CountUp } from "@/components/motion";
+import { NewsPhoto, LivingPhones, toReels } from "@/components/news-motion";
+import { GRUBSHELF_SCREENS } from "@/lib/product-screens";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -539,7 +541,7 @@ export default function Home() {
           description="A meal planner for UK households: pick your meals, get a list split by shop, know what it costs. Taken from spec to a 53-screen prototype to a SwiftUI build."
           href="/design/grubshelf"
           page="5"
-          phones={["/images/grubshelf-app/this-week.jpg", "/images/grubshelf-app/welcome.jpg", "/images/grubshelf-app/list.jpg"]}
+          phones={toReels(GRUBSHELF_SCREENS.map((x) => x.src))}
           reverse={true}
           last={true}
           more={{ label: "All app and design work", href: "/products" }}
@@ -780,7 +782,7 @@ function CourseCard({
   href: string;
   page: string;
   image?: string;
-  phones?: string[];
+  phones?: string[][];
   reverse: boolean;
   last: boolean;
   more?: { label: string; href: string };
@@ -810,6 +812,7 @@ function CourseCard({
           className="ks-lift"
           style={{
             viewTransitionName: `media-${href.split("/").pop()}`,
+            position: "relative",
             overflow: "hidden",
             background: phones ? "#0A4D3E" : "#14120F",
             height: "clamp(220px, 24vw, 280px)",
@@ -817,43 +820,13 @@ function CourseCard({
             order: reverse ? 2 : undefined,
           }}
         >
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              transition: "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
-              display: "flex",
-              justifyContent: "center",
-              gap: 12,
-              padding: phones ? "22px 16px 0" : 0,
-              boxSizing: "border-box",
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.05)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
-          >
+          <NewsPhoto style={{ position: "absolute", inset: 0 }}>
             {phones ? (
-              phones.map((src, i) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt=""
-                  loading="lazy"
-                  style={{
-                    width: "28%",
-                    height: "auto",
-                    alignSelf: "flex-start",
-                    borderRadius: "14px 14px 0 0",
-                    border: "3px solid #14120F",
-                    borderBottom: "none",
-                    marginTop: i === 1 ? 0 : 22,
-                    boxShadow: "0 10px 24px rgba(0,0,0,0.3)",
-                  }}
-                />
-              ))
+              <LivingPhones reels={phones} bg="#0A4D3E" />
             ) : (
               <img src={image} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             )}
-          </div>
+          </NewsPhoto>
         </div>
         <div style={{ minWidth: 0, order: reverse ? 1 : undefined }}>
           <div

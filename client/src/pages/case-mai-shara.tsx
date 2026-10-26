@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
-import PhoneCarousel from "@/components/phone-carousel";
 import { MAI_SHARA_SCREENS } from "@/lib/product-screens";
 import { Words } from "@/components/motion";
+import { PhoneStory, InkRing } from "@/components/news-motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -289,26 +289,8 @@ export default function CaseMaiShara() {
               desc: "Complained about high service charge due to estimated bill from the waste management handler",
             },
           ].map((item, i) => (
-            <div
-              key={i}
-              ref={addRevealRef}
-              data-reveal="off"
-              style={{ borderTop: "1px solid #14120F", paddingTop: 14 }}
-            >
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 36,
-                  fontWeight: 900,
-                  letterSpacing: "-0.05em",
-                  color: "#C0281B",
-                  lineHeight: 1,
-                  marginBottom: 9,
-                }}
-              >
-                {item.stat}
-              </div>
-              <p style={{ fontSize: 15, lineHeight: 1.55, color: "#3A362F", margin: 0 }}>{item.desc}</p>
+            <div key={i} style={{ borderTop: "1px solid #14120F", paddingTop: 14 }}>
+              <InkRing value={parseInt(item.stat)} label={item.desc} color={["#C0281B", "#F0B442", "#14120F"][i]} />
             </div>
           ))}
         </div>
@@ -591,8 +573,8 @@ export default function CaseMaiShara() {
             Key screens
           </h2>
         </div>
-        <div ref={addRevealRef} data-reveal="off" style={{ marginBottom: 30 }}>
-          <PhoneCarousel screens={MAI_SHARA_SCREENS} name="Mai Shara" accent="#FF8A4C" />
+        <div style={{ marginBottom: 30, marginLeft: "calc(-1 * clamp(16px, 2.6vw, 30px))", marginRight: "calc(-1 * clamp(16px, 2.6vw, 30px))" }}>
+          <PhoneStory screens={MAI_SHARA_SCREENS} name="Mai Shara" kicker="Key screens" headline="Report · Recycle · Pay · Track" accent="#FF8A4C" />
         </div>
         <div
           style={{

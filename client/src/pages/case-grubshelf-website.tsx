@@ -2,6 +2,7 @@ import { useEffect, useRef, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { Words } from "@/components/motion";
+import { ScrollingSite } from "@/components/news-motion";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -131,29 +132,9 @@ export default function CaseGrubShelfWebsite() {
           Plan smarter. Waste less. One page with one job: get people on the waiting list.
         </p>
 
-        <div ref={addRevealRef} data-reveal="off" style={{ marginBottom: "clamp(30px, 4vw, 48px)" }}>
-          <a
-            href="https://grubshelf.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-track="grubshelf_web_hero"
-            style={{ display: "block", border: "1px solid #14120F", background: "#14120F", textDecoration: "none", viewTransitionName: "media-grubshelf-website" }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px" }}>
-              {["#C0281B", "#F0B442", "#2AB88A"].map((c) => (
-                <span key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />
-              ))}
-              <span style={{ marginLeft: 10, fontFamily: "Archivo, sans-serif", fontSize: 11, color: "#9C968C", letterSpacing: "0.06em" }}>
-                grubshelf.app
-              </span>
-            </div>
-            <img
-              src="/images/grubshelf-web/hero.jpg"
-              alt="The grubshelf.app home page: Plan smarter. Waste less."
-              style={{ width: "100%", height: "auto", display: "block" }}
-            />
-          </a>
-          <Figure num="1" caption="The landing page at desktop width" />
+        <div style={{ marginBottom: "clamp(30px, 4vw, 48px)", viewTransitionName: "media-grubshelf-website" }}>
+          <ScrollingSite src="/images/grubshelf-web/full.jpg" url="grubshelf.app" height={320} />
+          <Figure num="1" caption="Scroll to read the whole landing page, top to bottom" />
         </div>
       </section>
 

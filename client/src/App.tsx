@@ -145,10 +145,14 @@ function animatePageChange(e: MouseEvent) {
 
   e.preventDefault();
   e.stopPropagation();
-  document.startViewTransition(() => {
+  // Opening a product turns the page like a newspaper; other moves cross-fade.
+  const turn = /^\/(products|design)/.test(url.pathname);
+  if (turn) document.documentElement.dataset.turn = "1";
+  const vt = document.startViewTransition(() => {
     flushSync(() => navigate(url.pathname + url.search + url.hash));
     window.scrollTo(0, 0);
   });
+  vt.finished.finally(() => delete document.documentElement.dataset.turn);
 }
 
 export default function App() {
