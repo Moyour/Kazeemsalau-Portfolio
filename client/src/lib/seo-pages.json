@@ -1,0 +1,149 @@
+{
+  "base": "https://www.kazeemsalau.com",
+  "pages": {
+    "/": {
+      "name": "Home",
+      "parent": null,
+      "type": "website",
+      "title": "Kazeem Salau | Learning Experience & Product Designer",
+      "description": "Learning experience designer building SCORM courses in Storyline 360 and Rise, and product designer of iOS apps and websites. London-based, working worldwide.",
+      "image": "/images/og-default.jpg",
+      "imageAlt": "Kazeem Salau, learning experience designer and product designer"
+    },
+    "/learning": {
+      "name": "Learning Edition",
+      "parent": "/",
+      "type": "website",
+      "title": "Instructional & Learning Experience Designer | Kazeem Salau",
+      "description": "Instructional designer and learning experience designer: courses people finish, from the needs analysis to the SCORM package, in Storyline 360 and Rise.",
+      "image": "/images/og-learning.jpg",
+      "imageAlt": "Kazeem Salau, instructional designer and learning experience designer"
+    },
+    "/product": {
+      "name": "Product Edition",
+      "parent": "/",
+      "type": "website",
+      "title": "Product Designer: iOS Apps & Websites | Kazeem Salau",
+      "description": "The Product Edition: apps people use, from the first user interview to a working SwiftUI build. GrubShelf, Mai Shara and more.",
+      "image": "/images/og-product.jpg",
+      "imageAlt": "Kazeem Salau - Product Designer"
+    },
+    "/work": {
+      "name": "Learning case studies",
+      "parent": "/learning",
+      "type": "website",
+      "title": "eLearning Case Studies & SCORM Demos | Kazeem Salau",
+      "description": "Playable SCORM course demos by instructional designer Kazeem Salau, built in Storyline 360: business writing, a branching scenario and emotional intelligence.",
+      "image": "/images/business-writing-hq.jpg",
+      "imageAlt": "eLearning course portfolio showcasing SCORM demos"
+    },
+    "/work/business-writing": {
+      "name": "Business Writing",
+      "parent": "/work",
+      "type": "article",
+      "title": "Business Writing Course in Storyline 360 | Kazeem Salau",
+      "description": "A corporate business writing SCORM course built in Articulate Storyline 360: planning, structuring and editing emails, reports and proposals.",
+      "image": "/images/business-writing-hq.jpg",
+      "imageAlt": "Business Writing eLearning course built in Articulate Storyline 360"
+    },
+    "/work/the-fixer": {
+      "name": "The Fixer",
+      "parent": "/work",
+      "type": "article",
+      "title": "The Fixer: Branching Scenario eLearning | Kazeem Salau",
+      "description": "Branching scenario SCORM course with custom illustration. A policy-training game where every choice changes what happens next, built in Articulate Storyline.",
+      "image": "/images/the-fixer-hq.jpg",
+      "imageAlt": "The Fixer branching scenario eLearning course"
+    },
+    "/work/emotional-intelligence": {
+      "name": "Emotional Intelligence",
+      "parent": "/work",
+      "type": "article",
+      "title": "Emotional Intelligence eLearning Course | Kazeem Salau",
+      "description": "Scenario-led emotional intelligence SCORM course. Learners practise recognising triggers and choosing responses in realistic workplace situations.",
+      "image": "/images/emotional-intelligence-meeting.jpg",
+      "imageAlt": "Emotional Intelligence eLearning course in Articulate Storyline 360"
+    },
+    "/products": {
+      "name": "App and design",
+      "parent": "/product",
+      "type": "website",
+      "title": "Product Design Case Studies | Kazeem Salau",
+      "description": "Six product design case studies: the GrubShelf iOS app and website, Mai Shara, Leadway Health's website, the Householder journey and Pharmacy Benefit.",
+      "image": "/images/grubshelf-og.jpg",
+      "imageAlt": "Product design case studies by Kazeem Salau"
+    },
+    "/design/mai-shara": {
+      "name": "Mai Shara",
+      "parent": "/products",
+      "type": "article",
+      "title": "Mai Shara: Waste Pick-up App UX Case Study | Kazeem Salau",
+      "description": "UX research and UI design for Mai Shara, a mobile app to schedule and track waste pick-ups, pay for the service and report incidents.",
+      "image": "/images/og-mai-shara.jpg",
+      "imageAlt": "Mai Shara waste management app screens"
+    },
+    "/design/grubshelf": {
+      "name": "GrubShelf: Meals Lite",
+      "parent": "/products",
+      "type": "article",
+      "title": "GrubShelf: iOS Meal Planner Case Study | Kazeem Salau",
+      "description": "How I designed and built GrubShelf, an iOS meal planner for African and diaspora households in the UK: an LLM-first spec, a prototype and a SwiftUI build.",
+      "image": "/images/grubshelf-og.jpg",
+      "imageAlt": "GrubShelf Meals Lite product design case study"
+    },
+    "/design/grubshelf-website": {
+      "name": "GrubShelf website",
+      "parent": "/products",
+      "type": "article",
+      "title": "GrubShelf Website: Landing Page Design | Kazeem Salau",
+      "description": "Design and build of grubshelf.app, a problem-first landing page for the GrubShelf meal planner with one goal: waiting-list sign-ups.",
+      "image": "/images/grubshelf-web/hero.jpg",
+      "imageAlt": "The grubshelf.app landing page"
+    },
+    "/design/leadway-health": {
+      "name": "Leadway Health",
+      "parent": "/products",
+      "type": "article",
+      "title": "Leadway Health: Healthcare Website Design | Kazeem Salau",
+      "description": "Healthcare website design for Leadway Health, a new HMO: clear navigation, health plans, provider search and resources. A case study by Kazeem Salau.",
+      "image": "/images/leadway-health/home.jpg",
+      "imageAlt": "Leadway Health Website Design"
+    },
+    "/design/householder": {
+      "name": "Householder",
+      "parent": "/products",
+      "type": "article",
+      "title": "Householder: Home Insurance UX Case Study | Kazeem Salau",
+      "description": "Home insurance UX for Householder: a guided journey where customers choose the rooms and items to insure and see their cover. By Kazeem Salau.",
+      "image": "/images/householder/choose-items.jpg",
+      "imageAlt": "Householder home insurance journey: choosing items to insure"
+    },
+    "/design/pharmacy-benefit": {
+      "name": "Pharmacy Benefit",
+      "parent": "/products",
+      "type": "article",
+      "title": "Pharmacy Benefit: HMO Software UX Design | Kazeem Salau",
+      "description": "Redesigning an HMO management system for healthcare administration: dashboards, members and pharmacy records. A healthcare UX case study.",
+      "image": "/images/pharmacy-benefit/dashboard.jpg",
+      "imageAlt": "Pharmacy Benefit HMO management dashboard"
+    },
+    "/about": {
+      "name": "About",
+      "parent": "/",
+      "type": "profile",
+      "title": "About Kazeem Salau | Learning Experience & Product Designer",
+      "description": "Instructional designer, learning experience designer and product designer in London. Twelve years of Storyline 360, Rise, user research, UI design and SwiftUI.",
+      "image": "/images/og-default.jpg",
+      "imageAlt": "Kazeem Salau, learning experience designer and product designer"
+    },
+    "/contact": {
+      "name": "Hire",
+      "parent": "/",
+      "type": "website",
+      "title": "Hire Kazeem Salau | Learning Experience & Product Designer",
+      "description": "Hire Kazeem Salau for a course, an app or a website: learning experience design in Storyline 360 and Rise, and product design. Full-time or freelance.",
+      "image": "/images/og-default.jpg",
+      "imageAlt": "Contact Kazeem Salau, instructional designer, learning experience designer and product designer"
+    }
+  }
+}

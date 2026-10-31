@@ -1,7 +1,9 @@
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { Words } from "@/components/motion";
+import Crossword from "@/components/crossword";
+import CareerTimeline from "@/components/career-timeline";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -9,7 +11,7 @@ function scrollToTop() {
 
 const kicker: CSSProperties = {
   fontFamily: "Archivo, sans-serif",
-  fontSize: 10,
+  fontSize: 11,
   fontWeight: 700,
   letterSpacing: "0.2em",
   textTransform: "uppercase",
@@ -17,12 +19,12 @@ const kicker: CSSProperties = {
 
 const boxLabel: CSSProperties = {
   ...kicker,
-  borderBottom: "1px solid #14120F",
+  borderBottom: "1px solid var(--ink)",
   paddingBottom: 9,
   marginBottom: 14,
 };
 
-const body: CSSProperties = { fontSize: 17, lineHeight: 1.6, margin: "0 0 14px", color: "#3A362F" };
+const body: CSSProperties = { fontSize: 17, lineHeight: 1.6, margin: "0 0 14px", color: "var(--body)" };
 
 const h2Style: CSSProperties = {
   fontFamily: "Archivo, sans-serif",
@@ -134,11 +136,14 @@ const CAREER = [
   },
 ];
 
-const TRACK_COLOR: Record<string, string> = { Learning: "#C0281B", Product: "#0A4D3E", Design: "#5F5A50" };
+const TRACK_COLOR: Record<string, string> = { Learning: "var(--accent)", Product: "#0A4D3E", Design: "var(--muted)" };
 
 export default function About() {
   useSEO("/about");
   const revealRefs = useRef<HTMLElement[]>([]);
+  const [track, setTrack] = useState("All");
+  // The role being pointed at, in the timeline or the list.
+  const [focus, setFocus] = useState<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -160,9 +165,10 @@ export default function About() {
   return (
     <div>
       <section style={{ padding: "clamp(24px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) 0" }}>
-        <div style={{ ...kicker, letterSpacing: "0.22em", color: "#C0281B", marginBottom: 14 }}>Page 6 &middot; Profile</div>
+        <div style={{ ...kicker, letterSpacing: "0.22em", color: "var(--accent)", marginBottom: 14 }}>Page 6 &middot; Profile</div>
 
         <h1
+          className="ks-page-h1"
           style={{
             fontFamily: "Archivo, sans-serif",
             fontWeight: 900,
@@ -181,7 +187,7 @@ export default function About() {
             fontSize: "clamp(18px, 2vw, 23px)",
             lineHeight: 1.4,
             fontStyle: "italic",
-            color: "#3A362F",
+            color: "var(--body)",
             margin: "0 0 20px",
             maxWidth: "56ch",
           }}
@@ -199,13 +205,15 @@ export default function About() {
             alignItems: "center",
             gap: 14,
             padding: "10px 0",
-            borderTop: "1px solid #14120F",
-            borderBottom: "4px solid #14120F",
-            color: "#5F5A50",
+            borderTop: "1px solid var(--ink)",
+            borderBottom: "4px solid var(--ink)",
+            color: "var(--muted)",
             marginBottom: 26,
           }}
         >
-          <span style={{ color: "#14120F" }}>Kazeem Salau</span>
+          <span style={{ color: "var(--ink)" }}>Kazeem Salau</span>
+          <span>&middot;</span>
+          <span>Instructional designer</span>
           <span>&middot;</span>
           <span>Learning experience designer</span>
           <span>&middot;</span>
@@ -225,7 +233,7 @@ export default function About() {
         >
           {/* Left: intro + disciplines */}
           <div style={{ minWidth: 0 }}>
-            <div className="ks-cols" style={{ columns: 2, columnGap: 34, columnRule: "1px solid #CFC9BB" }}>
+            <div className="ks-cols" style={{ columns: 2, columnGap: 34, columnRule: "1px solid var(--rule)" }}>
               <p style={body}>
                 I started in 2014 as a graphic designer building eLearning, and grew into instructional design: nine years
                 at Leadway Assurance and TM Forum defining courses end to end, from the learning needs analysis to the
@@ -259,7 +267,7 @@ export default function About() {
                   key={d.num}
                   ref={addRevealRef}
                   data-reveal="off"
-                  style={{ border: "1px solid #14120F", padding: 18, display: "flex", flexDirection: "column" }}
+                  style={{ border: "1px solid var(--ink)", padding: 18, display: "flex", flexDirection: "column" }}
                 >
                   <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
                     <span
@@ -268,7 +276,7 @@ export default function About() {
                         fontWeight: 900,
                         fontSize: 26,
                         letterSpacing: "-0.05em",
-                        color: "#C0281B",
+                        color: "var(--accent)",
                         lineHeight: 1,
                       }}
                     >
@@ -276,17 +284,17 @@ export default function About() {
                     </span>
                     <span style={{ ...h2Style, fontSize: 20 }}>{d.title}</span>
                   </div>
-                  <p style={{ fontSize: 15, lineHeight: 1.5, fontStyle: "italic", color: "#3A362F", margin: "0 0 14px" }}>
+                  <p style={{ fontSize: 15, lineHeight: 1.5, fontStyle: "italic", color: "var(--body)", margin: "0 0 14px" }}>
                     {d.lead}
                   </p>
                   <div style={{ ...boxLabel, marginBottom: 10 }}>Practice</div>
-                  <ul style={{ margin: "0 0 16px", paddingLeft: 18, fontSize: 15, lineHeight: 1.6, color: "#3A362F" }}>
+                  <ul style={{ margin: "0 0 16px", paddingLeft: 18, fontSize: 15, lineHeight: 1.6, color: "var(--body)" }}>
                     {d.practice.map((x) => (
                       <li key={x}>{x}</li>
                     ))}
                   </ul>
                   <div style={{ ...boxLabel, marginBottom: 10 }}>Tools</div>
-                  <p style={{ fontSize: 15, lineHeight: 1.6, color: "#3A362F", margin: "0 0 16px", flex: 1 }}>{d.tools}</p>
+                  <p style={{ fontSize: 15, lineHeight: 1.6, color: "var(--body)", margin: "0 0 16px", flex: 1 }}>{d.tools}</p>
                   <Link
                     href={d.href}
                     onClick={scrollToTop}
@@ -294,9 +302,9 @@ export default function About() {
                       ...kicker,
                       fontSize: 11,
                       letterSpacing: "0.14em",
-                      color: "#C0281B",
+                      color: "var(--accent)",
                       textDecoration: "none",
-                      borderBottom: "1px solid #C0281B",
+                      borderBottom: "1px solid var(--accent)",
                       paddingBottom: 2,
                       alignSelf: "flex-start",
                     }}
@@ -311,14 +319,7 @@ export default function About() {
           {/* Right column */}
           <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>
             <div>
-              <div
-                style={{
-                  height: "clamp(280px, 32vw, 360px)",
-                  background: "#C0281B",
-                  overflow: "hidden",
-                  border: "1px solid #14120F",
-                }}
-              >
+              <div style={{ height: "clamp(280px, 32vw, 360px)", background: "var(--accent)", border: "1px solid var(--ink)", overflow: "hidden" }}>
                 <img
                   src="/images/portrait.png"
                   alt="Kazeem Salau"
@@ -334,18 +335,18 @@ export default function About() {
                   gap: 8,
                   paddingTop: 7,
                   paddingBottom: 8,
-                  color: "#5F5A50",
-                  borderBottom: "1px solid #CFC9BB",
+                  color: "var(--muted)",
+                  borderBottom: "1px solid var(--rule)",
                 }}
               >
-                <span style={{ color: "#C0281B" }}>Fig. 2</span>
+                <span style={{ color: "var(--accent)" }}>Fig. 2</span>
                 <span>The designer at work</span>
               </div>
             </div>
 
-            <div ref={addRevealRef} data-reveal="off" style={{ border: "1px solid #14120F", padding: 18 }}>
+            <div ref={addRevealRef} data-reveal="off" style={{ border: "1px solid var(--ink)", padding: 18 }}>
               <div style={boxLabel}>Currently open to work</div>
-              <p style={{ fontSize: 16, lineHeight: 1.6, color: "#3A362F", margin: "0 0 16px" }}>
+              <p style={{ fontSize: 16, lineHeight: 1.6, color: "var(--body)", margin: "0 0 16px" }}>
                 Full-time instructional design, learning experience and product design roles, plus select freelance
                 projects.
               </p>
@@ -359,14 +360,14 @@ export default function About() {
                   gap: 9,
                 }}
               >
-                <Link href="/contact" onClick={scrollToTop} style={{ color: "#C0281B", textDecoration: "none" }}>
+                <Link href="/contact" onClick={scrollToTop} style={{ color: "var(--accent)", textDecoration: "none" }}>
                   Get in touch &rarr;
                 </Link>
                 <a
                   href="https://linkedin.com/in/kazeem-salau-164b1087"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: "#C0281B", textDecoration: "none" }}
+                  style={{ color: "var(--accent)", textDecoration: "none" }}
                 >
                   LinkedIn
                 </a>
@@ -374,16 +375,16 @@ export default function About() {
                   href="/files/KazeemSalau-InstructionalDesign.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: "#C0281B", textDecoration: "none" }}
+                  style={{ color: "var(--accent)", textDecoration: "none" }}
                 >
                   Download resume (PDF)
                 </a>
               </div>
             </div>
 
-            <div ref={addRevealRef} data-reveal="off" style={{ border: "1px solid #14120F", padding: 18 }}>
+            <div ref={addRevealRef} data-reveal="off" style={{ border: "1px solid var(--ink)", padding: 18 }}>
               <div style={boxLabel}>Education</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, fontSize: 16, lineHeight: 1.45, color: "#3A362F" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, fontSize: 16, lineHeight: 1.45, color: "var(--body)" }}>
                 <span>B.Sc. Computer Science</span>
                 <span>Professional Certificate in Instructional Design</span>
                 <span>Design Thinking, Interaction Design Foundation</span>
@@ -402,34 +403,42 @@ export default function About() {
             gap: "10px 20px",
             alignItems: "baseline",
             justifyContent: "space-between",
-            borderTop: "4px solid #14120F",
+            borderTop: "4px solid var(--ink)",
             paddingTop: 14,
             marginBottom: 6,
           }}
         >
           <h2 style={h2Style}><Words text="Career" /></h2>
-          <div style={{ ...kicker, display: "flex", gap: 16, color: "#5F5A50" }}>
-            {Object.entries(TRACK_COLOR).map(([t, c]) => (
-              <span key={t} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: c }} />
+          {/* The legend doubles as a filter: pick a track to bring its roles forward. */}
+          <div className="ab-tracks" role="group" aria-label="Show roles by track">
+            {[["All", "var(--ink)"], ...Object.entries(TRACK_COLOR)].map(([t, c]) => (
+              <button key={t} type="button" aria-pressed={track === t} onClick={() => setTrack(t)}>
+                <span style={{ background: c }} />
                 {t}
-              </span>
+              </button>
             ))}
           </div>
         </div>
+        <CareerTimeline roles={CAREER} colors={TRACK_COLOR} focus={focus} dimTrack={track} onFocus={setFocus} />
         <div>
-          {CAREER.map((job) => (
+          {CAREER.map((job, i) => (
             <div
+              id={`role-${i}`}
+              onMouseEnter={() => setFocus(i)}
+              onMouseLeave={() => setFocus(null)}
+              data-focus={focus === i ? "1" : undefined}
               key={job.role + job.dates}
               ref={addRevealRef}
               data-reveal="off"
-              className="ks-two"
+              className="ks-two ab-job"
+              data-dim={track !== "All" && job.track !== track ? "1" : undefined}
               style={{
                 display: "grid",
                 gridTemplateColumns: "minmax(200px, 1fr) minmax(0, 2.2fr)",
                 gap: "6px clamp(16px, 2.6vw, 34px)",
                 padding: "18px 0",
-                borderBottom: "1px solid #CFC9BB",
+                borderBottom: "1px solid var(--rule)",
+                ["--track" as string]: TRACK_COLOR[job.track],
               }}
             >
               <div>
@@ -446,7 +455,7 @@ export default function About() {
                 >
                   {job.org}
                 </div>
-                <div style={{ fontSize: 15, fontStyle: "italic", color: "#3A362F", marginTop: 4 }}>{job.role}</div>
+                <div style={{ fontSize: 15, fontStyle: "italic", color: "var(--body)", marginTop: 4 }}>{job.role}</div>
               </div>
               <ul
                 style={{
@@ -454,7 +463,7 @@ export default function About() {
                   paddingLeft: 18,
                   fontSize: 16,
                   lineHeight: 1.6,
-                  color: "#3A362F",
+                  color: "var(--body)",
                   minWidth: 0,
                 }}
               >
@@ -475,7 +484,7 @@ export default function About() {
       >
         <div
           style={{
-            borderTop: "4px solid #14120F",
+            borderTop: "4px solid var(--ink)",
             paddingTop: 10,
             marginBottom: 22,
           }}
@@ -525,7 +534,7 @@ export default function About() {
               style={{
                 margin: 0,
                 paddingRight: i < arr.length - 1 ? "clamp(0px, 2vw, 24px)" : 0,
-                borderRight: i < arr.length - 1 ? "1px solid #CFC9BB" : "none",
+                borderRight: i < arr.length - 1 ? "1px solid var(--rule)" : "none",
               }}
             >
               <p style={{ fontSize: 17, lineHeight: 1.55, margin: "0 0 12px" }}>
@@ -534,11 +543,11 @@ export default function About() {
               <div
                 style={{
                   fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
+                  fontSize: 11,
                   fontWeight: 700,
                   letterSpacing: "0.16em",
                   textTransform: "uppercase" as const,
-                  color: "#5F5A50",
+                  color: "var(--muted)",
                 }}
               >
                 {t.name} &middot; {t.role}
@@ -546,6 +555,25 @@ export default function About() {
             </blockquote>
           ))}
         </div>
+      </section>
+
+      {/* Puzzles */}
+      <section
+        ref={addRevealRef}
+        data-reveal="off"
+        style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(30px, 4vw, 52px)" }}
+      >
+        <div style={{ borderTop: "4px solid var(--ink)", paddingTop: 10, marginBottom: 6 }}>
+          <span style={{ ...kicker, color: "var(--accent)" }}>Puzzles &middot; Page 14</span>
+          <h2 style={{ ...h2Style, marginTop: 6 }}>
+            <Words text="The setter's crossword" />
+          </h2>
+        </div>
+        <p style={{ ...body, maxWidth: "60ch", marginBottom: 20 }}>
+          Every answer is a tool or method I use. Click a square and type; click it again to turn between across
+          and down.
+        </p>
+        <Crossword />
       </section>
     </div>
   );

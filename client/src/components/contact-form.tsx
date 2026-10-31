@@ -15,11 +15,11 @@ const REASONS = [
 const labelStyle = {
   display: "block",
   fontFamily: "Archivo, sans-serif",
-  fontSize: 10,
+  fontSize: 11,
   fontWeight: 700,
   letterSpacing: "0.18em",
   textTransform: "uppercase" as const,
-  color: "#5F5A50",
+  color: "var(--muted)",
   marginBottom: 6,
 };
 
@@ -28,9 +28,9 @@ const inputStyle = {
   boxSizing: "border-box" as const,
   fontFamily: "Newsreader, Georgia, serif",
   fontSize: 17,
-  color: "#14120F",
-  background: "#FBF9F4",
-  border: "1px solid #14120F",
+  color: "var(--ink)",
+  background: "var(--paper-2)",
+  border: "1px solid var(--ink)",
   borderRadius: 0,
   padding: "11px 12px",
   outline: "none",
@@ -81,7 +81,7 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
         >
           Thanks, it&rsquo;s with me.
         </div>
-        <p style={{ fontSize: 17, lineHeight: 1.6, color: "#3A362F", margin: 0 }}>
+        <p style={{ fontSize: 17, lineHeight: 1.6, color: "var(--body)", margin: 0 }}>
           I usually reply the same day. Keep an eye on your inbox, and your spam folder just in case.
         </p>
       </div>
@@ -108,9 +108,9 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
                 textTransform: "uppercase" as const,
                 padding: "9px 12px",
                 cursor: "pointer",
-                border: "1px solid #14120F",
-                background: active ? "#14120F" : "transparent",
-                color: active ? "#F4F1EA" : "#14120F",
+                border: "1px solid var(--ink)",
+                background: active ? "var(--ink)" : "transparent",
+                color: active ? "var(--paper)" : "var(--ink)",
               }}
             >
               {r}
@@ -153,23 +153,23 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
             letterSpacing: "0.14em",
             textTransform: "uppercase" as const,
             padding: "14px 26px",
-            background: "#C0281B",
-            color: "#F4F1EA",
+            background: "var(--accent)",
+            color: "var(--paper)",
             border: "none",
-            boxShadow: "4px 4px 0 #14120F",
+            boxShadow: "4px 4px 0 var(--ink)",
             cursor: status === "sending" ? "wait" : "pointer",
             opacity: status === "sending" ? 0.7 : 1,
           }}
         >
           {status === "sending" ? "Sending…" : "Send message →"}
         </button>
-        <span style={{ fontSize: 14, fontStyle: "italic", color: "#5F5A50" }}>Usually answered the same day.</span>
+        <span style={{ fontSize: 14, fontStyle: "italic", color: "var(--muted)" }}>Usually answered the same day.</span>
       </div>
 
       {status === "error" && (
-        <p role="alert" style={{ fontSize: 15, color: "#C0281B", margin: 0 }}>
+        <p role="alert" style={{ fontSize: 15, color: "var(--accent)", margin: 0 }}>
           That didn&rsquo;t send. Please email me directly at{" "}
-          <a href={`mailto:${fallbackEmail}`} style={{ color: "#C0281B" }}>
+          <a href={`mailto:${fallbackEmail}`} style={{ color: "var(--accent)" }}>
             {fallbackEmail}
           </a>
           .

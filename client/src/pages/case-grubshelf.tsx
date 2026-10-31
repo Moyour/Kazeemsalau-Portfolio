@@ -1,27 +1,14 @@
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
-import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
+import YourCalls from "@/components/your-call";
+import { CALLS } from "@/lib/calls";
 import { GRUBSHELF_SCREENS } from "@/lib/product-screens";
-import { Words } from "@/components/motion";
-import { PhoneStory } from "@/components/news-motion";
+import { CountUp } from "@/components/motion";
+import GrubShelfWeek from "@/components/grubshelf-week";
+import { Flap, PopUp } from "@/components/living-paper";
+import { CodeCard, FrictionNote, ProblemEvidence, PrototypeSheet, SpecSheet } from "@/components/grubshelf-artifacts";
+import { CaseHeader, CaseNext, CaseSection, PhoneHero, ScreenStrip, ShortVersion } from "@/components/case-kit";
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-
-const kicker: CSSProperties = {
-  fontFamily: "Archivo, sans-serif",
-  fontSize: 10,
-  fontWeight: 700,
-  letterSpacing: "0.2em",
-  textTransform: "uppercase",
-  color: "#5F5A50",
-};
-
-const body: CSSProperties = { fontSize: 17, lineHeight: 1.6, color: "#3A362F", margin: "0 0 14px" };
-
-const sectionPad: CSSProperties = { padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" };
+// GrubShelf: Meals Lite, in the site's one case-study layout.
 
 const facts = [
   { num: "53", label: "Screens mocked up before build" },
@@ -65,237 +52,57 @@ const metrics = [
   { metric: "Pot check-ins answered", target: "Low = too many prompts" },
 ];
 
-function SectionHead({ num, title, addRef }: { num: string; title: string; addRef: (el: HTMLElement | null) => void }) {
-  return (
-    <div ref={addRef} data-reveal="off" style={{ borderTop: "4px solid #14120F", paddingTop: 18, marginBottom: 20 }}>
-      <div style={{ ...kicker, color: "#C0281B", marginBottom: 8 }}>{num}</div>
-      <h2
-        style={{
-          fontFamily: "Archivo, sans-serif",
-          fontWeight: 900,
-          fontSize: "clamp(20px, 2.6vw, 32px)",
-          lineHeight: 1,
-          letterSpacing: "-0.03em",
-          textTransform: "uppercase",
-          margin: 0,
-        }}
-      >
-        {title}
-      </h2>
-    </div>
-  );
-}
-
-function Cols({ children }: { children: ReactNode }) {
-  return (
-    <div className="ks-cols" style={{ columns: 2, columnGap: 34, columnRule: "1px solid #CFC9BB" }}>
-      {children}
-    </div>
-  );
-}
+const STRIP = ["Pick this week", "List", "Shopping mode", "Your shelf"].map((t) => GRUBSHELF_SCREENS.find((x) => x.title === t)!);
 
 export default function CaseGrubShelf() {
   useSEO("/design/grubshelf");
-  const revealRefs = useRef<HTMLElement[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.setAttribute("data-reveal", "in");
-        });
-      },
-      { threshold: 0.1 }
-    );
-    revealRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  function addRevealRef(el: HTMLElement | null) {
-    if (el && !revealRefs.current.includes(el)) revealRefs.current.push(el);
-  }
 
   return (
-    <div>
-      {/* Header */}
-      <section style={{ padding: "clamp(24px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) 0" }}>
-        <Link href="/products" onClick={scrollToTop} style={{ ...kicker, letterSpacing: "0.18em", textDecoration: "none" }}>
-          &larr; App and design
-        </Link>
+    <article>
+      <CaseHeader
+        back={{ href: "/products", label: "All app and design work" }}
+        tags={["iOS", "Product design", "AI-first workflow"]}
+        title="GrubShelf: Meals Lite"
+        deck="Pick your meals. Get your list. Know what it costs. A meal planner built for how African and diaspora households in the UK actually cook and shop."
+        byline={["Founder & product designer", "2026", <span key="s" className="cs-accent">Status: built, in founder testing</span>]}
+        heroStyle={{ background: "#04342C", viewTransitionName: "media-grubshelf" }}
+        hero={
+          <PhoneHero
+            label="GrubShelf screens: the shopping list split by shop, a jollof rice meal priced per plate, and the kitchen"
+            srcs={["list", "meal", "kitchen"].map((n) => `/images/grubshelf-meals-lite/${n}.jpg`)}
+          />
+        }
+      />
 
-        <div
-          style={{
-            ...kicker,
-            letterSpacing: "0.18em",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 14,
-            margin: "22px 0 14px",
-          }}
-        >
-          <span style={{ color: "#C0281B" }}>Case study</span>
-          <span>iOS</span>
-          <span>&middot;</span>
-          <span>Product design</span>
-          <span>&middot;</span>
-          <span>AI-first workflow</span>
-        </div>
+      <ShortVersion
+        problem="Meal planners assume one supermarket and a fresh dinner every night. Diaspora households cook in pots and shop at two kinds of shop."
+        role="Founder and product designer: the spec, the design, and the build with Claude Code."
+        did="A meal planner where the shopping list builds itself from the week's meals, split by shop and priced."
+        result="Built, through QA, and in founder testing with its first community. Not launched yet."
+      />
 
-        <h1
-          style={{
-            fontFamily: "Archivo, sans-serif",
-            fontWeight: 900,
-            fontSize: "clamp(36px, 6.4vw, 84px)",
-            lineHeight: 0.92,
-            letterSpacing: "-0.04em",
-            textTransform: "uppercase",
-            margin: "0 0 18px",
-          }}
-        >
-          <Words text="GrubShelf: Meals Lite" />
-        </h1>
-
-        <p
-          style={{
-            fontSize: "clamp(18px, 2vw, 23px)",
-            lineHeight: 1.4,
-            fontStyle: "italic",
-            color: "#3A362F",
-            maxWidth: "56ch",
-            margin: "0 0 20px",
-          }}
-        >
-          Pick your meals. Get your list. Know what it costs. A meal planner built for how African and diaspora households
-          in the UK actually cook and shop.
+      <CaseSection part="challenge">
+        <p className="cs-lead">Meal planners aren&rsquo;t built for how many diaspora households eat.</p>
+        <p className="cs-p">
+          They assume one supermarket, recipes with exact amounts and a fresh dinner every night. Many Nigerian and diaspora
+          households in the UK cook a big pot of stew or egusi and eat it over several days with different sides. They mix
+          Nigerian and British food, and shop at two kinds of shop: a supermarket and an afro shop.
         </p>
+        <p className="cs-p">
+          The previous version of the product had been cut down to just a shopping list. Using it showed why that wasn&rsquo;t
+          enough: meals are the reason a list exists, and you can&rsquo;t say what your dinners cost without them.
+        </p>
+        <p className="cs-p">
+          <strong style={{ color: "var(--ink)" }}>The rule I set:</strong> meals exist only to feed the list and give it a
+          price. If a feature doesn&rsquo;t do one of those, it&rsquo;s out.
+        </p>
+        <ProblemEvidence />
+        <YourCalls calls={CALLS["grubshelf"]} />
+      </CaseSection>
 
-        <div
-          style={{
-            ...kicker,
-            letterSpacing: "0.18em",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 14,
-            padding: "10px 0",
-            borderTop: "1px solid #14120F",
-            borderBottom: "1px solid #14120F",
-          }}
-        >
-          <span style={{ color: "#14120F" }}>By Kazeem Salau</span>
-          <span>Role: founder &amp; product designer</span>
-          <span>2026</span>
-          <span style={{ color: "#C0281B" }}>Status: built, in founder testing</span>
-        </div>
-
-        {/* Hero screens */}
-        <div
-          style={{
-            viewTransitionName: "media-grubshelf",
-            background: "#04342C",
-            border: "1px solid #14120F",
-            marginTop: 22,
-            padding: "clamp(18px, 3vw, 36px) clamp(12px, 2vw, 28px) 0",
-            display: "flex",
-            justifyContent: "center",
-            gap: "clamp(10px, 2vw, 26px)",
-            overflow: "hidden",
-          }}
-        >
-          {["list.jpg", "meal.jpg", "kitchen.jpg"].map((src, i) => (
-            <img
-              key={src}
-              src={`/images/grubshelf-meals-lite/${src}`}
-              alt=""
-              style={{
-                width: "clamp(96px, 24%, 260px)",
-                height: "auto",
-                display: "block",
-                borderRadius: "18px 18px 0 0",
-                marginTop: i === 1 ? 0 : "clamp(14px, 3vw, 40px)",
-                boxShadow: "0 12px 30px rgba(0,0,0,0.35)",
-              }}
-            />
-          ))}
-        </div>
-        <div
-          style={{
-            ...kicker,
-            fontWeight: 600,
-            letterSpacing: "0.1em",
-            display: "flex",
-            gap: 8,
-            paddingTop: 7,
-            paddingBottom: 8,
-            borderBottom: "1px solid #CFC9BB",
-            marginBottom: 26,
-          }}
-        >
-          <span style={{ color: "#C0281B" }}>Fig. 1</span>
-          <span>The list, a meal and the kitchen, from the working build</span>
-        </div>
-
-        {/* Facts */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
-            gap: 22,
-            marginBottom: "clamp(26px, 3.4vw, 42px)",
-          }}
-        >
-          {facts.map((f) => (
-            <div key={f.label} ref={addRevealRef} data-reveal="off" style={{ borderTop: "1px solid #14120F", paddingTop: 12 }}>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontWeight: 900,
-                  fontSize: "clamp(34px, 4vw, 48px)",
-                  letterSpacing: "-0.05em",
-                  lineHeight: 1,
-                  color: "#C0281B",
-                  marginBottom: 6,
-                }}
-              >
-                {f.num}
-              </div>
-              <div style={{ fontSize: 15, lineHeight: 1.45, color: "#3A362F" }}>{f.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 01 Problem */}
-      <section style={sectionPad}>
-        <SectionHead num="01" title="The problem" addRef={addRevealRef} />
-        <Cols>
-          <p style={body}>
-            Meal planners assume one supermarket, recipes with exact amounts and a fresh dinner every night. That isn&rsquo;t
-            how many Nigerian and diaspora households in the UK eat. They cook a big pot of stew or egusi and eat it over
-            several days with different sides. They eat three meals a day, mix Nigerian and British food, and shop at two
-            kinds of shop: a supermarket and an afro shop.
-          </p>
-          <p style={body}>
-            The previous version of the product had been cut down to just a shopping list. Using it showed why that
-            wasn&rsquo;t enough: meals are the reason a list exists, and you can&rsquo;t say what your dinners cost without
-            them. So meals came back, but lightly: no recipes to follow, no calendar, no calorie counting.
-          </p>
-          <p style={{ ...body, margin: 0 }}>
-            <strong style={{ color: "#14120F" }}>The rule I set:</strong> meals exist only to feed the list and give it a
-            price. If a feature doesn&rsquo;t do one of those, it&rsquo;s out.
-          </p>
-        </Cols>
-      </section>
-
-      {/* 02 Process */}
-      <section style={sectionPad}>
-        <SectionHead num="02" title="How I worked: LLM first, then prototype, then build" addRef={addRevealRef} />
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 22,
-          }}
-        >
+      <CaseSection part="approach">
+        <p className="cs-lead">LLM first, then prototype, then build.</p>
+        <div className="lp-steps">
           {[
             {
               step: "Spec with an LLM",
@@ -314,14 +121,20 @@ export default function CaseGrubShelf() {
               text: "Each test pass ended in a friction list with fixes. The UI moved from glass-and-outline styles to solid cards because the glass looked nice but was harder to read. Every option shown to the user comes with a recommended default.",
             },
           ].map((s, i) => (
-            <div key={s.step} ref={addRevealRef} data-reveal="off" style={{ borderTop: "1px solid #14120F", paddingTop: 14 }}>
+            <div key={s.step}>
+              <div className="lp-step-art">
+                <PopUp delay={i * 0.12} tilt={[-2, 1.5, -1, 2][i]}>
+                  {[<SpecSheet />, <PrototypeSheet />, <CodeCard />, <FrictionNote />][i]}
+                </PopUp>
+              </div>
+            <div style={{ borderTop: "1px solid var(--ink)", paddingTop: 14 }}>
               <div
                 style={{
                   fontFamily: "Archivo, sans-serif",
                   fontSize: 26,
                   fontWeight: 900,
                   letterSpacing: "-0.05em",
-                  color: "#C0281B",
+                  color: "var(--accent)",
                   lineHeight: 1,
                   marginBottom: 9,
                 }}
@@ -339,240 +152,106 @@ export default function CaseGrubShelf() {
               >
                 {s.step}
               </div>
-              <p style={{ fontSize: 15, lineHeight: 1.55, color: "#3A362F", margin: 0 }}>{s.text}</p>
+              <p style={{ fontSize: 15, lineHeight: 1.55, color: "var(--body)", margin: 0 }}>{s.text}</p>
+            </div>
             </div>
           ))}
         </div>
-      </section>
+      </CaseSection>
 
-      {/* 03 Screens */}
-      <section style={sectionPad}>
-        <SectionHead num="03" title="The core loop" addRef={addRevealRef} />
-        <p style={{ ...body, maxWidth: "62ch" }}>
-          Pick meals &rarr; the list builds itself, split by shop &rarr; shop one shop at a time &rarr; log what it came
-          to &rarr; cook a pot &rarr; use it up during the week. Each week should take about a minute of picking.
+      <CaseSection part="solution">
+        <p className="cs-lead">Pick meals, and the list builds itself.</p>
+        <p className="cs-p">
+          The list splits by shop. You shop one shop at a time, log what it came to, cook a pot and use it up during the week.
+          Each week should take about a minute of picking.
         </p>
-        <div style={{ marginTop: 18, marginLeft: "calc(-1 * clamp(16px, 2.6vw, 30px))", marginRight: "calc(-1 * clamp(16px, 2.6vw, 30px))" }}>
-          <PhoneStory screens={GRUBSHELF_SCREENS} name="GrubShelf" kicker="The core loop" headline="Pick · List · Shop · Cook · Repeat" accent="#0A4D3E" />
-          <div style={{ textAlign: "center", marginTop: 14 }}>
-            <Link
-              href="/design/grubshelf/screens"
-              onClick={scrollToTop}
-              data-track="grubshelf_carousel_all"
-              style={{ ...kicker, fontSize: 11, color: "#C0281B", textDecoration: "none", borderBottom: "1px solid #C0281B", paddingBottom: 2 }}
-            >
-              See all 70 screens &rarr;
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 04 Decisions */}
-      <section style={sectionPad}>
-        <SectionHead num="04" title="Key decisions, and why" addRef={addRevealRef} />
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: 0,
-            border: "1px solid #14120F",
-          }}
-        >
-          {decisions.map((d) => (
-            <div
+        <ScreenStrip screens={STRIP} />
+        <h3 className="cs-h3">Six decisions, and why</h3>
+        <p className="cs-p">Lift a flap to read why.</p>
+        <div className="lp-flaps">
+          {decisions.map((d, i) => (
+            <Flap
               key={d.call}
-              ref={addRevealRef}
-              data-reveal="off"
-              style={{ padding: "clamp(14px, 1.8vw, 20px)", borderRight: "1px solid #CFC9BB", borderBottom: "1px solid #CFC9BB" }}
-            >
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontWeight: 900,
-                  fontSize: 17,
-                  letterSpacing: "-0.01em",
-                  textTransform: "uppercase",
-                  marginBottom: 8,
-                }}
-              >
-                {d.call}
-              </div>
-              <p style={{ fontSize: 15, lineHeight: 1.55, color: "#3A362F", margin: 0 }}>{d.why}</p>
+              label={d.call}
+              front={
+                <>
+                  <span className="lp-flap-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="lp-flap-call">{d.call}</span>
+                  <span className="lp-flap-hint">Lift to read why &uarr;</span>
+                </>
+              }
+              back={d.why}
+            />
+          ))}
+        </div>
+      </CaseSection>
+
+      <CaseSection part="tryIt">
+        <p className="cs-lead">Plan a week.</p>
+        <p className="cs-p">The app&rsquo;s core loop, on the page: put dinners on days and watch the list build itself.</p>
+        <div className="ks-try">
+          <GrubShelfWeek />
+        </div>
+        <a href="https://grubshelf.app" target="_blank" rel="noopener noreferrer" className="cs-link" data-track="grubshelf_site">
+          grubshelf.app &#8599;
+        </a>
+      </CaseSection>
+
+      <CaseSection part="outcome">
+        <p className="cs-lead">Built and in founder testing. It hasn&rsquo;t launched, so these are the build&rsquo;s numbers, not results.</p>
+        <div className="cs-facts">
+          {facts.map((f) => (
+            <div key={f.label}>
+              <b>
+                <CountUp value={f.num} />
+              </b>
+              <span>{f.label}</span>
             </div>
           ))}
         </div>
-      </section>
-
-      {/* 05 Shipping */}
-      <section style={sectionPad}>
-        <SectionHead num="05" title="Staying in it through QA and release" addRef={addRevealRef} />
-        <Cols>
-          <p style={body}>
-            Apple rejected the first version under guideline 4.0. After Sign in with Apple, it asked for a name that Apple
-            had already provided. I removed the prompt, then wrote an App Review checklist that every submission now goes
-            through: never re-ask for what Sign in with Apple gives you, never hard-code prices, and never advertise
-            unbuilt features on the paywall.
-          </p>
-          <p style={body}>
-            Before release I called a feature freeze. The rules: no new features until the pre-release list is done, one
-            stable build for testing, and one final submission with the subscriptions sorted first. Risky clean-up happens on
-            a separate branch.
-          </p>
-          <p style={{ ...body, margin: 0 }}>
-            Engineering-aware calls along the way: debug, staging and production environments; features behind
-            remote-config flags; Premium limits on the free plan (15 meals, 2 household members); prices read live from
-            StoreKit; and a 460-test suite plus a UI tour that screenshots every screen.
-          </p>
-        </Cols>
-      </section>
-
-      {/* 06 Measure */}
-      <section style={sectionPad}>
-        <SectionHead num="06" title="How I'll know it works" addRef={addRevealRef} />
-        <p style={{ ...body, maxWidth: "62ch" }}>
-          Meals Lite hasn&rsquo;t launched yet, so these are targets, not results. The first cohort is a UK diaspora
-          community I belong to, and the first test is simple: do 5&ndash;10 households recognise their own week in it?
+        <h3 className="cs-h3">Through App Review</h3>
+        <p className="cs-p">
+          Apple rejected the first version under guideline 4.0: after Sign in with Apple, it asked for a name Apple had already
+          provided. I removed the prompt, then wrote an App Review checklist every submission now goes through.
         </p>
-        <div ref={addRevealRef} data-reveal="off" style={{ borderTop: "1px solid #14120F" }}>
-          {metrics.map((m) => (
-            <div
-              key={m.metric}
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-                gap: "4px 20px",
-                padding: "11px 0",
-                borderBottom: "1px solid #CFC9BB",
-              }}
-            >
-              <span style={{ fontSize: 16, color: "#14120F" }}>{m.metric}</span>
-              <span style={{ ...kicker, letterSpacing: "0.12em", color: "#C0281B", alignSelf: "center" }}>{m.target}</span>
-            </div>
+        <p className="cs-p">
+          Engineering-aware calls along the way: debug, staging and production environments; features behind remote-config
+          flags; Premium limits on the free plan; prices read live from StoreKit; and a 460-test suite plus a UI tour that
+          screenshots every screen.
+        </p>
+        <h3 className="cs-h3">How I&rsquo;ll know it works</h3>
+        <p className="cs-p">
+          The first cohort is a UK diaspora community I belong to, and the first test is simple: do 5&ndash;10 households
+          recognise their own week in it?
+        </p>
+        <div className="lp-cards">
+          {metrics.map((m, i) => (
+            <PopUp key={m.metric} delay={i * 0.08}>
+              <div className="lp-target">
+                <span>{m.metric}</span>
+                <b>{m.target}</b>
+              </div>
+            </PopUp>
           ))}
         </div>
-      </section>
+        <h3 className="cs-h3">What I learned</h3>
+        <ul className="cs-list">
+          <li>
+            <strong style={{ color: "var(--ink)" }}>Writing it down first is the fastest route.</strong> Most changes of
+            direction happened in the spec, where they cost minutes, not in code.
+          </li>
+          <li>
+            <strong style={{ color: "var(--ink)" }}>Cutting is the design work.</strong> What we decided not to build
+            (recipes, calendars, calorie tracking, AI week plans) shaped the product more than any one screen.
+          </li>
+          <li>
+            <strong style={{ color: "var(--ink)" }}>AI raises the bar for judgement.</strong> With code cheap to produce, the
+            hard part is deciding what&rsquo;s worth building.
+          </li>
+        </ul>
+      </CaseSection>
 
-      {/* 07 Learned */}
-      <section style={sectionPad}>
-        <SectionHead num="07" title="What I learned" addRef={addRevealRef} />
-        <Cols>
-          <p style={body}>
-            <strong style={{ color: "#14120F" }}>Writing it down first is the fastest route.</strong> Working through the spec and its
-            edge cases with an LLM meant most of the changes of direction happened in a document, where they cost
-            minutes, not in code.
-          </p>
-          <p style={body}>
-            <strong style={{ color: "#14120F" }}>Cutting is the design work.</strong> The list of things we decided not to
-            build (recipes, calendars, calorie tracking, AI week plans, budgets) shaped the product more than any one
-            screen.
-          </p>
-          <p style={{ ...body, margin: 0 }}>
-            <strong style={{ color: "#14120F" }}>AI raises the bar for judgement, not lowers it.</strong> With code cheap to
-            produce, the hard part is deciding what&rsquo;s worth building and noticing when a working feature still
-            gets in the user&rsquo;s way.
-          </p>
-        </Cols>
-      </section>
-
-      {/* Next case study */}
-      <section style={sectionPad}>
-        <div style={{ borderTop: "4px solid #14120F", paddingTop: 16 }}>
-          <div style={{ ...kicker, marginBottom: 10 }}>Next case study</div>
-          <Link
-            href="/design/mai-shara"
-            onClick={scrollToTop}
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(24px, 3.4vw, 44px)",
-              lineHeight: 1,
-              letterSpacing: "-0.035em",
-              textTransform: "uppercase",
-              color: "#14120F",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "#C0281B";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "#14120F";
-            }}
-          >
-            Mai Shara &rarr;
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer links */}
-      <section style={sectionPad}>
-        <div
-          style={{
-            borderTop: "4px solid #14120F",
-            paddingTop: 16,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 10,
-            alignItems: "center",
-          }}
-        >
-          <Link
-            href="/design/grubshelf/screens"
-            onClick={scrollToTop}
-            data-track="grubshelf_mockup"
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              padding: "14px 24px",
-              background: "#C0281B",
-              color: "#F4F1EA",
-              textDecoration: "none",
-            }}
-          >
-            See every screen &rarr;
-          </Link>
-          <a
-            href="https://grubshelf.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-track="grubshelf_site"
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              padding: "12px 22px",
-              border: "2px solid #14120F",
-              color: "#14120F",
-              textDecoration: "none",
-            }}
-          >
-            grubshelf.app &#8599;
-          </a>
-          <Link
-            href="/contact"
-            onClick={scrollToTop}
-            data-track="grubshelf_contact"
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              padding: "12px 22px",
-              border: "2px solid #14120F",
-              color: "#14120F",
-              textDecoration: "none",
-            }}
-          >
-            Get in touch
-          </Link>
-        </div>
-      </section>
-    </div>
+      <CaseNext label="GrubShelf website" href="/design/grubshelf-website" hire="Hire me for a product like this" />
+    </article>
   );
 }

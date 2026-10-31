@@ -10,8 +10,8 @@ export default function Footer() {
   return (
     <footer
       style={{
-        borderTop: "4px solid #14120F",
-        background: "#14120F",
+        borderTop: "4px solid var(--ink)",
+        background: "var(--ink)",
         color: "#E7E3DA",
       }}
     >
@@ -24,7 +24,7 @@ export default function Footer() {
           alignItems: "center",
           gap: "16px 32px",
           fontFamily: "Archivo, sans-serif",
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: 600,
           letterSpacing: "0.16em",
           textTransform: "uppercase" as const,

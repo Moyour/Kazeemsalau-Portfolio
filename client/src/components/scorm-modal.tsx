@@ -40,8 +40,8 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
         style={{
           width: "100%",
           maxWidth: 1180,
-          background: "#F4F1EA",
-          border: "1px solid #14120F",
+          background: "var(--paper)",
+          border: "1px solid var(--ink)",
           boxShadow: "0 24px 60px rgba(20, 18, 15, 0.4)",
           display: "flex",
           flexDirection: "column",
@@ -57,7 +57,7 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
             flexWrap: "wrap",
             gap: "8px 16px",
             padding: "10px clamp(14px, 2vw, 22px)",
-            borderBottom: "1px solid #14120F",
+            borderBottom: "1px solid var(--ink)",
           }}
         >
           <div>
@@ -73,11 +73,11 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
             <span
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 600,
                 letterSpacing: "0.15em",
                 textTransform: "uppercase" as const,
-                color: "#5F5A50",
+                color: "var(--muted)",
                 marginLeft: 12,
               }}
             >
@@ -91,25 +91,25 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
               rel="noopener noreferrer"
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase" as const,
                 padding: "7px 16px",
-                border: "1px solid #14120F",
-                color: "#14120F",
+                border: "1px solid var(--ink)",
+                color: "var(--ink)",
                 textDecoration: "none",
                 background: "transparent",
                 cursor: "pointer",
                 transition: "background 0.2s, color 0.2s",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "#14120F";
-                (e.currentTarget as HTMLElement).style.color = "#F4F1EA";
+                (e.currentTarget as HTMLElement).style.background = "var(--ink)";
+                (e.currentTarget as HTMLElement).style.color = "var(--paper)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.background = "transparent";
-                (e.currentTarget as HTMLElement).style.color = "#14120F";
+                (e.currentTarget as HTMLElement).style.color = "var(--ink)";
               }}
             >
               Open in new tab &#8599;
@@ -118,22 +118,22 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
               onClick={onClose}
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase" as const,
                 padding: "7px 16px",
-                background: "#14120F",
-                color: "#F4F1EA",
+                background: "var(--ink)",
+                color: "var(--paper)",
                 border: "none",
                 cursor: "pointer",
                 transition: "background 0.2s",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "#C0281B";
+                (e.currentTarget as HTMLElement).style.background = "var(--accent)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "#14120F";
+                (e.currentTarget as HTMLElement).style.background = "var(--ink)";
               }}
             >
               Close &times;
@@ -158,13 +158,13 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
         <div
           style={{
             padding: "8px clamp(14px, 2vw, 22px)",
-            borderTop: "1px solid #CFC9BB",
+            borderTop: "1px solid var(--rule)",
             fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
+            fontSize: 11,
             fontWeight: 600,
             letterSpacing: "0.15em",
             textTransform: "uppercase" as const,
-            color: "#5F5A50",
+            color: "var(--muted)",
             textAlign: "center",
           }}
         >

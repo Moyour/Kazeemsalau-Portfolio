@@ -8,21 +8,10 @@ gsap.registerPlugin(ScrollTrigger);
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Halftone dots over a warm paper tint: what a photo looks like on newsprint.
-const halftone: CSSProperties = {
-  position: "absolute",
-  inset: 0,
-  pointerEvents: "none",
-  backgroundColor: "rgba(226, 216, 192, 0.55)",
-  backgroundImage: "radial-gradient(circle, rgba(20, 18, 15, 0.62) 1.1px, transparent 1.7px)",
-  backgroundSize: "5px 5px",
-  mixBlendMode: "multiply",
-};
-
 /* ── NewsPhoto ────────────────────────────────────────────────
-   Starts as a grey halftone print. As it scrolls into view the ink
-   bleeds outward from the centre into full colour and the picture
-   settles from a slight zoom, like a newspaper photo coming to life. */
+   Starts as a grey print. As it scrolls into view it warms into full
+   colour and the picture settles from a slight zoom, like a newspaper
+   photo coming to life. */
 export function NewsPhoto({ children, style, className }: { children: ReactNode; style?: CSSProperties; className?: string }) {
   const root = useRef<HTMLDivElement>(null);
 
@@ -32,8 +21,7 @@ export function NewsPhoto({ children, style, className }: { children: ReactNode;
       const tl = gsap.timeline({
         scrollTrigger: { trigger: root.current, start: "top 88%", end: "top 30%", scrub: 0.6 },
       });
-      tl.fromTo(".ks-np-print", { filter: "grayscale(1) contrast(1.35) brightness(1.05)", scale: 1.14 }, { filter: "grayscale(0) contrast(1) brightness(1)", scale: 1, ease: "none" }, 0)
-        .fromTo(".ks-np-dots", { clipPath: "circle(150% at 50% 55%)" }, { clipPath: "circle(0% at 50% 55%)", ease: "power2.in" }, 0);
+      tl.fromTo(".ks-np-print", { filter: "grayscale(1) contrast(1.35) brightness(1.05)", scale: 1.14 }, { filter: "grayscale(0) contrast(1) brightness(1)", scale: 1, ease: "none" }, 0);
     }, root);
     return () => ctx.revert();
   }, []);
@@ -43,7 +31,6 @@ export function NewsPhoto({ children, style, className }: { children: ReactNode;
       <div className="ks-np-print" style={{ position: "absolute", inset: 0, willChange: "transform, filter" }}>
         {children}
       </div>
-      <div className="ks-np-dots" style={halftone} aria-hidden="true" />
     </div>
   );
 }
@@ -52,7 +39,10 @@ export function NewsPhoto({ children, style, className }: { children: ReactNode;
    Three phones rise out of the page as it scrolls in, then keep
    flicking through real app screens like the moving photographs
    in a wizard's newspaper. */
-export function LivingPhones({ reels, bg }: { reels: string[][]; bg: string }) {
+// The phones sit centred in their frame. `still: false` adds a rise as the
+// frame scrolls in; by default they hold still, so a thumbnail never
+// shows them half-risen and off-centre.
+export function LivingPhones({ reels, bg, still = true }: { reels: string[][]; bg: string; still?: boolean }) {
   const root = useRef<HTMLDivElement>(null);
   const [tick, setTick] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -72,7 +62,7 @@ export function LivingPhones({ reels, bg }: { reels: string[][]; bg: string }) {
   }, [visible]);
 
   useLayoutEffect(() => {
-    if (prefersReducedMotion() || !root.current) return;
+    if (still || prefersReducedMotion() || !root.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".ks-lp-phone",
@@ -84,12 +74,12 @@ export function LivingPhones({ reels, bg }: { reels: string[][]; bg: string }) {
           opacity: 1,
           ease: "none",
           stagger: 0.12,
-          scrollTrigger: { trigger: root.current, start: "top 92%", end: "top 35%", scrub: 0.8 },
+          scrollTrigger: { trigger: root.current, start: "top 95%", end: "top 65%", scrub: 0.6 },
         }
       );
     }, root);
     return () => ctx.revert();
-  }, []);
+  }, [still]);
 
   return (
     <div
@@ -98,12 +88,15 @@ export function LivingPhones({ reels, bg }: { reels: string[][]; bg: string }) {
         position: "absolute",
         inset: 0,
         background: bg,
+        // Sized by the frame's height, so all three phones always fit inside
+        // it, centred, whatever shape the frame is.
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-start",
+        alignItems: "center",
         gap: "4%",
-        padding: "7% 5% 0",
+        padding: "6% 5%",
         perspective: 900,
+        containerType: "size",
       }}
     >
       {reels.map((reel, i) => {
@@ -115,10 +108,12 @@ export function LivingPhones({ reels, bg }: { reels: string[][]; bg: string }) {
             key={i}
             className="ks-lp-phone"
             style={{
-              width: "28%",
-              marginTop: i === 1 ? 0 : "6%",
+              // As tall as the frame allows while three still fit across it,
+              // always at the screenshots' own proportions.
+              height: `calc(min(92cqh, 30cqw * 844 / 390) * ${i === 1 ? 1 : 0.9})`,
               aspectRatio: "390 / 844",
-              background: "#14120F",
+              flexShrink: 0,
+              background: "var(--ink)",
               borderRadius: 18,
               padding: 3,
               boxShadow: "0 22px 40px -12px rgba(0,0,0,0.5)",
@@ -195,7 +190,9 @@ export function PhoneStory({
       cards.forEach((card, i) => {
         if (i === 0) return;
         tl.fromTo(card, { yPercent: 110, rotate: 6, scale: 1.05 }, { yPercent: 0, rotate: 0, scale: 1, duration: 1 }, i - 1);
-        tl.to(cards[i - 1], { scale: 0.88, filter: "brightness(0.55)", yPercent: -4, duration: 1 }, i - 1);
+        // The screen beneath eases back a touch; no dimming, so there's no
+        // dark flash between screens.
+        tl.to(cards[i - 1], { scale: 0.94, yPercent: -2, duration: 1 }, i - 1);
       });
       tl.fromTo(".ks-ps-phone", { rotateY: -16, rotateX: 6 }, { rotateY: 16, rotateX: -4, ease: "none", duration: screens.length - 1 }, 0);
       tl.fromTo(".ks-ps-bigword", { xPercent: 8 }, { xPercent: -38, ease: "none", duration: screens.length - 1 }, 0);
@@ -209,7 +206,7 @@ export function PhoneStory({
   const current = screens[index];
 
   return (
-    <div ref={root} style={{ position: "relative", height: `${screens.length * 70 + 40}vh`, ["--ks-ps-accent" as string]: accent }}>
+    <div ref={root} style={{ position: "relative", height: `${screens.length * 40 + 30}vh`, ["--ks-ps-accent" as string]: accent }}>
       <div
         style={{
           position: "sticky",
@@ -249,7 +246,7 @@ export function PhoneStory({
 
         {/* Caption column */}
         <div style={{ position: "relative", display: "flex", gap: 20, maxWidth: 520, zIndex: 1 }} className="ks-ps-copy">
-          <div style={{ width: 4, background: "#CFC9BB", position: "relative", flexShrink: 0, minHeight: 220 }}>
+          <div style={{ width: 4, background: "var(--rule)", position: "relative", flexShrink: 0, minHeight: 220 }}>
             <div className="ks-ps-rule" style={{ position: "absolute", inset: 0, background: accent, transformOrigin: "top" }} />
           </div>
           <div>
@@ -260,7 +257,7 @@ export function PhoneStory({
                 fontWeight: 800,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#5F5A50",
+                color: "var(--muted)",
                 marginBottom: 14,
               }}
             >
@@ -287,7 +284,7 @@ export function PhoneStory({
                   </span>
                 ))}
               </div>
-              <p className="ks-ps-p" style={{ fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1.5, color: "#3A362F", margin: 0, maxWidth: "36ch" }}>
+              <p className="ks-ps-p" style={{ fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1.5, color: "var(--body)", margin: 0, maxWidth: "36ch" }}>
                 {current.caption}
               </p>
             </div>
@@ -301,7 +298,7 @@ export function PhoneStory({
             style={{
               width: "clamp(200px, 24vw, 300px)",
               aspectRatio: "390 / 844",
-              background: "#14120F",
+              background: "var(--ink)",
               borderRadius: 40,
               padding: 9,
               boxShadow: `18px 22px 0 ${accent}, 0 40px 80px -30px rgba(0,0,0,0.6)`,
@@ -324,7 +321,7 @@ export function PhoneStory({
                     objectFit: "cover",
                     objectPosition: "top",
                     transformOrigin: "50% 0%",
-                    boxShadow: "0 -12px 30px rgba(0,0,0,0.25)",
+                    boxShadow: "0 -8px 18px rgba(0,0,0,0.1)",
                   }}
                 />
               ))}
@@ -351,7 +348,7 @@ export function PhoneStory({
 /* ── ScrollingSite ────────────────────────────────────────────
    A browser window pinned on screen; scrolling the article scrolls
    the website inside it from top to bottom. */
-export function ScrollingSite({ src, url, height = 300 }: { src: string; url: string; height?: number }) {
+export function ScrollingSite({ src, url, height = 200 }: { src: string; url: string; height?: number }) {
   const root = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -379,8 +376,8 @@ export function ScrollingSite({ src, url, height = 300 }: { src: string; url: st
 
   return (
     <div ref={root} style={{ position: "relative", height: `${height}vh` }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", perspective: 1600, padding: "0 clamp(12px, 3vw, 40px)" }}>
-        <div className="ks-ss-window" style={{ width: "min(1100px, 100%)", border: "1px solid #14120F", background: "#14120F", boxShadow: "0 40px 80px -40px rgba(0,0,0,0.6)", transformOrigin: "50% 100%" }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "flex-start", paddingTop: 64, boxSizing: "border-box", justifyContent: "center", perspective: 1600, padding: "0 clamp(12px, 3vw, 40px)" }}>
+        <div className="ks-ss-window" style={{ width: "min(1100px, 100%)", border: "1px solid var(--ink)", background: "var(--ink)", boxShadow: "0 40px 80px -40px rgba(0,0,0,0.6)", transformOrigin: "50% 100%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px" }}>
             {["#C0281B", "#F0B442", "#2AB88A"].map((c) => (
               <span key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />
@@ -417,7 +414,7 @@ export function InkRing({ value, label, color }: { value: number; label: string;
   }, [value, c]);
 
   return (
-    <div ref={root} style={{ display: "flex", alignItems: "center", gap: 16 }}>
+    <div ref={root} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 14 }}>
       <div style={{ position: "relative", width: 124, height: 124, flexShrink: 0 }}>
         <svg className="ks-ir-svg" viewBox="0 0 124 124" width="124" height="124" style={{ transform: "rotate(-90deg)" }} aria-hidden="true">
           <circle cx="62" cy="62" r={r} fill="none" stroke="#E2DCCF" strokeWidth="12" />
@@ -427,7 +424,7 @@ export function InkRing({ value, label, color }: { value: number; label: string;
           {shown}%
         </div>
       </div>
-      <div style={{ fontSize: 15, lineHeight: 1.45, color: "#3A362F" }}>{label}</div>
+      <div style={{ fontSize: 15, lineHeight: 1.45, color: "var(--body)" }}>{label}</div>
     </div>
   );
 }

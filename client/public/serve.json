@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/apps", "destination": "/design/grubshelf", "type": 301 },
+    { "source": "/design", "destination": "/products", "type": 301 },
+    { "source": "/design/grubshelf/screens", "destination": "/design/grubshelf", "type": 301 }
+  ]
+}

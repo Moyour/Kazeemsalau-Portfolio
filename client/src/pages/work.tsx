@@ -43,7 +43,8 @@ const COURSES = [
     description:
       "Self-awareness, regulation and decision-making under pressure, taught through scenarios rather than definitions.",
     href: "/work/emotional-intelligence",
-    image: "/images/emotional-intelligence-hq.jpg",
+    // Unsplash photo by Memento Media (Unsplash Licence).
+    image: "/images/emotional-intelligence-meeting.jpg",
     url: "https://codvacreatives.com/demo/ei/story_html5.html",
     kicker: "Corporate . Storyline 360",
     category: "corporate",
@@ -82,17 +83,18 @@ export default function Work() {
         <div
           style={{
             fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
+            fontSize: 11,
             fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase" as const,
-            color: "#C0281B",
+            color: "var(--accent)",
             marginBottom: 14,
           }}
         >
           Case studies &middot; Pages 2 to 4
         </div>
         <h1
+          className="ks-page-h1"
           style={{
             fontFamily: "Archivo, sans-serif",
             fontWeight: 900,
@@ -109,7 +111,7 @@ export default function Work() {
             fontStyle: "italic",
             fontSize: "clamp(17px, 1.8vw, 21px)",
             lineHeight: 1.5,
-            color: "#3A362F",
+            color: "var(--body)",
             maxWidth: "60ch",
             margin: 0,
           }}
@@ -117,7 +119,7 @@ export default function Work() {
           Built in Articulate Storyline, packaged as SCORM, delivered through an LMS. Click through the decisions
           yourself, then read how each one was made.
         </p>
-        <div style={{ height: 4, background: "#14120F", marginTop: "clamp(16px, 2vw, 24px)" }} />
+        <div style={{ height: 4, background: "var(--ink)", marginTop: "clamp(16px, 2vw, 24px)" }} />
       </div>
 
       {/* Filter chips */}
@@ -133,11 +135,11 @@ export default function Work() {
         <span
           style={{
             fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
+            fontSize: 11,
             fontWeight: 600,
             letterSpacing: "0.2em",
             textTransform: "uppercase" as const,
-            color: "#5F5A50",
+            color: "var(--muted)",
           }}
         >
           Sections
@@ -153,29 +155,29 @@ export default function Work() {
             data-chip={filter === chip.value ? "on" : undefined}
             style={{
               fontFamily: "Archivo, sans-serif",
-              fontSize: 10,
+              fontSize: 11,
               fontWeight: 700,
               letterSpacing: "0.14em",
               textTransform: "uppercase" as const,
               padding: "9px 16px",
-              border: "1px solid #14120F",
-              background: filter === chip.value ? "#14120F" : "transparent",
-              color: filter === chip.value ? "#F4F1EA" : "#14120F",
+              border: "1px solid var(--ink)",
+              background: filter === chip.value ? "var(--ink)" : "transparent",
+              color: filter === chip.value ? "var(--paper)" : "var(--ink)",
               cursor: "pointer",
               transition: "background 0.2s, color 0.2s, border-color 0.2s",
             }}
             onMouseEnter={(e) => {
               if (filter !== chip.value) {
-                (e.currentTarget as HTMLElement).style.background = "#C0281B";
-                (e.currentTarget as HTMLElement).style.borderColor = "#C0281B";
-                (e.currentTarget as HTMLElement).style.color = "#F4F1EA";
+                (e.currentTarget as HTMLElement).style.background = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.color = "var(--paper)";
               }
             }}
             onMouseLeave={(e) => {
               if (filter !== chip.value) {
                 (e.currentTarget as HTMLElement).style.background = "transparent";
-                (e.currentTarget as HTMLElement).style.borderColor = "#14120F";
-                (e.currentTarget as HTMLElement).style.color = "#14120F";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--ink)";
+                (e.currentTarget as HTMLElement).style.color = "var(--ink)";
               }
             }}
           >
@@ -199,15 +201,14 @@ export default function Work() {
             ref={addRevealRef}
             data-reveal="off"
             style={{
-              border: "1px solid #14120F",
+              border: "1px solid var(--ink)",
               display: "flex",
               flexDirection: "column",
             }}
           >
             {/* Image */}
             <div
-              className="ks-lift"
-              style={{ height: 220, overflow: "hidden", background: "#14120F", viewTransitionName: `media-${course.href.split("/").pop()}` }}
+              style={{ height: 220, overflow: "hidden", background: "var(--ink)", viewTransitionName: `media-${course.href.split("/").pop()}` }}
             >
               <img
                 src={course.image}
@@ -221,15 +222,15 @@ export default function Work() {
               <div
                 style={{
                   fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
+                  fontSize: 11,
                   fontWeight: 600,
                   letterSpacing: "0.15em",
                   textTransform: "uppercase" as const,
-                  color: "#5F5A50",
+                  color: "var(--muted)",
                   marginBottom: 10,
                 }}
               >
-                <span style={{ color: "#C0281B", fontWeight: 700 }}>{course.num}</span>
+                <span style={{ color: "var(--accent)", fontWeight: 700 }}>{course.num}</span>
                 {" · "}
                 <span dangerouslySetInnerHTML={{ __html: course.tags }} />
               </div>
@@ -246,7 +247,7 @@ export default function Work() {
               >
                 {course.title}
               </h3>
-              <p style={{ fontSize: 15, lineHeight: 1.6, color: "#3A362F", margin: "0 0 18px", flex: 1 }}>
+              <p style={{ fontSize: 15, lineHeight: 1.6, color: "var(--body)", margin: "0 0 18px", flex: 1 }}>
                 {course.description}
               </p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -260,16 +261,16 @@ export default function Work() {
                     letterSpacing: "0.15em",
                     textTransform: "uppercase" as const,
                     padding: "9px 20px",
-                    background: "#14120F",
-                    color: "#F4F1EA",
+                    background: "var(--ink)",
+                    color: "var(--paper)",
                     textDecoration: "none",
                     transition: "background 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "#C0281B";
+                    (e.currentTarget as HTMLElement).style.background = "var(--accent)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "#14120F";
+                    (e.currentTarget as HTMLElement).style.background = "var(--ink)";
                   }}
                 >
                   Case study
@@ -284,18 +285,18 @@ export default function Work() {
                     textTransform: "uppercase" as const,
                     padding: "9px 20px",
                     background: "transparent",
-                    color: "#14120F",
-                    border: "1px solid #14120F",
+                    color: "var(--ink)",
+                    border: "1px solid var(--ink)",
                     cursor: "pointer",
                     transition: "background 0.2s, color 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "#14120F";
-                    (e.currentTarget as HTMLElement).style.color = "#F4F1EA";
+                    (e.currentTarget as HTMLElement).style.background = "var(--ink)";
+                    (e.currentTarget as HTMLElement).style.color = "var(--paper)";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.background = "transparent";
-                    (e.currentTarget as HTMLElement).style.color = "#14120F";
+                    (e.currentTarget as HTMLElement).style.color = "var(--ink)";
                   }}
                 >
                   Play here &#9654;

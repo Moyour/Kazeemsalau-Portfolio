@@ -1,15 +1,13 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "wouter";
-import ScormModal from "@/components/scorm-modal";
-import { track } from "@/lib/track";
-import { Words } from "@/components/motion";
+import YourCalls, { type Call } from "@/components/your-call";
+import LearningDiagram, { type Diagram } from "@/components/learning-diagrams";
+import CoursePlayer from "@/components/course-player";
+import { CaseHeader, CaseNext, CaseSection, HeroFigure, ShortVersion } from "@/components/case-kit";
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+// A learning case study, set in the site's one case-study layout: the
+// challenge, how it was made, the solution, the course itself playable on
+// the page, and what it achieved.
 
 interface CaseStudyProps {
-  pageNum: string;
   tags: string[];
   title: string;
   tagline: string;
@@ -17,422 +15,84 @@ interface CaseStudyProps {
   playKicker: string;
   image: string;
   imageCaption: string;
+  short: { problem: string; role: string; did: string; result: string };
   challenge: string;
   solution: string;
   process: string;
   outcome: string;
   nextLabel: string;
   nextHref: string;
-  nextPageNum: string;
-  nextDirection: "Continued on" | "Back to";
+  // "Your call" decisions, asked once the challenge is set out.
+  calls?: Call[];
+  // Diagrams that show the challenge and how the solution works.
+  diagrams?: { challenge?: Diagram; solution?: Diagram };
+  // For a course published at a fixed size: that size, so it can be scaled to fit.
+  playerSize?: { width: number; height: number };
+}
+
+// The first sentence set large, the rest beneath it.
+function Lead({ text }: { text: string }) {
+  const cut = text.search(/[.!?](\s|$)/);
+  const lead = cut > 0 ? text.slice(0, cut + 1) : text;
+  const rest = cut > 0 ? text.slice(cut + 1).trim() : "";
+  return (
+    <>
+      <p className="cs-lead">{lead}</p>
+      {rest && <p className="cs-p">{rest}</p>}
+    </>
+  );
 }
 
 export default function CaseStudyLayout(props: CaseStudyProps) {
-  const [playing, setPlaying] = useState(false);
-  const [location] = useLocation();
-  const [played, setPlayed] = useState(false);
-  const revealRefs = useRef<HTMLElement[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.setAttribute("data-reveal", "in");
-        });
-      },
-      { threshold: 0.1 }
-    );
-    revealRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  function addRevealRef(el: HTMLElement | null) {
-    if (el && !revealRefs.current.includes(el)) revealRefs.current.push(el);
-  }
-
-  const sections = [
-    { label: "The challenge", text: props.challenge },
-    { label: "The solution", text: props.solution },
-    { label: "The process", text: props.process },
-    { label: "The outcome", text: props.outcome },
-  ];
-
   return (
-    <div>
-      <section style={{ padding: "clamp(24px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) 0" }}>
-        {/* Back link */}
-        <Link
-          href="/work"
-          onClick={scrollToTop}
-          style={{
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase" as const,
-            color: "#5F5A50",
-            textDecoration: "none",
-          }}
-        >
-          &larr; All case studies
-        </Link>
+    <article>
+      <CaseHeader
+        back={{ href: "/work", label: "All learning case studies" }}
+        tags={props.tags}
+        title={props.title}
+        deck={props.tagline}
+        byline={[
+          props.playKicker,
+          <a key="play" href="#the-course">
+            Play it on this page &darr;
+          </a>,
+        ]}
+        hero={<HeroFigure src={props.image} alt={`${props.title} course`} caption={props.imageCaption} />}
+      />
 
-        {/* Tags */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 14,
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase" as const,
-            color: "#5F5A50",
-            margin: "22px 0 14px",
-          }}
-        >
-          <span style={{ color: "#C0281B" }}>Page {props.pageNum}</span>
-          {props.tags.slice(1).map((tag, i, arr) => (
-            <span key={i}>
-              {tag}
-              {i < arr.length - 1 && <span style={{ marginLeft: 14 }}>&middot;</span>}
-            </span>
-          ))}
-        </div>
+      <ShortVersion {...props.short} />
 
-        {/* Title */}
-        <h1
-          style={{
-            fontFamily: "Archivo, sans-serif",
-            fontWeight: 900,
-            fontSize: "clamp(36px, 6.4vw, 84px)",
-            lineHeight: 0.92,
-            letterSpacing: "-0.04em",
-            textTransform: "uppercase" as const,
-            margin: "0 0 18px",
-          }}
-        >
-          <Words text={props.title} />
-        </h1>
+      <CaseSection part="challenge">
+        <Lead text={props.challenge} />
+        {props.diagrams?.challenge && <LearningDiagram d={props.diagrams.challenge} />}
+        {props.calls && <YourCalls calls={props.calls} />}
+      </CaseSection>
 
-        {/* Tagline */}
-        <p
-          style={{
-            fontSize: "clamp(18px, 2vw, 23px)",
-            lineHeight: 1.4,
-            fontStyle: "italic",
-            color: "#3A362F",
-            maxWidth: "54ch",
-            margin: "0 0 20px",
-          }}
-        >
-          {props.tagline}
-        </p>
+      <CaseSection part="approach">
+        <Lead text={props.process} />
+      </CaseSection>
 
-        {/* Byline bar with play button inside */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 14,
-            alignItems: "center",
-            padding: "10px 0",
-            borderTop: "1px solid #14120F",
-            borderBottom: "1px solid #14120F",
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase" as const,
-            color: "#5F5A50",
-          }}
-        >
-          <span style={{ color: "#14120F" }}>By Kazeem Salau</span>
-          <button
-            onClick={() => {
-              setPlaying(true);
-              track("course_play", { course: props.title });
-            }}
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 13,
-              fontWeight: 800,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase" as const,
-              padding: "14px 26px",
-              background: "#C0281B",
-              color: "#F4F1EA",
-              border: "none",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 9,
-              boxShadow: "4px 4px 0 #14120F",
-              transition: "background 0.2s, box-shadow 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#14120F";
-              (e.currentTarget as HTMLElement).style.boxShadow = "4px 4px 0 #C0281B";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#C0281B";
-              (e.currentTarget as HTMLElement).style.boxShadow = "4px 4px 0 #14120F";
-            }}
-          >
-            &#9654; Play the full course
-          </button>
-        </div>
+      <CaseSection part="solution">
+        <Lead text={props.solution} />
+        {props.diagrams?.solution && <LearningDiagram d={props.diagrams.solution} />}
+      </CaseSection>
 
-        {/* Hero image */}
-        <div
-          style={{
-            height: "clamp(240px, 36vw, 480px)",
-            viewTransitionName: `media-${location.split("/").pop()}`,
-            background: "#14120F",
-            border: "1px solid #14120F",
-            marginTop: 22,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={props.image}
-            alt={props.title}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            gap: 8,
-            paddingTop: 7,
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
-            fontWeight: 600,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase" as const,
-            color: "#5F5A50",
-            borderBottom: "1px solid #CFC9BB",
-            paddingBottom: 8,
-            marginBottom: 26,
-          }}
-        >
-          <span style={{ color: "#C0281B" }}>Fig. 1</span>
-          <span>{props.imageCaption}</span>
-        </div>
-      </section>
-
-      {/* Content sections */}
-      <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" }}>
-        {sections.map((section, i) => (
-          <div
-            key={i}
-            ref={addRevealRef}
-            data-reveal="off"
-            style={{ marginBottom: 26 }}
-          >
-            <h2
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontWeight: 900,
-                fontSize: "clamp(18px, 2vw, 24px)",
-                lineHeight: 1,
-                letterSpacing: "-0.02em",
-                textTransform: "uppercase" as const,
-                margin: "0 0 12px",
-                borderBottom: "1px solid #14120F",
-                paddingBottom: 9,
-              }}
-            >
-              {section.label}
-            </h2>
-            <div className="ks-cols" style={{ columns: 2, columnGap: 34, columnRule: "1px solid #CFC9BB" }}>
-              <p style={{ fontSize: 17, lineHeight: 1.6, color: "#3A362F", margin: 0 }}>{section.text}</p>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      {/* Footer nav */}
-      <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" }}>
-        <div
-          style={{
-            borderTop: "4px solid #14120F",
-            paddingTop: 16,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 20,
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase" as const,
-                color: "#5F5A50",
-                marginBottom: 10,
-              }}
-            >
-              {props.nextDirection} page {props.nextPageNum}
-            </div>
-            <Link
-              href={props.nextHref}
-              onClick={scrollToTop}
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontWeight: 900,
-                fontSize: "clamp(26px, 3.6vw, 46px)",
-                lineHeight: 1,
-                letterSpacing: "-0.035em",
-                textTransform: "uppercase" as const,
-                color: "#14120F",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#C0281B";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#14120F";
-              }}
-            >
-              {props.nextLabel} &rarr;
-            </Link>
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-          <a
-            href="/files/KazeemSalau-InstructionalDesign.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-track="case_footer_cv"
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase" as const,
-              padding: "12px 22px",
-              border: "2px solid #14120F",
-              color: "#14120F",
-              textDecoration: "none",
-            }}
-          >
-            Download CV
+      <CaseSection part="tryIt" id="the-course">
+        <p className="cs-lead">Play the course here. Sound on.</p>
+        <CoursePlayer url={props.playUrl} title={props.title} native={props.playerSize} />
+        <div className="ks-course-bar">
+          <span>{props.playKicker}</span>
+          <a href={props.playUrl} target="_blank" rel="noopener noreferrer" data-track="course_new_tab">
+            Not loading? Open it in a new tab &#8599;
           </a>
-          <Link
-            href="/contact"
-            onClick={scrollToTop}
-            data-track="case_footer_hire"
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase" as const,
-              padding: "14px 24px",
-              background: "#C0281B",
-              color: "#F4F1EA",
-              textDecoration: "none",
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#14120F";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#C0281B";
-            }}
-          >
-            Hire me for a course like this
-          </Link>
-          </div>
         </div>
-      </section>
+      </CaseSection>
 
-      {played && !playing && (
-        <div
-          role="status"
-          style={{
-            position: "fixed",
-            left: "50%",
-            bottom: 20,
-            transform: "translateX(-50%)",
-            width: "min(560px, calc(100vw - 32px))",
-            zIndex: 50,
-            background: "#14120F",
-            color: "#F4F1EA",
-            border: "1px solid #14120F",
-            boxShadow: "6px 6px 0 #C0281B",
-            padding: "16px 18px",
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
-          <div style={{ flex: "1 1 220px", fontSize: 16, lineHeight: 1.4 }}>
-            Want a course like this for your team?
-          </div>
-          <Link
-            href="/contact"
-            onClick={scrollToTop}
-            data-track="post_play_hire"
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase" as const,
-              padding: "11px 16px",
-              background: "#C0281B",
-              color: "#F4F1EA",
-              textDecoration: "none",
-            }}
-          >
-            Let&rsquo;s talk &rarr;
-          </Link>
-          <a
-            href="/files/KazeemSalau-InstructionalDesign.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-track="post_play_cv"
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase" as const,
-              color: "#F4F1EA",
-              textDecoration: "none",
-              borderBottom: "1px solid #F4F1EA",
-            }}
-          >
-            CV
-          </a>
-          <button
-            onClick={() => setPlayed(false)}
-            aria-label="Dismiss"
-            style={{ background: "none", border: "none", color: "#9C968C", fontSize: 20, cursor: "pointer", padding: "0 4px" }}
-          >
-            &times;
-          </button>
-        </div>
-      )}
+      <CaseSection part="outcome">
+        <Lead text={props.outcome} />
+      </CaseSection>
 
-      {playing && (
-        <ScormModal
-          url={props.playUrl}
-          title={props.title}
-          kicker={props.playKicker}
-          onClose={() => {
-            setPlaying(false);
-            setPlayed(true);
-          }}
-        />
-      )}
-    </div>
+      <CaseNext label={props.nextLabel} href={props.nextHref} hire="Hire me for a course like this" />
+    </article>
   );
 }

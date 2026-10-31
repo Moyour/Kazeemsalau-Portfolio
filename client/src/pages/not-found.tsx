@@ -10,12 +10,13 @@ export default function NotFound() {
           fontSize: "clamp(60px, 14vw, 160px)",
           lineHeight: 0.9,
           letterSpacing: "-0.04em",
-          color: "#CFC9BB",
+          color: "var(--rule)",
         }}
       >
         404
       </div>
       <h1
+        className="ks-page-h1"
         style={{
           fontFamily: "Archivo, sans-serif",
           fontWeight: 800,
@@ -25,7 +26,7 @@ export default function NotFound() {
       >
         Page not found
       </h1>
-      <p style={{ fontSize: 17, lineHeight: 1.6, color: "#3A362F", marginBottom: 24 }}>
+      <p style={{ fontSize: 17, lineHeight: 1.6, color: "var(--body)", marginBottom: 24 }}>
         This page does not exist. Try the front page instead.
       </p>
       <Link
@@ -37,8 +38,8 @@ export default function NotFound() {
           letterSpacing: "0.15em",
           textTransform: "uppercase" as const,
           padding: "10px 24px",
-          background: "#14120F",
-          color: "#F4F1EA",
+          background: "var(--ink)",
+          color: "var(--paper)",
           textDecoration: "none",
         }}
       >

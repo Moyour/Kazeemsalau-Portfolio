@@ -45,25 +45,18 @@ export function useSEO(path?: string) {
     document.title = data.title;
 
     setMetaTag("name", "description", data.description);
-    setMetaTag("name", "title", data.title);
 
+    setMetaTag("property", "og:type", data.type === "article" ? "article" : data.type === "profile" ? "profile" : "website");
     setMetaTag("property", "og:title", data.title);
     setMetaTag("property", "og:description", data.description);
     setMetaTag("property", "og:url", data.url);
-    if (data.image) {
-      setMetaTag("property", "og:image", data.image);
-      setMetaTag("property", "og:image:secure_url", data.image);
-    }
-    if (data.imageAlt) {
-      setMetaTag("property", "og:image:alt", data.imageAlt);
-    }
+    setMetaTag("property", "og:image", data.image);
+    setMetaTag("property", "og:image:alt", data.imageAlt);
 
-    setMetaTag("property", "twitter:title", data.title);
-    setMetaTag("property", "twitter:description", data.description);
-    setMetaTag("property", "twitter:url", data.url);
-    if (data.image) {
-      setMetaTag("property", "twitter:image", data.image);
-    }
+    setMetaTag("name", "twitter:title", data.title);
+    setMetaTag("name", "twitter:description", data.description);
+    setMetaTag("name", "twitter:image", data.image);
+    setMetaTag("name", "twitter:image:alt", data.imageAlt);
 
     setCanonical(data.url);
 

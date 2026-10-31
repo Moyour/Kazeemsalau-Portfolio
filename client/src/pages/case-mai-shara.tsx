@@ -1,272 +1,47 @@
-import { useEffect, useRef } from "react";
-import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
+import YourCalls from "@/components/your-call";
+import { CALLS } from "@/lib/calls";
 import { MAI_SHARA_SCREENS } from "@/lib/product-screens";
-import { Words } from "@/components/motion";
-import { PhoneStory, InkRing } from "@/components/news-motion";
+import { InkRing } from "@/components/news-motion";
+import { Flap, PopUp } from "@/components/living-paper";
+import { EmpathyMap, FlowSheet, PrototypePhone, SurveySheet } from "@/components/mai-shara-artifacts";
+import { CaseHeader, CaseNext, CaseSection, PhoneHero, ScreenStrip, ShortVersion } from "@/components/case-kit";
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+// Mai Shara, in the site's one case-study layout.
 
 export default function CaseMaiShara() {
   useSEO("/design/mai-shara");
-  const revealRefs = useRef<HTMLElement[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.setAttribute("data-reveal", "in");
-        });
-      },
-      { threshold: 0.1 }
-    );
-    revealRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  function addRevealRef(el: HTMLElement | null) {
-    if (el && !revealRefs.current.includes(el)) revealRefs.current.push(el);
-  }
 
   return (
-    <div>
-      <section style={{ padding: "clamp(24px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) 0" }}>
-        <Link
-          href="/products"
-          onClick={scrollToTop}
-          style={{
-            display: "inline-block",
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase" as const,
-            color: "#5F5A50",
-            textDecoration: "none",
-            marginBottom: 22,
-          }}
-        >
-          &larr; App and design
-        </Link>
+    <article>
+      <CaseHeader
+        back={{ href: "/products", label: "All app and design work" }}
+        tags={["Mobile app", "UX research", "UI design"]}
+        title="Mai Shara"
+        deck="A mobile application that solves problems associated with waste management, enabling users to manage waste disposal in both residential and corporate environments."
+        byline={["UX research & UI/UX design", "Figma · Jira · Miro · Photoshop"]}
+        heroStyle={{ background: "#FF8A4C", viewTransitionName: "media-mai-shara" }}
+        hero={
+          <PhoneHero
+            label="Mai Shara screens: registration, the home dashboard and the wallet"
+            srcs={["register", "home", "wallet"].map((n) => `/images/mai-shara/${n}.jpg`)}
+          />
+        }
+      />
 
-        <div
-          className="ks-two"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 2.1fr) minmax(280px, 1fr)",
-            gap: "clamp(20px, 3vw, 40px)",
-            paddingBottom: "clamp(20px, 2.6vw, 32px)",
-          }}
-        >
-          {/* Left: description */}
-          <div style={{ minWidth: 0 }}>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 12,
-                alignItems: "baseline",
-                fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase" as const,
-                color: "#5F5A50",
-                marginBottom: 14,
-              }}
-            >
-              <span style={{ color: "#C0281B" }}>Case study</span>
-              <span>Mobile App &middot; UX/UI Design</span>
-            </div>
-            <h1
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontWeight: 900,
-                fontSize: "clamp(36px, 6.4vw, 84px)",
-                lineHeight: 0.92,
-                letterSpacing: "-0.035em",
-                textTransform: "uppercase" as const,
-                margin: "0 0 14px",
-              }}
-            >
-              <Words text="Mai Shara" />
-            </h1>
-            <p
-              style={{
-                fontSize: "clamp(17px, 1.8vw, 21px)",
-                lineHeight: 1.45,
-                fontStyle: "italic",
-                color: "#3A362F",
-                margin: "0 0 22px",
-                maxWidth: "48ch",
-              }}
-            >
-              A mobile application that solves problems associated with waste management, enabling users to manage waste
-              disposal in both residential and corporate environments.
-            </p>
+      <ShortVersion
+        problem="Late waste pick-ups left residents with blocked drains, bad odour and estimated bills."
+        role="UX research and UI/UX design, with a product manager, UI designers and a programme manager."
+        did="A mobile app to schedule and track pick-ups, report incidents, recycle and pay for the service."
+        result="A fully prototyped mobile app, taken from user interviews to high-fidelity screens."
+      />
 
-            <div style={{ maxWidth: "60ch" }}>
-              <p style={{ fontSize: 17, lineHeight: 1.6, margin: "0 0 14px", color: "#3A362F" }}>
-                <span
-                  style={{
-                    float: "left",
-                    fontFamily: "Archivo, sans-serif",
-                    fontWeight: 900,
-                    fontSize: 60,
-                    lineHeight: 0.74,
-                    padding: "5px 10px 0 0",
-                    color: "#C0281B",
-                  }}
-                >
-                  D
-                </span>
-                ue to the inefficiency of the waste management agencies, there has been a delay in the pickup of waste in
-                both residential and corporate environments. Residents complained about blocked drainage, terrible odour from
-                piled waste, and inflated service charges from estimated billing.
-              </p>
-              <p style={{ fontSize: 17, lineHeight: 1.6, margin: "0 0 14px", color: "#3A362F" }}>
-                The solution was to create a mobile application that enables users to schedule and monitor waste pick-up. Mai
-                Shara gives residents and businesses control over their waste disposal, from scheduling collection to
-                reporting incidents and recycling.
-              </p>
-              <p style={{ fontSize: 17, lineHeight: 1.6, margin: 0, color: "#3A362F" }}>
-                I led the UX research and UI/UX design, working alongside a product manager, UI designers and a programme
-                manager to take the concept from user interviews through to a fully prototyped mobile application.
-              </p>
-            </div>
-          </div>
-
-          {/* Right: info boxes */}
-          <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>
-            {/* Portfolio link */}
-            <div style={{ border: "1px solid #14120F", padding: 18 }}>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase" as const,
-                  borderBottom: "1px solid #14120F",
-                  paddingBottom: 9,
-                  marginBottom: 14,
-                }}
-              >
-                View the full case study
-              </div>
-              <a
-                href="https://uxfol.io/p/kaspersalau/03fbae68"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase" as const,
-                  color: "#C0281B",
-                  borderBottom: "1px solid #C0281B",
-                  paddingBottom: 2,
-                  textDecoration: "none",
-                }}
-              >
-                UXfolio case study &#8599;
-              </a>
-            </div>
-
-            {/* Role */}
-            <div style={{ border: "1px solid #14120F", padding: 18 }}>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase" as const,
-                  borderBottom: "1px solid #14120F",
-                  paddingBottom: 9,
-                  marginBottom: 14,
-                }}
-              >
-                Role
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 9, fontSize: 16, color: "#3A362F" }}>
-                <span>UX Research</span>
-                <span>UI/UX Design</span>
-              </div>
-            </div>
-
-            {/* Collaboration */}
-            <div style={{ border: "1px solid #14120F", padding: 18 }}>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase" as const,
-                  borderBottom: "1px solid #14120F",
-                  paddingBottom: 9,
-                  marginBottom: 14,
-                }}
-              >
-                Collaboration
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 9, fontSize: 16, color: "#3A362F" }}>
-                <span>Product Manager</span>
-                <span>UI Designers</span>
-                <span>Programme Manager</span>
-              </div>
-            </div>
-
-            {/* Tools */}
-            <div style={{ border: "1px solid #14120F", padding: 18 }}>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase" as const,
-                  borderBottom: "1px solid #14120F",
-                  paddingBottom: 9,
-                  marginBottom: 14,
-                }}
-              >
-                Tools
-              </div>
-              <div style={{ fontSize: 16, lineHeight: 1.7, color: "#3A362F" }}>
-                Figma &middot; Jira &middot; Miro &middot; Photoshop
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Research findings */}
-      <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" }}>
-        <div
-          ref={addRevealRef}
-          data-reveal="off"
-          style={{ borderTop: "4px solid #14120F", paddingTop: 18, marginBottom: 24 }}
-        >
-          <h2
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(20px, 2.6vw, 32px)",
-              lineHeight: 1,
-              letterSpacing: "-0.03em",
-              textTransform: "uppercase" as const,
-              margin: 0,
-            }}
-          >
-            User research
-          </h2>
-        </div>
+      <CaseSection part="challenge">
+        <p className="cs-lead">Waste pick-ups were late, and residents were living with the results.</p>
+        <p className="cs-p">
+          Due to the inefficiency of the waste management agencies, there was a delay in the pick-up of waste in both
+          residential and corporate environments. Surveys and interviews showed what that meant day to day:
+        </p>
         <div
           style={{
             display: "grid",
@@ -289,82 +64,96 @@ export default function CaseMaiShara() {
               desc: "Complained about high service charge due to estimated bill from the waste management handler",
             },
           ].map((item, i) => (
-            <div key={i} style={{ borderTop: "1px solid #14120F", paddingTop: 14 }}>
+            <div key={i} style={{ borderTop: "1px solid var(--ink)", paddingTop: 14 }}>
               <InkRing value={parseInt(item.stat)} label={item.desc} color={["#C0281B", "#F0B442", "#14120F"][i]} />
             </div>
           ))}
         </div>
 
-        {/* Empathy quotes */}
-        <div
-          ref={addRevealRef}
-          data-reveal="off"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "clamp(20px, 2.6vw, 34px)",
-            marginBottom: 30,
-          }}
-        >
+        <div className="lp-quotes">
           {[
             "Going for a walk in the estate feels like walking through a dump, the odour from the waste makes it so hard to breathe in fresh.",
             "Whenever it rains, the entire estate is flooded and plastic is washed up on the street from the blocked drainage.",
             "The wind acts as a catalyst in distributing the unattended dirt around the estate.",
-          ].map((quote, i, arr) => (
-            <blockquote
-              key={i}
-              style={{
-                margin: 0,
-                paddingRight: i < arr.length - 1 ? "clamp(0px, 2vw, 24px)" : 0,
-                borderRight: i < arr.length - 1 ? "1px solid #CFC9BB" : "none",
-              }}
-            >
-              <p style={{ fontSize: 17, lineHeight: 1.55, margin: "0 0 12px", fontStyle: "italic" }}>
-                &ldquo;{quote}&rdquo;
-              </p>
+          ].map((quote, i) => (
+            <PopUp key={i} delay={i * 0.12} tilt={[-1.5, 1.2, -0.8][i]}>
+              <div className="lp-note lp-quote-note">
+                <b>&ldquo;{quote}&rdquo;</b>
+                <span>User interview</span>
+              </div>
+            </PopUp>
+          ))}
+        </div>
+        <YourCalls calls={CALLS["mai-shara"]} />
+      </CaseSection>
+
+      <CaseSection part="approach">
+        <p className="cs-lead">From user interviews to a tested prototype.</p>
+        <div className="lp-steps" style={{ marginBottom: 30 }}>
+          {[
+            {
+              num: "01",
+              title: "User research",
+              desc: "Surveys and interviews across residential and corporate environments to map waste management pain points, demographics and behavioural patterns.",
+            },
+            {
+              num: "02",
+              title: "Empathy and persona",
+              desc: "Synthesised findings into a primary persona and empathy map, surfacing the emotional weight of living with unreliable waste collection.",
+            },
+            {
+              num: "03",
+              title: "User flow and wireframes",
+              desc: "Mapped three core journeys (schedule pick-up, recycle and report), then sketched low-fidelity wireframes on paper before moving to Figma.",
+            },
+            {
+              num: "04",
+              title: "Prototyping",
+              desc: "High-fidelity screens covering onboarding, home dashboard, scheduling, wallet, location tracking and incident reporting, all tested against the persona.",
+            },
+          ].map((step, i) => (
+            <div key={step.num}>
+              <div className="lp-step-art">
+                <PopUp delay={i * 0.12} tilt={[-2, 1.5, -1, 2][i]}>
+                  {[<SurveySheet />, <EmpathyMap />, <FlowSheet />, <PrototypePhone />][i]}
+                </PopUp>
+              </div>
+            <div style={{ borderTop: "1px solid var(--ink)", paddingTop: 14 }}>
               <div
                 style={{
                   fontFamily: "Archivo, sans-serif",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase" as const,
-                  color: "#5F5A50",
+                  fontSize: 26,
+                  fontWeight: 900,
+                  letterSpacing: "-0.05em",
+                  color: "var(--accent)",
+                  lineHeight: 1,
+                  marginBottom: 9,
                 }}
               >
-                User interview
+                {step.num}
               </div>
-            </blockquote>
+              <div
+                style={{
+                  fontFamily: "Archivo, sans-serif",
+                  fontWeight: 800,
+                  fontSize: 15,
+                  textTransform: "uppercase" as const,
+                  marginBottom: 8,
+                }}
+              >
+                {step.title}
+              </div>
+              <p style={{ fontSize: 15, lineHeight: 1.55, color: "var(--body)", margin: 0 }}>{step.desc}</p>
+            </div>
+            </div>
           ))}
         </div>
-      </section>
-
-      {/* Persona */}
-      <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" }}>
+        <h3 className="cs-h3">Who it&rsquo;s for</h3>
+        <PopUp tilt={-0.6}>
         <div
-          ref={addRevealRef}
-          data-reveal="off"
-          style={{ borderTop: "4px solid #14120F", paddingTop: 18, marginBottom: 24 }}
-        >
-          <h2
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(20px, 2.6vw, 32px)",
-              lineHeight: 1,
-              letterSpacing: "-0.03em",
-              textTransform: "uppercase" as const,
-              margin: 0,
-            }}
-          >
-            Persona
-          </h2>
-        </div>
-        <div
-          ref={addRevealRef}
-          data-reveal="off"
           style={{
-            border: "1px solid #14120F",
+            border: "1px solid var(--ink)",
+            background: "var(--paper-2)",
             padding: "clamp(18px, 2.4vw, 28px)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
@@ -383,7 +172,7 @@ export default function CaseMaiShara() {
             >
               Adeola Olawale
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "#3A362F" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "var(--body)" }}>
               <span><strong>Age:</strong> 25</span>
               <span><strong>Location:</strong> Ikeja</span>
               <span><strong>Job:</strong> Travel Vlogger</span>
@@ -394,7 +183,7 @@ export default function CaseMaiShara() {
                 fontSize: 15,
                 lineHeight: 1.55,
                 fontStyle: "italic",
-                color: "#5F5A50",
+                color: "var(--muted)",
                 margin: "14px 0 0",
               }}
             >
@@ -405,17 +194,17 @@ export default function CaseMaiShara() {
             <div
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase" as const,
-                color: "#5F5A50",
+                color: "var(--muted)",
                 marginBottom: 10,
               }}
             >
               Motivations
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "#3A362F", marginBottom: 18 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "var(--body)", marginBottom: 18 }}>
               <span>Neatness</span>
               <span>Conducive environment</span>
               <span>Value for money</span>
@@ -424,17 +213,17 @@ export default function CaseMaiShara() {
             <div
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase" as const,
-                color: "#5F5A50",
+                color: "var(--muted)",
                 marginBottom: 10,
               }}
             >
               Needs
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "#3A362F" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "var(--body)" }}>
               <span>Proper waste management</span>
               <span>Schedule waste pick-up</span>
               <span>Monitor bills and charges</span>
@@ -445,17 +234,17 @@ export default function CaseMaiShara() {
             <div
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase" as const,
-                color: "#5F5A50",
+                color: "var(--muted)",
                 marginBottom: 10,
               }}
             >
               Pain points
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "#3A362F" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 15, color: "var(--body)" }}>
               <span>Littered environment</span>
               <span>Delay in waste pick-up</span>
               <span>Increased service charge from estimated billing</span>
@@ -463,127 +252,16 @@ export default function CaseMaiShara() {
             </div>
           </div>
         </div>
-      </section>
+        </PopUp>
+      </CaseSection>
 
-      {/* Process */}
-      <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" }}>
-        <div
-          ref={addRevealRef}
-          data-reveal="off"
-          style={{ borderTop: "4px solid #14120F", paddingTop: 18, marginBottom: 24 }}
-        >
-          <h2
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(20px, 2.6vw, 32px)",
-              lineHeight: 1,
-              letterSpacing: "-0.03em",
-              textTransform: "uppercase" as const,
-              margin: 0,
-            }}
-          >
-            The process
-          </h2>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 22,
-            marginBottom: 30,
-          }}
-        >
-          {[
-            {
-              num: "01",
-              title: "User Research",
-              desc: "Surveys and interviews across residential and corporate environments to map waste management pain points, demographics and behavioural patterns.",
-            },
-            {
-              num: "02",
-              title: "Empathy & Persona",
-              desc: "Synthesised findings into a primary persona and empathy map, surfacing the emotional weight of living with unreliable waste collection.",
-            },
-            {
-              num: "03",
-              title: "User Flow & Wireframes",
-              desc: "Mapped three core journeys — schedule pick-up, recycle, and report — then sketched low-fidelity wireframes on paper before moving to Figma.",
-            },
-            {
-              num: "04",
-              title: "Prototyping",
-              desc: "High-fidelity screens covering onboarding, home dashboard, scheduling, wallet, location tracking and incident reporting, all tested against the persona.",
-            },
-          ].map((step) => (
-            <div
-              key={step.num}
-              ref={addRevealRef}
-              data-reveal="off"
-              style={{ borderTop: "1px solid #14120F", paddingTop: 14 }}
-            >
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 26,
-                  fontWeight: 900,
-                  letterSpacing: "-0.05em",
-                  color: "#C0281B",
-                  lineHeight: 1,
-                  marginBottom: 9,
-                }}
-              >
-                {step.num}
-              </div>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontWeight: 800,
-                  fontSize: 15,
-                  textTransform: "uppercase" as const,
-                  marginBottom: 8,
-                }}
-              >
-                {step.title}
-              </div>
-              <p style={{ fontSize: 15, lineHeight: 1.55, color: "#3A362F", margin: 0 }}>{step.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Key screens */}
-      <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" }}>
-        <div
-          ref={addRevealRef}
-          data-reveal="off"
-          style={{ borderTop: "4px solid #14120F", paddingTop: 18, marginBottom: 24 }}
-        >
-          <h2
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(20px, 2.6vw, 32px)",
-              lineHeight: 1,
-              letterSpacing: "-0.03em",
-              textTransform: "uppercase" as const,
-              margin: 0,
-            }}
-          >
-            Key screens
-          </h2>
-        </div>
-        <div style={{ marginBottom: 30, marginLeft: "calc(-1 * clamp(16px, 2.6vw, 30px))", marginRight: "calc(-1 * clamp(16px, 2.6vw, 30px))" }}>
-          <PhoneStory screens={MAI_SHARA_SCREENS} name="Mai Shara" kicker="Key screens" headline="Report · Recycle · Pay · Track" accent="#FF8A4C" />
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 22,
-            marginBottom: 30,
-          }}
-        >
+      <CaseSection part="solution">
+        <p className="cs-lead">One app for scheduling, tracking, reporting and paying.</p>
+        <p className="cs-p">
+          Mai Shara gives residents and businesses control over their waste disposal, from scheduling collection to reporting
+          incidents and recycling. Lift a flap to read about each part.
+        </p>
+        <div className="lp-flaps" style={{ marginBottom: 30 }}>
           {[
             {
               num: "01",
@@ -593,11 +271,11 @@ export default function CaseMaiShara() {
             {
               num: "02",
               title: "Onboarding",
-              desc: "Three-step introduction explaining the recycling mission, incident reporting and waste scheduling — setting expectations before registration.",
+              desc: "Three-step introduction explaining the recycling mission, incident reporting and waste scheduling, setting expectations before registration.",
             },
             {
               num: "03",
-              title: "Schedule & Track",
+              title: "Schedule and track",
               desc: "Location-based scheduling with address search, driver assignment, estimated duration and real-time pick-up confirmation.",
             },
             {
@@ -606,111 +284,39 @@ export default function CaseMaiShara() {
               desc: "In-app wallet for service payments, fund management with bank transfers, and transaction history for full billing transparency.",
             },
           ].map((card) => (
-            <div
+            <Flap
               key={card.num}
-              ref={addRevealRef}
-              data-reveal="off"
-              style={{ borderTop: "1px solid #14120F", paddingTop: 14 }}
-            >
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontSize: 26,
-                  fontWeight: 900,
-                  letterSpacing: "-0.05em",
-                  color: "#C0281B",
-                  lineHeight: 1,
-                  marginBottom: 9,
-                }}
-              >
-                {card.num}
-              </div>
-              <div
-                style={{
-                  fontFamily: "Archivo, sans-serif",
-                  fontWeight: 800,
-                  fontSize: 15,
-                  textTransform: "uppercase" as const,
-                  marginBottom: 8,
-                }}
-              >
-                {card.title}
-              </div>
-              <p style={{ fontSize: 15, lineHeight: 1.55, color: "#3A362F", margin: 0 }}>{card.desc}</p>
-            </div>
+              label={card.title}
+              front={
+                <>
+                  <span className="lp-flap-num">{card.num}</span>
+                  <span className="lp-flap-call">{card.title}</span>
+                  <span className="lp-flap-hint">Lift to read more &uarr;</span>
+                </>
+              }
+              back={card.desc}
+            />
           ))}
         </div>
-      </section>
+      </CaseSection>
 
-      {/* Next case study */}
-      <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(26px, 3.4vw, 42px)" }}>
-        <div
-          style={{
-            borderTop: "4px solid #14120F",
-            paddingTop: 16,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 20,
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase" as const,
-                color: "#5F5A50",
-                marginBottom: 10,
-              }}
-            >
-              Next case study
-            </div>
-            <Link
-              href="/design/grubshelf"
-              onClick={scrollToTop}
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontWeight: 900,
-                fontSize: "clamp(24px, 3.4vw, 44px)",
-                lineHeight: 1,
-                letterSpacing: "-0.035em",
-                textTransform: "uppercase" as const,
-                color: "#14120F",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#C0281B";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#14120F";
-              }}
-            >
-              GrubShelf: Meals Lite &rarr;
-            </Link>
-          </div>
-          <Link
-            href="/products"
-            onClick={scrollToTop}
-            style={{
-              fontFamily: "Archivo, sans-serif",
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase" as const,
-              padding: "12px 22px",
-              border: "2px solid #14120F",
-              color: "#14120F",
-              textDecoration: "none",
-            }}
-          >
-            All app and design
-          </Link>
-        </div>
-      </section>
-    </div>
+      <CaseSection part="tryIt">
+        <p className="cs-lead">Walk through the app, screen by screen.</p>
+        <ScreenStrip screens={MAI_SHARA_SCREENS} />
+      </CaseSection>
+
+      <CaseSection part="outcome">
+        <p className="cs-lead">A fully prototyped app, built on what residents told us.</p>
+        <p className="cs-p">
+          Every screen traces back to the research: scheduling and tracking for the late pick-ups, incident reports for the
+          blocked drains, and a wallet with a full history for the estimated bills.
+        </p>
+        <a href="https://uxfol.io/p/kaspersalau/03fbae68" target="_blank" rel="noopener noreferrer" className="cs-link">
+          Read the full case study on UXfolio &#8599;
+        </a>
+      </CaseSection>
+
+      <CaseNext label="GrubShelf: Meals Lite" href="/design/grubshelf" hire="Hire me for a product like this" />
+    </article>
   );
 }

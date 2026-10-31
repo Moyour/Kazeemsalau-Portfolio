@@ -1,30 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
-
-type NavLink = {
-  label: string;
-  href: string;
-  match?: string[];
-};
-
-const NAV_LINKS: NavLink[] = [
-  { label: "Front page", href: "/" },
-  { label: "Learning case studies", href: "/work" },
-  {
-    label: "App and design",
-    href: "/products",
-    match: ["/products", "/design"],
-  },
-  { label: "About", href: "/about" },
-  { label: "Hire", href: "/contact" },
-];
+import { editionName, getEdition } from "@/lib/edition";
+import { PAPERS, paperFor, type Paper } from "@/lib/paper";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export default function Navigation() {
+// `paper` fixes which paper this is; otherwise it follows the route.
+export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
   const [location] = useLocation();
+  const paper = fixed ?? paperFor(location);
+  const NAV_LINKS = PAPERS[paper].sections;
   const [progress, setProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -60,7 +47,7 @@ export default function Navigation() {
           left: 0,
           width: "100%",
           height: 3,
-          background: "#C0281B",
+          background: "var(--accent)",
           transform: `scaleX(${progress})`,
           transformOrigin: "left",
           zIndex: 60,
@@ -77,26 +64,28 @@ export default function Navigation() {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "8px clamp(16px, 2.6vw, 30px)",
-          borderBottom: "1px solid #14120F",
+          borderBottom: "1px solid var(--ink)",
           fontFamily: "Archivo, sans-serif",
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: 600,
           letterSpacing: "0.2em",
           textTransform: "uppercase" as const,
-          color: "#5F5A50",
+          color: "var(--muted)",
         }}
       >
-        <span>Learning experience design &middot; Product design</span>
+        <span>{PAPERS[paper].disciplines}</span>
         <span>{dateline}</span>
-        <span>Portfolio edition &middot; No. 01</span>
+        <span>
+          {editionName()} &middot; No. {String(getEdition().copy).padStart(2, "0")}
+        </span>
       </div>
 
       {/* Masthead */}
       <div style={{ padding: "clamp(18px, 3vw, 34px) clamp(16px, 2.6vw, 30px) 0", textAlign: "center" }}>
-        <Link href="/" onClick={scrollToTop} style={{ display: "block", color: "#14120F", textDecoration: "none" }}>
+        <Link href="/" data-section="" aria-label="Kazeem Salau: back to the table" style={{ display: "block", color: "var(--ink)", textDecoration: "none" }}>
           <span style={{ display: "block", overflow: "hidden" }}>
             <span
-              className="ks-anim"
+              className="ks-anim ks-masthead"
               style={{
                 display: "block",
                 fontFamily: "Archivo, sans-serif",
@@ -116,7 +105,7 @@ export default function Navigation() {
           className="ks-anim"
           style={{
             height: 1,
-            background: "#14120F",
+            background: "var(--ink)",
             margin: "14px 0 0",
             transformOrigin: "left",
             animation: "ks-rule 0.9s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
@@ -126,12 +115,13 @@ export default function Navigation() {
           className="ks-anim"
           style={{
             height: 4,
-            background: "#14120F",
+            background: "var(--ink)",
             margin: "2px 0 0",
             transformOrigin: "left",
             animation: "ks-rule 0.9s 0.58s cubic-bezier(0.16, 1, 0.3, 1) both",
           }}
         />
+        {/* Which paper this is, and the way to the other one */}
       </div>
 
       {/* Sticky nav */}
@@ -140,8 +130,8 @@ export default function Navigation() {
           position: "sticky",
           top: 0,
           zIndex: 30,
-          background: "#F4F1EA",
-          borderBottom: "1px solid #14120F",
+          background: "var(--paper)",
+          borderBottom: "1px solid var(--ink)",
         }}
       >
         {/* Mobile toggle */}
@@ -157,7 +147,7 @@ export default function Navigation() {
             fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase" as const,
-            color: "#14120F",
+            color: "var(--ink)",
             background: "transparent",
             border: "none",
             cursor: "pointer",
@@ -178,8 +168,8 @@ export default function Navigation() {
             fontWeight: 800,
             letterSpacing: "0.2em",
             textTransform: "uppercase" as const,
-            background: "#C0281B",
-            color: "#F4F1EA",
+            background: "var(--accent)",
+            color: "var(--paper)",
             textDecoration: "none",
           }}
         >
@@ -203,9 +193,7 @@ export default function Navigation() {
         >
           {NAV_LINKS.map((link, i) => {
             const isActive =
-              link.href === "/"
-                ? location === "/"
-                : (link.match ?? [link.href]).some((m) => location.startsWith(m));
+              i === 0 ? location === link.href : (link.match ?? [link.href]).some((m) => location.startsWith(m));
             const isCta = link.href === "/contact";
             return (
               <Link
@@ -215,23 +203,23 @@ export default function Navigation() {
                 className="ks-nav-link"
                 style={{
                   padding: "11px 22px",
-                  color: isActive || isCta ? "#F4F1EA" : "#14120F",
-                  background: isActive ? "#C0281B" : isCta ? "#14120F" : "transparent",
+                  color: isActive || isCta ? "var(--paper)" : "var(--ink)",
+                  background: isActive ? "var(--accent)" : isCta ? "var(--ink)" : "transparent",
                   fontWeight: isCta ? 800 : undefined,
-                  borderRight: i < NAV_LINKS.length - 1 ? "1px solid #CFC9BB" : "none",
+                  borderRight: i < NAV_LINKS.length - 1 ? "1px solid var(--rule)" : "none",
                   textDecoration: "none",
                   transition: "background 0.2s, color 0.2s",
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
-                    (e.target as HTMLElement).style.background = "#C0281B";
-                    (e.target as HTMLElement).style.color = "#F4F1EA";
+                    (e.target as HTMLElement).style.background = "var(--accent)";
+                    (e.target as HTMLElement).style.color = "var(--paper)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
-                    (e.target as HTMLElement).style.background = isCta ? "#14120F" : "transparent";
-                    (e.target as HTMLElement).style.color = isCta ? "#F4F1EA" : "#14120F";
+                    (e.target as HTMLElement).style.background = isCta ? "var(--ink)" : "transparent";
+                    (e.target as HTMLElement).style.color = isCta ? "var(--paper)" : "var(--ink)";
                   }
                 }}
               >
@@ -260,7 +248,7 @@ export default function Navigation() {
           }
           .ks-nav-link {
             border-right: none !important;
-            border-bottom: 1px solid #CFC9BB;
+            border-bottom: 1px solid var(--rule);
             text-align: center;
           }
         }

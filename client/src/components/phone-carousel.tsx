@@ -7,9 +7,9 @@ const arrowStyle = {
   width: 44,
   height: 44,
   borderRadius: "50%",
-  border: "1px solid #14120F",
-  background: "#F4F1EA",
-  color: "#14120F",
+  border: "1px solid var(--ink)",
+  background: "var(--paper)",
+  color: "var(--ink)",
   fontSize: 18,
   cursor: "pointer",
   display: "flex",
@@ -83,7 +83,7 @@ export default function PhoneCarousel({
           style={{
             width: "clamp(190px, 54vw, 232px)",
             aspectRatio: "390 / 844",
-            background: "#14120F",
+            background: "var(--ink)",
             borderRadius: 34,
             padding: 9,
             boxShadow: `10px 10px 0 ${accent}`,
@@ -150,7 +150,7 @@ export default function PhoneCarousel({
               border: "none",
               padding: 0,
               cursor: "pointer",
-              background: i === index ? accent : "#CFC9BB",
+              background: i === index ? accent : "var(--rule)",
               transition: "width 0.2s, background 0.2s",
             }}
           />
@@ -174,7 +174,7 @@ export default function PhoneCarousel({
           </span>{" "}
           &middot; {current.title}
         </div>
-        <p style={{ fontSize: 15, lineHeight: 1.5, color: "#3A362F", margin: 0 }}>{current.caption}</p>
+        <p style={{ fontSize: 15, lineHeight: 1.5, color: "var(--body)", margin: 0 }}>{current.caption}</p>
       </div>
 
       <style>{`.ks-carousel-track::-webkit-scrollbar{display:none}`}</style>

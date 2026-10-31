@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --mode production && node scripts/prerender.mjs",
-    "build:no-prerender": "vite build --mode production",
+    "build": "vite build --mode production && node scripts/seo-pages.mjs",
     "start": "serve client/dist -l tcp://0.0.0.0:${PORT:-3000}",
     "preview": "vite preview"
   },

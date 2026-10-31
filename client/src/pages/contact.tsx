@@ -23,11 +23,11 @@ const btnStyle = {
 
 const boxLabelStyle = {
   fontFamily: "Archivo, sans-serif",
-  fontSize: 10,
+  fontSize: 11,
   fontWeight: 700,
   letterSpacing: "0.2em",
   textTransform: "uppercase" as const,
-  borderBottom: "1px solid #14120F",
+  borderBottom: "1px solid var(--ink)",
   paddingBottom: 9,
 };
 
@@ -70,11 +70,11 @@ export default function Contact() {
       <div
         style={{
           fontFamily: "Archivo, sans-serif",
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: 700,
           letterSpacing: "0.2em",
           textTransform: "uppercase" as const,
-          color: "#C0281B",
+          color: "var(--accent)",
           marginBottom: 14,
         }}
       >
@@ -83,6 +83,7 @@ export default function Contact() {
 
       {/* Title */}
       <h1
+        className="ks-page-h1"
         style={{
           fontFamily: "Archivo, sans-serif",
           fontWeight: 900,
@@ -99,14 +100,14 @@ export default function Contact() {
           fontStyle: "italic",
           fontSize: "clamp(17px, 1.8vw, 21px)",
           lineHeight: 1.5,
-          color: "#3A362F",
+          color: "var(--body)",
           maxWidth: "60ch",
           margin: "0 0 clamp(22px, 3vw, 36px)",
         }}
       >
         Tell me a little about what you need. I read everything and I usually reply the same day.
       </p>
-      <div style={{ height: 4, background: "#14120F", marginBottom: "clamp(22px, 3vw, 36px)" }} />
+      <div style={{ height: 4, background: "var(--ink)", marginBottom: "clamp(22px, 3vw, 36px)" }} />
 
       {/* Two column */}
       <div
@@ -119,12 +120,12 @@ export default function Contact() {
       >
         {/* Left: Form + email */}
         <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
-          <div style={{ border: "1px solid #14120F", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 18 }}>
+          <div style={{ border: "1px solid var(--ink)", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 18 }}>
             <div style={boxLabelStyle}>Send a message</div>
             <ContactForm fallbackEmail={EMAIL} />
           </div>
 
-          <div style={{ border: "1px solid #14120F", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ border: "1px solid var(--ink)", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 14 }}>
             <div style={boxLabelStyle}>Or write to me directly</div>
             <a
               href={`mailto:${EMAIL}?subject=${encodeURIComponent("Project enquiry")}`}
@@ -136,15 +137,15 @@ export default function Contact() {
                 fontSize: "clamp(20px, 2.8vw, 32px)",
                 lineHeight: 1.1,
                 letterSpacing: "-0.035em",
-                color: "#14120F",
+                color: "var(--ink)",
                 textDecoration: "none",
                 wordBreak: "break-all",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#C0281B";
+                (e.currentTarget as HTMLElement).style.color = "var(--accent)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#14120F";
+                (e.currentTarget as HTMLElement).style.color = "var(--ink)";
               }}
             >
               {EMAIL}
@@ -153,11 +154,11 @@ export default function Contact() {
               <a
                 href={`mailto:${EMAIL}?subject=${encodeURIComponent("Project enquiry")}`}
                 data-track="contact_email_button"
-                style={{ ...btnStyle, background: "transparent", color: "#14120F", border: "2px solid #14120F" }}
+                style={{ ...btnStyle, background: "transparent", color: "var(--ink)", border: "2px solid var(--ink)" }}
               >
                 Open email &rarr;
               </a>
-              <button onClick={copyEmail} style={{ ...btnStyle, background: "transparent", color: "#14120F", border: "2px solid #14120F", cursor: "pointer" }}>
+              <button onClick={copyEmail} style={{ ...btnStyle, background: "transparent", color: "var(--ink)", border: "2px solid var(--ink)", cursor: "pointer" }}>
                 {copied ? "Copied \u2713" : "Copy email address"}
               </button>
             </div>
@@ -167,17 +168,17 @@ export default function Contact() {
         {/* Right column */}
         <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
           {/* Direct lines */}
-          <div style={{ border: "1px solid #14120F", padding: "16px 18px" }}>
+          <div style={{ border: "1px solid var(--ink)", padding: "16px 18px" }}>
             <div
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase" as const,
                 paddingBottom: 10,
                 marginBottom: 12,
-                borderBottom: "1px solid #14120F",
+                borderBottom: "1px solid var(--ink)",
               }}
             >
               Direct lines
@@ -194,14 +195,14 @@ export default function Contact() {
                 textTransform: "uppercase" as const,
               }}
             >
-              <a href="mailto:kazeem.salau@yahoo.com" style={{ color: "#C0281B", textDecoration: "none" }}>
+              <a href="mailto:kazeem.salau@yahoo.com" style={{ color: "var(--accent)", textDecoration: "none" }}>
                 kazeem.salau@yahoo.com
               </a>
               <a
                 href="https://linkedin.com/in/kazeem-salau-164b1087"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "#C0281B", textDecoration: "none" }}
+                style={{ color: "var(--accent)", textDecoration: "none" }}
               >
                 LinkedIn
               </a>
@@ -209,7 +210,7 @@ export default function Contact() {
                 href="https://www.youtube.com/@moyoursalau"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "#C0281B", textDecoration: "none" }}
+                style={{ color: "var(--accent)", textDecoration: "none" }}
               >
                 YouTube
               </a>
@@ -217,11 +218,11 @@ export default function Contact() {
                 href="https://grubshelf.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "#C0281B", textDecoration: "none" }}
+                style={{ color: "var(--accent)", textDecoration: "none" }}
               >
                 grubshelf.app &#8599;
               </a>
-              <a href="/files/KazeemSalau-InstructionalDesign.pdf" target="_blank" rel="noopener noreferrer" style={{ color: "#C0281B", textDecoration: "none" }}>
+              <a href="/files/KazeemSalau-InstructionalDesign.pdf" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "none" }}>
                 Download resume (PDF)
               </a>
             </div>
@@ -232,15 +233,15 @@ export default function Contact() {
             ref={addRevealRef}
             data-reveal="off"
             style={{
-              background: "#14120F",
-              color: "#F4F1EA",
+              background: "var(--ink)",
+              color: "var(--paper)",
               padding: "18px 20px",
             }}
           >
             <div
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase" as const,
@@ -250,7 +251,7 @@ export default function Contact() {
             >
               Right now
             </div>
-            <p style={{ fontSize: 15, lineHeight: 1.6, margin: "0 0 10px", color: "#CFC9BB" }}>
+            <p style={{ fontSize: 15, lineHeight: 1.6, margin: "0 0 10px", color: "var(--rule)" }}>
               I am happy to take on full-time instructional design, learning experience and product design roles, and
               freelance work alongside them.
             </p>
@@ -263,27 +264,28 @@ export default function Contact() {
           <div
             ref={addRevealRef}
             data-reveal="off"
-            style={{ border: "1px solid #14120F", padding: "16px 18px" }}
+            style={{ border: "1px solid var(--ink)", padding: "16px 18px" }}
           >
             <div
               style={{
                 fontFamily: "Archivo, sans-serif",
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase" as const,
                 paddingBottom: 10,
                 marginBottom: 12,
-                borderBottom: "1px solid #14120F",
+                borderBottom: "1px solid var(--ink)",
               }}
             >
               Have a look first
             </div>
-            <p style={{ fontSize: 15, lineHeight: 1.6, color: "#3A362F", margin: "0 0 12px" }}>
+            <p style={{ fontSize: 15, lineHeight: 1.6, color: "var(--body)", margin: "0 0 12px" }}>
               All three courses are playable in full, and the app work has clickable screens, so you can see how I build
               before you write.
             </p>
             <Link
+              className="ks-tap"
               href="/work"
               onClick={scrollToTop}
               style={{
@@ -292,9 +294,9 @@ export default function Contact() {
                 fontWeight: 700,
                 letterSpacing: "0.15em",
                 textTransform: "uppercase" as const,
-                color: "#C0281B",
+                color: "var(--accent)",
                 textDecoration: "none",
-                borderBottom: "1px solid #C0281B",
+                borderBottom: "1px solid var(--accent)",
                 paddingBottom: 3,
               }}
             >
