@@ -3,14 +3,14 @@ import { Link } from "wouter";
 export default function NotFound() {
   return (
     <div style={{ padding: "clamp(40px, 6vw, 80px) clamp(16px, 2.6vw, 30px)", textAlign: "center" }}>
-      <div
+      <div aria-hidden="true"
         style={{
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontWeight: 900,
           fontSize: "clamp(60px, 14vw, 160px)",
           lineHeight: 0.9,
           letterSpacing: "-0.04em",
-          color: "var(--rule)",
+          color: "#8C8C8C",
         }}
       >
         404
@@ -18,7 +18,7 @@ export default function NotFound() {
       <h1
         className="ks-page-h1"
         style={{
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontWeight: 800,
           fontSize: "clamp(20px, 3vw, 32px)",
           margin: "16px 0 12px",
@@ -32,7 +32,7 @@ export default function NotFound() {
       <Link
         href="/"
         style={{
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontSize: 11,
           fontWeight: 700,
           letterSpacing: "0.15em",

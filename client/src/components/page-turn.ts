@@ -1,12 +1,11 @@
 import { tween } from "@/lib/spring";
+import type { Paper } from "@/lib/paper";
 
-// Turning to another page of the paper. The page is a leaf hinged at its
-// left edge, cut into narrow vertical strips that each lean a little more
-// than the one before, so it curls as it turns: the outer edge lifts and
-// leads, the part by the spine follows. Past edge-on each strip shows the
-// plain back of the sheet, and the leaf throws a shadow on the page it is
-// uncovering. It takes its time, the way a hand turns a broadsheet: a slow
-// lift off the page, an easy sweep across, and a soft landing.
+// Turning to another page of the paper. The page is one leaf, hinged at
+// the spine on the left, the way a book cover opens: it lifts off the page,
+// swings across in perspective, shows the plain back of the sheet once it
+// passes edge-on, and throws a shadow on the page it is uncovering. A slow
+// lift, an easy sweep, a soft landing.
 //
 // Forward, the current page turns away to reveal the new one beneath.
 // Back, the new page turns over onto the stack from the left, covering the
@@ -19,10 +18,31 @@ const div = (className: string) => Object.assign(document.createElement("div"), 
 // A copy of the paper as it sits on screen right now, without the bits
 // that would misbehave inside a moving piece, and without anything below
 // the window, which never shows during a turn and only slows it down.
+// Faces that come from the paper's own rules (the product serif, the
+// learning capitals). A moving copy leaves `.ks-paper`, so those rules
+// let go and the inline learning face shows through. Stamp the computed
+// type on first, while the original is still on the page.
+const TYPE_PROPS = ["font-family", "font-weight", "font-style", "letter-spacing", "text-transform"];
+function keepsItsType(el: Element) {
+  if (!(el instanceof HTMLElement)) return false;
+  if (/^H[1-6]$/.test(el.tagName)) return true;
+  if (el.classList.contains("ks-masthead") || el.classList.contains("ks-more-title") || el.classList.contains("ks-page-h1") || el.classList.contains("pt-title")) return true;
+  return /font|text-transform/i.test(el.getAttribute("style") || "");
+}
+function freezeType(originals: Element[], copies: Element[]) {
+  originals.forEach((el, i) => {
+    const node = copies[i];
+    if (!keepsItsType(el) || !(node instanceof HTMLElement)) return;
+    const cs = getComputedStyle(el);
+    TYPE_PROPS.forEach((p) => node.style.setProperty(p, cs.getPropertyValue(p)));
+  });
+}
+
 function copyOf(paper: HTMLElement, r: DOMRect) {
   const copy = paper.cloneNode(true) as HTMLElement;
-  const originals = paper.querySelectorAll("*");
-  const copies = copy.querySelectorAll("*");
+  const originals = [paper, ...paper.querySelectorAll("*")];
+  const copies = [copy, ...copy.querySelectorAll("*")];
+  freezeType(originals, copies);
   const below = innerHeight + 40;
   originals.forEach((el, i) => {
     if (el.getBoundingClientRect().top > below || getComputedStyle(el).position === "fixed") copies[i].remove();
@@ -36,71 +56,36 @@ function copyOf(paper: HTMLElement, r: DOMRect) {
   return copy;
 }
 
-// The leaf: strips of the page, each with a printed front and a plain back.
-function buildLeaf(paper: HTMLElement, r: DOMRect, strips: number): Leaf {
+// The leaf: one sheet, printed on the front and plain newsprint on the back,
+// hinged at the spine so it opens like a book cover.
+function buildLeaf(paper: HTMLElement, r: DOMRect): Leaf {
   const el = div("ks-leaf");
   Object.assign(el.style, { left: `${r.left}px`, width: `${r.width}px` });
-  const w = r.width / strips;
-  const page = copyOf(paper, r);
-  const fronts: HTMLElement[] = [];
-  const backs: HTMLElement[] = [];
-  for (let i = 0; i < strips; i++) {
-    // A hair of overlap hides the seams between strips.
-    const clip = `inset(0 ${Math.max(0, r.width - (i + 1) * w - 0.6)}px 0 ${i * w}px)`;
-    const front = div("ks-leaf-front");
-    front.style.clipPath = clip;
-    front.style.transformOrigin = `${i * w}px 0`;
-    front.append(page.cloneNode(true));
-    const back = div("ks-leaf-back");
-    back.style.clipPath = clip;
-    back.style.transformOrigin = `${i * w}px 0`;
-    fronts.push(front);
-    backs.push(back);
-    el.append(back, front);
-  }
+  const hinge = div("ks-book-hinge");
+  const front = div("ks-leaf-front");
+  front.append(copyOf(paper, r));
+  const back = div("ks-leaf-back");
+  hinge.append(back, front);
   const shade = div("ks-leaf-shade");
-  el.append(shade);
+  el.append(shade, hinge);
 
-  // How far each strip has turned, p from 0 (flat) to 1 (turned over). The
-  // outer edge starts first; `lead` is how far ahead of the spine it runs.
-  const lead = 0.32;
   const draw = (p: number) => {
-    let x = 0;
-    let z = 0;
-    let lift = 0;
-    for (let i = 0; i < strips; i++) {
-      const across = (i + 0.5) / strips;
-      const t = Math.min(1, Math.max(0, p * (1 + lead) - lead * (1 - across)));
-      // Ease each strip's own turn so the curl stays round. It only needs to
-      // go a little past edge-on: beyond that the leaf is out of sight
-      // behind the spine, so the whole turn is spent where it can be seen.
-      const a = MAX_TURN * (t * t * (3 - 2 * t));
-      const deg = (a * 180) / Math.PI;
-      const move = `translate3d(${x - i * w}px, 0, ${z}px) rotateY(${-deg}deg)`;
-      fronts[i].style.transform = move;
-      backs[i].style.transform = `${move} translateX(${w}px) rotateY(180deg)`;
-      // Lit from the front: darkest edge-on, the back a little greyer.
-      const light = Math.cos(a);
-      fronts[i].style.filter = `brightness(${(0.72 + 0.28 * Math.max(0, light)).toFixed(3)})`;
-      backs[i].style.filter = `brightness(${(0.8 + 0.2 * Math.max(0, -light)).toFixed(3)})`;
-      x += w * Math.cos(a);
-      z += w * Math.sin(a);
-      lift = Math.max(lift, Math.sin(a));
-    }
-    // The leaf's shadow on the page beneath, deepest mid-turn.
-    shade.style.opacity = String((0.5 * lift * (1 - p * 0.6)).toFixed(3));
-    shade.style.transform = `translateX(${Math.max(0, x)}px)`;
-    // Nearly over, it slips out of sight past the spine rather than vanishing.
-    el.style.opacity = String(p > 0.82 ? Math.max(0, (1 - p) / 0.18).toFixed(3) : 1);
+    const t = p * p * (3 - 2 * p);
+    const deg = -t * 168;
+    const lift = Math.sin(Math.min(1, t * 1.05) * Math.PI);
+    hinge.style.transform = `rotateY(${deg}deg) translateZ(${(lift * 48).toFixed(1)}px)`;
+    const light = Math.cos((Math.abs(deg) * Math.PI) / 180);
+    front.style.filter = `brightness(${(0.62 + 0.38 * Math.max(0, light)).toFixed(3)})`;
+    back.style.filter = `brightness(${(0.72 + 0.2 * Math.max(0, -light)).toFixed(3)})`;
+    shade.style.opacity = (0.42 * lift * (1 - t * 0.35)).toFixed(3);
+    shade.style.transform = `scaleX(${(0.35 + 0.9 * (1 - t)).toFixed(3)})`;
+    el.style.opacity = p > 0.86 ? Math.max(0, (1 - p) / 0.14).toFixed(3) : "1";
   };
   return { el, draw };
 }
 
-// How far a strip turns, in radians: just past edge-on.
-const MAX_TURN = Math.PI * 0.6;
-
 // How long one turn takes, lift to landing.
-const TURN_MS = 1100;
+const TURN_MS = 1200;
 
 // The paper's colours as they are now, so a copy of the old page keeps
 // them while the new page (perhaps the other edition) takes over.
@@ -124,7 +109,6 @@ export function turnPage(direction: "forward" | "back", go: () => void) {
   busy?.();
 
   const html = document.documentElement;
-  const strips = innerWidth < 700 ? 6 : 9;
   const stage = div("ks-turn");
   stage.setAttribute("aria-hidden", "true");
   const before = paper.getBoundingClientRect();
@@ -134,7 +118,7 @@ export function turnPage(direction: "forward" | "back", go: () => void) {
   let to: number;
   if (direction === "forward") {
     // The current page lifts off the new one.
-    leaf = buildLeaf(paper, before, strips);
+    leaf = buildLeaf(paper, before);
     freezePalette(leaf.el);
     stage.append(leaf.el);
     document.body.append(stage);
@@ -155,7 +139,7 @@ export function turnPage(direction: "forward" | "back", go: () => void) {
     go();
     window.scrollTo(0, 0);
     const after = paper.getBoundingClientRect();
-    leaf = buildLeaf(paper, after, strips);
+    leaf = buildLeaf(paper, after);
     stage.append(leaf.el);
     leaf.draw(1);
     html.dataset.turning = "1";
@@ -187,7 +171,7 @@ export function turnPage(direction: "forward" | "back", go: () => void) {
 // edition, lying underneath, rises to take its place. Toward Product it
 // leaves to the right; back to Learning, to the left.
 const SWAP_MS = 950;
-export function swapPapers(toward: "learning" | "product", go: () => void) {
+export function swapPapers(toward: Paper, go: () => void) {
   const paper = document.querySelector<HTMLElement>(".ks-paper");
   if (!paper || matchMedia("(prefers-reduced-motion: reduce)").matches) {
     go();
@@ -204,10 +188,12 @@ export function swapPapers(toward: "learning" | "product", go: () => void) {
   freezePalette(sheet);
   stage.append(sheet);
   document.body.append(stage);
+  const from = html.dataset.paper ?? "learning";
   go();
   window.scrollTo(0, 0);
   html.dataset.swapping = "1";
-  const dir = toward === "product" ? 1 : -1;
+  const order: Paper[] = ["learning", "product", "video"];
+  const dir = order.indexOf(toward) >= order.indexOf(from as Paper) ? 1 : -1;
   const ease = (t: number) => 1 - Math.pow(1 - t, 3);
   let raf = 0;
   const start = performance.now() + 40;

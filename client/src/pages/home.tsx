@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import TheWire, { type Dispatch } from "@/components/the-wire";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { Words, CountUp } from "@/components/motion";
@@ -27,6 +28,8 @@ export const EDITIONS: Record<
     // The lead story; the first paragraph opens with a drop cap.
     story: string[];
     issue: { label: string; page: string; href: string }[];
+    // Dispatches for The Wire, the teleprinter on the front page.
+    wire: Dispatch[];
     stats: { value: string; label: string }[];
     skills: string[];
     featuredNote: string;
@@ -45,17 +48,46 @@ export const EDITIONS: Record<
     standfirst: "Courses people finish. From the needs analysis to the SCORM package.",
     role: "Instructional designer & learning experience designer",
     story: [
-      "I have been an instructional designer since 2014, building courses for blended and self-paced learning for learners spread across the globe. I work the ADDIE model with subject matter experts, write the script, then produce it in Storyline 360, Rise and Camtasia.",
-      "I define the course itself: observable, measurable learning outcomes, performance competencies, interactive elements, case studies, assessments, portfolio and capstone projects. Then I script the dialogue in conversational tones, so a new concept arrives the way a colleague would explain it.",
+      "An instructional designer since 2014, building blended and self-paced courses for learners around the world. I work ADDIE with subject matter experts, write the script, and build in Storyline 360, Rise and Camtasia.",
+      "I set measurable outcomes, competencies, interactions, cases and assessments, then script the dialogue so each new idea lands the way a colleague would explain it.",
+    ],
+    wire: [
+      {
+        desk: "Leadway Assurance",
+        text: "A curriculum of 50+ courses across sales, health, insurance and policy.",
+        href: "/about#career",
+        link: "See the career",
+      },
+      {
+        desk: "The Fixer",
+        text: "Learners finish the course, then replay it for the branches they missed.",
+        href: "/work/the-fixer",
+      },
+      {
+        desk: "Emotional Intelligence",
+        text: "Managers hear the course's vocabulary in team conversations.",
+        href: "/work/emotional-intelligence",
+      },
+      {
+        desk: "Business Writing",
+        text: "Plan, structure, edit: a Storyline 360 course for wordy, vague writing.",
+        href: "/work/business-writing",
+      },
+      {
+        desk: "TM Forum, London",
+        text: "Existing courses reworked with new methods and technology.",
+        href: "/about#career",
+        link: "See the career",
+      },
     ],
     issue: [
-      { label: "Learning case studies", page: "P. 2", href: "/work" },
-      { label: "The Fixer, featured course", page: "P. 3", href: "/work/the-fixer" },
+      { label: "Before Day One, featured course", page: "P. 2", href: "/work/before-day-one" },
+      { label: "Business Writing, The Fixer, Emotional Intelligence", page: "P. 3–5", href: "/work" },
       { label: "About, and what people say", page: "P. 6", href: "/about" },
     ],
     stats: [
       { value: "50+", label: "Courses in one curriculum" },
-      { value: "+20%", label: "Course completion" },
+      { value: "4", label: "Courses you can play" },
       { value: "2014", label: "Designing since" },
     ],
     skills: [
@@ -77,13 +109,13 @@ export const EDITIONS: Record<
     featuredNote: "Playable in full",
     featured: {
       num: "01",
-      tags: ["Learning experience design", "Branching scenario"],
-      title: "The Fixer",
+      tags: ["Learning experience design", "Scenario"],
+      title: "Before Day One",
       description:
-        "A branching special assignment: the learner is sent to close the policy knowledge gaps that are costing an agency its service delivery. Playable in full.",
-      href: "/work/the-fixer",
-      page: "3",
-      image: "/images/the-fixer-hq.jpg",
+        "A new starter's first week, from Tuesday night's offer to clocking out on Day One. Playable in full.",
+      href: "/work/before-day-one",
+      page: "2",
+      image: "/images/before-day-one.jpg",
       more: { label: "All learning case studies", href: "/work" },
     },
     pull: {
@@ -95,50 +127,67 @@ export const EDITIONS: Record<
         title: "Business Writing",
         line: "Writing that gets read, and gets acted on.",
         href: "/work/business-writing",
-        image: "/images/business-writing-hq.jpg",
-        page: "2",
+        image: "/images/business-writing-frame.jpg",
+        page: "3",
+      },
+      {
+        title: "The Fixer",
+        line: "A branching assignment under time and reputation pressure.",
+        href: "/work/the-fixer",
+        image: "/images/the-fixer-frame.jpg",
+        page: "4",
       },
       {
         title: "Emotional Intelligence",
         line: "Noticing the trigger before it changes the decision.",
         href: "/work/emotional-intelligence",
-        // Unsplash photo by Memento Media (Unsplash Licence).
-        image: "/images/emotional-intelligence-meeting.jpg",
-        page: "4",
+        image: "/images/emotional-intelligence-frame.jpg",
+        page: "5",
       },
     ],
-    howLabel: "How I build a course",
-    steps: [
-      {
-        num: "01",
-        title: "Start with the people",
-        desc: "A needs analysis with subject matter experts. Clear, measurable outcomes before anything gets built.",
-      },
-      {
-        num: "02",
-        title: "Script and storyboard",
-        desc: "Storyboards and conversational scripts, tested before they get built.",
-      },
-      {
-        num: "03",
-        title: "Build, ship, improve",
-        desc: "Storyline 360, Rise and Camtasia packaged for the LMS. Then reviewed and improved once real learners use it.",
-      },
-    ],
-    cta: "Got a course that needs to actually work?",
+    howLabel: "",
+    steps: [],
+    cta: "Got a course that needs to work?",
   },
   product: {
     headline: ["Product", "designer"],
     standfirst: "Apps people use. From the first user interview to a working build.",
     role: "Product designer",
     story: [
-      "I started out as a graphic designer, hold a B.Sc. in Computer Science, and now research, design and build apps: GrubShelf, a meal planner for UK households built in SwiftUI, and Mai Shara, a waste pick-up app taken from user interviews to prototype.",
-      "The method is the one I use for courses: start with the people, test before building, improve once it is live.",
+      "A graphic designer with a B.Sc. in Computer Science, now researching, designing and building apps: GrubShelf, a SwiftUI meal planner for UK households, and Mai Shara, a waste pick-up app taken from interviews to prototype.",
+      "Start with people. Test before building. Improve once live.",
+    ],
+    wire: [
+      {
+        desk: "GrubShelf",
+        text: "Meal planner in founder testing, backed by 460 tests.",
+        href: "/design/grubshelf",
+      },
+      {
+        desk: "GrubShelf",
+        text: "53 screens mocked up before the build; the mockup stays the source of truth.",
+        href: "/design/grubshelf",
+      },
+      {
+        desk: "Mai Shara",
+        text: "Waste pick-up app, from user interviews to full prototype.",
+        href: "/design/mai-shara",
+      },
+      {
+        desk: "Leadway Health",
+        text: "A new HMO's first website, prototyped: plans, providers and resources one click away.",
+        href: "/design/leadway-health",
+      },
+      {
+        desk: "Householder",
+        text: "Home insurance, prototyped: buyers choose what to insure, room by room.",
+        href: "/design/householder",
+      },
     ],
     issue: [
-      { label: "App and design work", page: "P. 2", href: "/products" },
-      { label: "GrubShelf, featured app", page: "P. 3", href: "/design/grubshelf" },
-      { label: "Mai Shara, from interviews to prototype", page: "P. 4", href: "/design/mai-shara" },
+      { label: "GrubShelf, featured app", page: "P. 2", href: "/design/grubshelf" },
+      { label: "Mai Shara, from interviews to prototype", page: "P. 3", href: "/design/mai-shara" },
+      { label: "The GrubShelf website", page: "P. 4", href: "/design/grubshelf-website" },
       { label: "About, and what people say", page: "P. 6", href: "/about" },
     ],
     stats: [
@@ -162,9 +211,9 @@ export const EDITIONS: Record<
       tags: ["Product design", "iOS app"],
       title: "GrubShelf",
       description:
-        "A meal planner for UK households: pick your meals, get a list split by shop, know what it costs. Taken from spec to a working SwiftUI build.",
+        "A meal planner for UK households: pick meals, get a list split by shop, see the cost. Spec to working SwiftUI build.",
       href: "/design/grubshelf",
-      page: "3",
+      page: "2",
       phones: toReels(GRUBSHELF_SCREENS.map((x) => x.src)),
       more: { label: "All app and design work", href: "/products" },
     },
@@ -175,19 +224,19 @@ export const EDITIONS: Record<
     more: [
       {
         title: "Mai Shara",
-        line: "Scheduling and tracking waste pick-ups, from user interviews to prototype.",
+        line: "Waste pick-ups, scheduled and tracked. Interviews to prototype.",
         href: "/design/mai-shara",
         // The app's own screens on its orange, as on its case study.
         phones: true,
         image: "",
-        page: "4",
+        page: "3",
       },
       {
         title: "The GrubShelf website",
         line: "One job: the waiting list. The receipt demo does the selling.",
         href: "/design/grubshelf-website",
-        image: "/images/grubshelf-web/full.jpg",
-        page: "5",
+        image: "/images/grubshelf-web/tile.jpg",
+        page: "4",
       },
     ],
     howLabel: "How I build an app",
@@ -195,25 +244,85 @@ export const EDITIONS: Record<
       {
         num: "01",
         title: "Start with the people",
-        desc: "Interviews with the people who will use the app. Clear, measurable outcomes before anything gets built.",
+        desc: "Interview the people who'll use it. Set measurable outcomes first.",
       },
       {
         num: "02",
         title: "Flows and prototypes",
-        desc: "Flows, wireframes and clickable prototypes, tested before they get built.",
+        desc: "Flows, wireframes and clickable prototypes, tested before build.",
       },
       {
         num: "03",
         title: "Build, ship, improve",
-        desc: "SwiftUI shipped to a phone. Then reviewed and improved once real people use it.",
+        desc: "Shipped in SwiftUI, then improved with real use.",
       },
     ],
-    cta: "Got an app that needs to actually work?",
+    cta: "Got an app that needs to work?",
+  },
+  video: {
+    headline: ["Video", "editor"],
+    standfirst: "The reel is on YouTube.",
+    role: "Video editor",
+    story: ["I cut pictures.", "The reel is the channel."],
+    wire: [
+      {
+        desk: "The reel",
+        text: "21 films, on YouTube, at @Moyoursalau.",
+        href: "/video/reel",
+        link: "Open the reel",
+      },
+      {
+        desk: "The cut",
+        text: "Picture, captions and sound.",
+        href: "/video/reel",
+        link: "See the films",
+      },
+    ],
+    issue: [
+      { label: "The reel, on YouTube", page: "P. 2", href: "/video/reel" },
+      { label: "About", page: "P. 6", href: "/about" },
+    ],
+    stats: [],
+    skills: ["Camtasia", "YouTube", "Picture edit", "Captions", "Sound"],
+    featuredNote: "On the channel",
+    featured: {
+      num: "01",
+      tags: ["Picture", "YouTube"],
+      title: "The reel",
+      description: "Edited pieces, on the channel.",
+      href: "/video/reel",
+      page: "2",
+      image: "/images/reel/tANWyt2mUdw.jpg",
+      more: { label: "The reel", href: "/video/reel" },
+    },
+    pull: {
+      quote: "Cut it so the idea arrives before the explanation.",
+      by: "Kazeem Salau",
+    },
+    more: [
+      {
+        title: "Hobbies vs productivity",
+        line: "A film on the channel.",
+        href: "/video/reel#film-SLc-Thmbdzc",
+        image: "/images/reel/SLc-Thmbdzc.jpg",
+        page: "2",
+      },
+      {
+        title: "Buying back your time",
+        line: "A film on the channel.",
+        href: "/video/reel#film-DqS27GE3ocY",
+        image: "/images/reel/DqS27GE3ocY.jpg",
+        page: "2",
+      },
+    ],
+    howLabel: "",
+    steps: [],
+    cta: "Got a film that needs cutting?",
   },
 };
 
 const sectionNote = {
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 11,
   fontWeight: 600,
   letterSpacing: "0.18em",
@@ -223,13 +332,9 @@ const sectionNote = {
 
 export const ctaStyle = {
   display: "inline-block",
-  fontFamily: "Archivo, sans-serif",
-  fontWeight: 800,
-  fontSize: 12,
-  letterSpacing: "0.14em",
-  textTransform: "uppercase" as const,
-  padding: "14px 22px",
-  textDecoration: "none",
+  fontWeight: 700,
+  fontSize: 15,
+  letterSpacing: "0.01em",
 };
 
 export function SkillsMarquee({ skills }: { skills: string[] }) {
@@ -268,7 +373,7 @@ export function SkillsMarquee({ skills }: { skills: string[] }) {
           display: "flex",
           width: "max-content",
           animation: "ks-marquee 46s linear infinite",
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontSize: 11,
           fontWeight: 600,
           letterSpacing: "0.2em",
@@ -291,43 +396,12 @@ export function SkillsMarquee({ skills }: { skills: string[] }) {
   );
 }
 
-// Fig. 1, the portrait. On phones it runs straight under the headline, as
-// the lead story's photo, so the folded paper shows name, roles and face;
-// on wider screens it heads the sidebar.
-function Portrait({ className }: { className: string }) {
-  return (
-    <div className={`ks-anim ${className}`} style={{ animation: "ks-fade 1s 0.6s both" }}>
-      <div style={{ height: "clamp(280px, 32vw, 380px)", background: "var(--accent)", border: "1px solid var(--ink)", overflow: "hidden" }}>
-        <img
-          src="/images/portrait.png"
-          alt="Kazeem Salau"
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          gap: 8,
-          paddingTop: 7,
-          fontFamily: "Archivo, sans-serif",
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase" as const,
-          color: "var(--muted)",
-          borderBottom: "1px solid var(--rule)",
-          paddingBottom: 8,
-        }}
-      >
-        <span style={{ color: "var(--accent)" }}>Fig. 1</span>
-        <span>Kazeem Salau, photographed in London</span>
-      </div>
-    </div>
-  );
-}
-
 export function LearningFront() {
   return <FrontPage paper="learning" />;
+}
+
+export function VideoFront() {
+  return <FrontPage paper="video" />;
 }
 
 // A paper's front page. `preview` is the copy lying folded on the table:
@@ -367,7 +441,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
       {/* Hero section */}
       <section style={{ padding: "clamp(22px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) 0" }}>
         <div
-          className="ks-two"
+          className="ks-two ks-lead"
           style={{
             display: "grid",
             gridTemplateColumns: "minmax(0, 2.1fr) minmax(260px, 1fr)",
@@ -379,7 +453,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
             <div
               className="ks-anim"
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.22em",
@@ -393,7 +467,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
             </div>
             <h1
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontWeight: 900,
                 fontSize: "clamp(38px, 6.6vw, 86px)",
                 lineHeight: 0.92,
@@ -424,11 +498,10 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 </span>
               </span>
             </h1>
-            <Portrait className="ks-photo-lead" />
             <p
-              className="ks-anim"
+              className="ks-anim ks-stand"
               style={{
-                fontFamily: "Newsreader, serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: "clamp(18px, 2vw, 23px)",
                 lineHeight: 1.4,
                 fontStyle: "italic",
@@ -455,35 +528,21 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 href="/contact"
                 onClick={scrollToTop}
                 data-track="hero_hire"
-                className="ks-press"
-                style={{ ...ctaStyle, background: "var(--accent)", color: "var(--paper)", boxShadow: "4px 4px 0 var(--ink)" }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "var(--ink)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "var(--accent)";
-                }}
+                className="ks-action"
+                style={ctaStyle}
               >
                 Hire me for a project &rarr;
               </Link>
-              <a
+              {paper === "learning" && <a
                 href="/files/KazeemSalau-InstructionalDesign.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-track="hero_cv"
-                className="ks-press"
-                style={{ ...ctaStyle, background: "transparent", color: "var(--ink)", border: "2px solid var(--ink)", padding: "12px 20px" }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "var(--ink)";
-                  (e.currentTarget as HTMLElement).style.color = "var(--paper)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "transparent";
-                  (e.currentTarget as HTMLElement).style.color = "var(--ink)";
-                }}
+                className="ks-action"
+                style={ctaStyle}
               >
                 Download CV (PDF)
-              </a>
+              </a>}
             </div>
             <div
               className="ks-anim"
@@ -491,7 +550,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.12em",
@@ -501,7 +560,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 animation: "ks-fade 0.8s 0.92s both",
               }}
             >
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#2E7D32", flexShrink: 0 }} />
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#6A6A6A", flexShrink: 0 }} />
               Available now for full-time roles &amp; freelance &middot; London / remote
             </div>
             <div
@@ -513,7 +572,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 padding: "10px 0",
                 borderTop: "1px solid var(--ink)",
                 borderBottom: "1px solid var(--ink)",
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.18em",
@@ -523,7 +582,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 animation: "ks-fade 0.8s 0.95s both",
               }}
             >
-              <span style={{ color: "var(--ink)" }}>By Kazeem Salau</span>
+              <span style={{ color: "var(--ink)" }}>By <span className="ks-name">Kazeem Salau</span></span>
               <span>&middot;</span>
               <span>{e.role}</span>
             </div>
@@ -535,7 +594,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                       <span
                         style={{
                           float: "left",
-                          fontFamily: "Archivo, sans-serif",
+                          fontFamily: "var(--font-learning-text)",
                           fontWeight: 900,
                           fontSize: 66,
                           lineHeight: 0.74,
@@ -555,7 +614,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
             </div>
 
             {/* The numbers */}
-            <div
+            {e.stats.length > 0 && <div
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${e.stats.length}, minmax(0, 1fr))`,
@@ -568,7 +627,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 <div key={s.label} style={{ padding: "14px 12px", borderLeft: i > 0 ? "1px solid var(--rule)" : "none" }}>
                   <div
                     style={{
-                      fontFamily: "Archivo, sans-serif",
+                      fontFamily: "var(--font-learning-text)",
                       fontWeight: 900,
                       fontSize: "clamp(28px, 3.2vw, 40px)",
                       lineHeight: 1,
@@ -582,18 +641,18 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                   <div style={sectionNote}>{s.label}</div>
                 </div>
               ))}
-            </div>
+            </div>}
 
             {/* Pull quote */}
             <blockquote className="ks-pull">
               <p>&ldquo;{e.pull.quote}&rdquo;</p>
-              <cite>{e.pull.by}</cite>
+              <cite>{e.pull.by.split(/(Kazeem Salau)/).map((part) => part === "Kazeem Salau" ? <span key={part} className="ks-name">{part}</span> : part)}</cite>
             </blockquote>
           </div>
 
           {/* Right column */}
           <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
-            <Portrait className="ks-photo-side" />
+            <TheWire dispatches={e.wire} />
 
             {/* In this issue */}
             <div
@@ -603,7 +662,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
             >
               <div
                 style={{
-                  fontFamily: "Archivo, sans-serif",
+                  fontFamily: "var(--font-learning-text)",
                   fontSize: 11,
                   fontWeight: 700,
                   letterSpacing: "0.2em",
@@ -640,7 +699,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                     <span>{item.label}</span>
                     <span
                       style={{
-                        fontFamily: "Archivo, sans-serif",
+                        fontFamily: "var(--font-learning-text)",
                         fontSize: 11,
                         fontWeight: 700,
                         color: "var(--accent)",
@@ -653,7 +712,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
               </div>
             </div>
 
-            <CvCoupon />
+            {paper === "learning" && <CvCoupon />}
           </div>
         </div>
       </section>
@@ -679,7 +738,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
         >
           <h2
             style={{
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontWeight: 900,
               fontSize: "clamp(22px, 2.8vw, 34px)",
               lineHeight: 1,
@@ -697,12 +756,12 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
 
         <div className="ks-more">
           {e.more.map((m) => (
-            <Link key={m.href} href={m.href} onClick={scrollToTop} className="ks-more-story">
+            <Link key={m.title} href={m.href} onClick={scrollToTop} className="ks-more-story">
               <span className="ks-more-img">
                 <img src={m.image} alt="" loading="lazy" />
               </span>
               <span className="ks-more-text">
-                <span className="ks-more-kicker">Also inside &middot; page {m.page}</span>
+                <span className="ks-more-kicker">{/^\d/.test(m.page) ? `Also inside · page ${m.page}` : m.page}</span>
                 <span className="ks-more-title">{m.title}</span>
                 <span className="ks-more-line">{m.line}</span>
               </span>
@@ -711,7 +770,8 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
         </div>
       </section>
 
-      {/* How I build */}
+      {/* How I build. The learning front already says this in the lead story. */}
+      {e.steps.length > 0 && (
       <section
         ref={addRevealRef}
         data-reveal="off"
@@ -729,7 +789,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
           <div style={{ minWidth: 0, border: "1px solid var(--ink)", padding: "clamp(18px, 2.4vw, 28px)" }}>
             <div
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
@@ -749,7 +809,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                 <div key={step.num}>
                   <div
                     style={{
-                      fontFamily: "Archivo, sans-serif",
+                      fontFamily: "var(--font-learning-text)",
                       fontWeight: 900,
                       fontSize: 30,
                       letterSpacing: "-0.05em",
@@ -762,7 +822,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
                   </div>
                   <div
                     style={{
-                      fontFamily: "Archivo, sans-serif",
+                      fontFamily: "var(--font-learning-text)",
                       fontWeight: 800,
                       fontSize: 15,
                       letterSpacing: "-0.01em",
@@ -779,6 +839,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
           </div>
         </div>
       </section>
+      )}
 
       {/* CTA */}
       <section style={{ padding: "0 clamp(16px, 2.6vw, 30px) clamp(30px, 4vw, 52px)" }}>
@@ -795,7 +856,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
         >
           <div
             style={{
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: "0.2em",
@@ -808,7 +869,7 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
           </div>
           <h2
             style={{
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontWeight: 900,
               fontSize: "clamp(26px, 4.2vw, 54px)",
               lineHeight: 0.98,
@@ -827,15 +888,16 @@ export function FrontPage({ paper, preview = false }: { paper: Paper; preview?: 
               margin: "0 auto 22px",
             }}
           >
-            Send me a couple of lines about who it is for and what is going wrong. I will come back with what I would
-            build and how long it would take.
+            {paper === "video"
+              ? "Send a couple of lines about the film."
+              : "Tell me who it's for and what's going wrong. I'll reply with what I'd build and how long it takes."}
           </p>
           <Link
             href="/contact"
             onClick={scrollToTop}
             style={{
               display: "inline-block",
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontWeight: 800,
               fontSize: 12,
               letterSpacing: "0.18em",
@@ -938,7 +1000,7 @@ function CourseCard({
               flexWrap: "wrap",
               gap: "4px 12px",
               alignItems: "baseline",
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: "0.18em",
@@ -954,7 +1016,7 @@ function CourseCard({
           </div>
           <h3
             style={{
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontWeight: 900,
               fontSize: "clamp(24px, 2.9vw, 36px)",
               lineHeight: 1,
@@ -968,7 +1030,7 @@ function CourseCard({
           <p style={{ fontSize: 16, lineHeight: 1.6, color: "var(--body)", margin: "0 0 14px", maxWidth: "52ch" }}>{description}</p>
           <span
             style={{
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: "0.18em",
@@ -988,7 +1050,7 @@ function CourseCard({
             href={more.href}
             onClick={scrollToTop}
             style={{
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: "0.18em",

@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/use-seo";
 import { CountUp, Words } from "@/components/motion";
 import { LivingPhones, toReels } from "@/components/news-motion";
-import CvCoupon from "@/components/cv-coupon";
+import TheWire from "@/components/the-wire";
 import { GRUBSHELF_SCREENS, MAI_SHARA_SCREENS } from "@/lib/product-screens";
 import { EDITIONS, SkillsMarquee } from "@/pages/home";
 
@@ -60,7 +60,7 @@ export default function ProductFront() {
       </section>
 
       <div className="ks-mag-actions">
-        <Link href="/contact" onClick={scrollToTop} data-track="hero_hire" className="ks-mag-btn" data-primary="1">
+        <Link href="/contact" onClick={scrollToTop} data-track="hero_hire" className="ks-action">
           Hire me for a project &rarr;
         </Link>
         <span className="ks-mag-available">
@@ -70,13 +70,8 @@ export default function ProductFront() {
 
       {/* Uneven columns: a wide margin, then the story set wide. */}
       <section className="ks-mag-spread">
-        <aside className="ks-mag-margin">
-          <figure className="ks-mag-portrait">
-            <div className="ks-mag-photo">
-              <img src="/images/portrait.png" alt="Kazeem Salau" />
-            </div>
-            <figcaption>The designer, photographed in London</figcaption>
-          </figure>
+        <div className="ks-mag-margin">
+          <TheWire dispatches={e.wire} />
 
           <blockquote className="ks-mag-pull">
             <p>&ldquo;{e.pull.quote}&rdquo;</p>
@@ -93,12 +88,11 @@ export default function ProductFront() {
             ))}
           </nav>
 
-          <CvCoupon />
-        </aside>
+        </div>
 
         <article className="ks-mag-story">
           <div className="ks-mag-byline">
-            By Kazeem Salau &middot; <span>{e.role}</span>
+            By <span className="ks-name">Kazeem Salau</span> &middot; <span>{e.role}</span>
           </div>
           {e.story.map((para, i) => (
             <p key={i} className={i === 0 ? "ks-mag-lede" : undefined}>
@@ -182,8 +176,7 @@ export default function ProductFront() {
           <Words text={e.cta} />
         </h2>
         <p>
-          Send me a couple of lines about who it is for and what is going wrong. I will come back with what I would build
-          and how long it would take.
+          Tell me who it&rsquo;s for and what&rsquo;s going wrong. I&rsquo;ll reply with what I&rsquo;d build and how long it takes.
         </p>
         <Link href="/contact" onClick={scrollToTop} className="ks-mag-btn" data-light="1">
           Let&rsquo;s have a chat &rarr;

@@ -10,41 +10,53 @@ function scrollToTop() {
 
 const COURSES = [
   {
+    id: "bdo",
+    page: "2",
+    tags: "Scenario &middot; SCORM",
+    title: "Before Day One",
+    description:
+      "A new starter's first week, from Tuesday night's offer to clocking out on Day One.",
+    href: "/work/before-day-one",
+    image: "/images/before-day-one.jpg",
+    url: "/courses/before-day-one/index.html",
+    kicker: "Scenario . Custom build, SCORM",
+    category: "scenario",
+  },
+  {
     id: "bw",
-    num: "01",
+    page: "3",
     tags: "Corporate &middot; Storyline 360",
     title: "Business Writing",
     description:
-      "Writing that influences decisions: planning, structure, tone and editing for emails, reports, proposals and executive summaries.",
+      "Writing that drives decisions: planning, structure, tone and editing for emails, reports and proposals.",
     href: "/work/business-writing",
-    image: "/images/business-writing-hq.jpg",
+    image: "/images/business-writing-frame.jpg",
     url: "https://codvacreatives.com/demo/Businesswriting/story_html5.html",
     kicker: "Corporate . Storyline 360",
     category: "corporate",
   },
   {
     id: "fixer",
-    num: "02",
+    page: "4",
     tags: "Scenario &middot; Storyline",
     title: "The Fixer",
     description:
-      "A branching assignment where the learner closes agency policy gaps under time and reputation pressure.",
+      "A branching assignment: close an agency's policy gaps under time and reputation pressure.",
     href: "/work/the-fixer",
-    image: "/images/the-fixer-hq.jpg",
+    image: "/images/the-fixer-frame.jpg",
     url: "https://codvacreatives.com/demo/fixer/story_html5.html",
     kicker: "Scenario . Storyline, illustration",
     category: "scenario",
   },
   {
     id: "ei",
-    num: "03",
+    page: "5",
     tags: "Corporate &middot; Storyline 360",
     title: "Emotional Intelligence",
     description:
-      "Self-awareness, regulation and decision-making under pressure, taught through scenarios rather than definitions.",
+      "Self-awareness and decisions under pressure, taught through scenarios, not definitions.",
     href: "/work/emotional-intelligence",
-    // Unsplash photo by Memento Media (Unsplash Licence).
-    image: "/images/emotional-intelligence-meeting.jpg",
+    image: "/images/emotional-intelligence-frame.jpg",
     url: "https://codvacreatives.com/demo/ei/story_html5.html",
     kicker: "Corporate . Storyline 360",
     category: "corporate",
@@ -82,7 +94,7 @@ export default function Work() {
       <div style={{ marginBottom: "clamp(22px, 3vw, 36px)" }}>
         <div
           style={{
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: "0.2em",
@@ -91,12 +103,12 @@ export default function Work() {
             marginBottom: 14,
           }}
         >
-          Case studies &middot; Pages 2 to 4
+          Case studies &middot; Pages 2 to 5
         </div>
         <h1
           className="ks-page-h1"
           style={{
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontWeight: 900,
             fontSize: "clamp(32px, 5.6vw, 64px)",
             lineHeight: 1,
@@ -116,8 +128,7 @@ export default function Work() {
             margin: 0,
           }}
         >
-          Built in Articulate Storyline, packaged as SCORM, delivered through an LMS. Click through the decisions
-          yourself, then read how each one was made.
+          SCORM courses, delivered through an LMS. Play the decisions yourself, then read how each was made.
         </p>
         <div style={{ height: 4, background: "var(--ink)", marginTop: "clamp(16px, 2vw, 24px)" }} />
       </div>
@@ -134,7 +145,7 @@ export default function Work() {
       >
         <span
           style={{
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontSize: 11,
             fontWeight: 600,
             letterSpacing: "0.2em",
@@ -145,7 +156,7 @@ export default function Work() {
           Sections
         </span>
         {[
-          { label: "All three", value: "all" as const },
+          { label: "All four", value: "all" as const },
           { label: "Corporate", value: "corporate" as const },
           { label: "Scenario-based", value: "scenario" as const },
         ].map((chip) => (
@@ -154,7 +165,7 @@ export default function Work() {
             onClick={() => setFilter(chip.value)}
             data-chip={filter === chip.value ? "on" : undefined}
             style={{
-              fontFamily: "Archivo, sans-serif",
+              fontFamily: "var(--font-learning-text)",
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: "0.14em",
@@ -186,12 +197,12 @@ export default function Work() {
         ))}
       </div>
 
-      {/* Cards — 3-column grid */}
+      {/* Cards: two by two, so four courses (or a section's two) fill their rows. */}
       <div
         className="ks-work-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))",
+          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
           gap: "clamp(16px, 2vw, 24px)",
         }}
       >
@@ -221,7 +232,7 @@ export default function Work() {
             <div style={{ padding: "clamp(14px, 1.8vw, 20px)", flex: 1, display: "flex", flexDirection: "column" }}>
               <div
                 style={{
-                  fontFamily: "Archivo, sans-serif",
+                  fontFamily: "var(--font-learning-text)",
                   fontSize: 11,
                   fontWeight: 600,
                   letterSpacing: "0.15em",
@@ -230,13 +241,13 @@ export default function Work() {
                   marginBottom: 10,
                 }}
               >
-                <span style={{ color: "var(--accent)", fontWeight: 700 }}>{course.num}</span>
+                <span style={{ color: "var(--accent)", fontWeight: 700 }}>Page {course.page}</span>
                 {" · "}
                 <span dangerouslySetInnerHTML={{ __html: course.tags }} />
               </div>
-              <h3
+              <h2
                 style={{
-                  fontFamily: "Archivo, sans-serif",
+                  fontFamily: "var(--font-learning-text)",
                   fontWeight: 900,
                   fontSize: "clamp(20px, 2.4vw, 28px)",
                   lineHeight: 1.1,
@@ -246,7 +257,7 @@ export default function Work() {
                 }}
               >
                 {course.title}
-              </h3>
+              </h2>
               <p style={{ fontSize: 15, lineHeight: 1.6, color: "var(--body)", margin: "0 0 18px", flex: 1 }}>
                 {course.description}
               </p>
@@ -255,7 +266,7 @@ export default function Work() {
                   href={course.href}
                   onClick={scrollToTop}
                   style={{
-                    fontFamily: "Archivo, sans-serif",
+                    fontFamily: "var(--font-learning-text)",
                     fontSize: 11,
                     fontWeight: 700,
                     letterSpacing: "0.15em",
@@ -278,7 +289,7 @@ export default function Work() {
                 <button
                   onClick={() => setPlaying(course)}
                   style={{
-                    fontFamily: "Archivo, sans-serif",
+                    fontFamily: "var(--font-learning-text)",
                     fontSize: 11,
                     fontWeight: 700,
                     letterSpacing: "0.15em",

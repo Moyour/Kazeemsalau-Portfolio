@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="BDO-BEFORE-DAY-ONE" version="1.0"
+  xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+  xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+  </metadata>
+  <organizations default="BDO-ORG">
+    <organization identifier="BDO-ORG">
+      <title>Before Day One</title>
+      <item identifier="BDO-SCO" identifierref="BDO-RES" isvisible="true">
+        <title>Before Day One</title>
+        <adlcp:masteryscore>80</adlcp:masteryscore>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="BDO-RES" type="webcontent" adlcp:scormtype="sco" href="index.html">
+      <file href="assets/audio/arjun-runclub.mp3"/>
+      <file href="assets/audio/jordan-welcome.mp3"/>
+      <file href="assets/audio/kazeem-11-good3-1.mp3"/>
+      <file href="assets/audio/kazeem-11-good3-2.mp3"/>
+      <file href="assets/audio/kazeem-11-open-1.mp3"/>
+      <file href="assets/audio/kazeem-11-open-2.mp3"/>
+      <file href="assets/audio/kazeem-11-people-1.mp3"/>
+      <file href="assets/audio/kazeem-11-people-2.mp3"/>
+      <file href="assets/audio/kazeem-11-redirect-1.mp3"/>
+      <file href="assets/audio/kazeem-11-redirect-2.mp3"/>
+      <file href="assets/audio/kazeem-call-1.mp3"/>
+      <file href="assets/audio/kazeem-call-2.mp3"/>
+      <file href="assets/audio/kazeem-call-3.mp3"/>
+      <file href="assets/audio/kazeem-react-ramble.mp3"/>
+      <file href="assets/audio/kazeem-react-short.mp3"/>
+      <file href="assets/audio/kazeem-react-strong.mp3"/>
+      <file href="assets/audio/kazeem-welcome-1.mp3"/>
+      <file href="assets/audio/kazeem-welcome-2.mp3"/>
+      <file href="assets/audio/kazeem-welcome-3.mp3"/>
+      <file href="assets/audio/kazeem-welcome-4.mp3"/>
+      <file href="assets/audio/kazeem-welcome-5.mp3"/>
+      <file href="assets/audio/kazeem-welcome-6.mp3"/>
+      <file href="assets/audio/margaret-lunch.mp3"/>
+      <file href="assets/audio/margaret-welcome.mp3"/>
+      <file href="assets/audio/mei-cat.mp3"/>
+      <file href="assets/audio/mei-morning.mp3"/>
+      <file href="assets/audio/priya-welcome-1.mp3"/>
+      <file href="assets/audio/priya-welcome-2.mp3"/>
+      <file href="assets/audio/priya-welcome-3.mp3"/>
+      <file href="assets/audio/priya-welcome-4.mp3"/>
+      <file href="assets/audio/tomi-acronyms-1.mp3"/>
+      <file href="assets/audio/tomi-acronyms-2.mp3"/>
+      <file href="assets/audio/tomi-bye-1.mp3"/>
+      <file href="assets/audio/tomi-bye-2.mp3"/>
+      <file href="assets/audio/tomi-howareyou.mp3"/>
+      <file href="assets/audio/tomi-lunch-1.mp3"/>
+      <file href="assets/audio/tomi-lunch-2.mp3"/>
+      <file href="assets/audio/tomi-open-cafe.mp3"/>
+      <file href="assets/audio/tomi-open-desk.mp3"/>
+      <file href="assets/audio/tomi-reply-good.mp3"/>
+      <file href="assets/audio/tomi-reply-great.mp3"/>
+      <file href="assets/audio/tomi-reply-over-1.mp3"/>
+      <file href="assets/audio/tomi-reply-over-2.mp3"/>
+      <file href="assets/audio/tomi-updates-1.mp3"/>
+      <file href="assets/audio/tomi-updates-2.mp3"/>
+      <file href="assets/audio/tomi-wish-1.mp3"/>
+      <file href="assets/audio/tomi-wish-2.mp3"/>
+      <file href="assets/bag-front.png"/>
+      <file href="assets/bedroom-evening-blur.jpg"/>
+      <file href="assets/bedroom-evening.jpg"/>
+      <file href="assets/bedroom-night-blur.jpg"/>
+      <file href="assets/bedroom-night.jpg"/>
+      <file href="assets/cafe-front.png"/>
+      <file href="assets/cafe.jpg"/>
+      <file href="assets/call-arjun-mehta-m1.jpg"/>
+      <file href="assets/call-arjun-mehta-m2.jpg"/>
+      <file href="assets/call-arjun-mehta.jpg"/>
+      <file href="assets/call-jordan-ellis-m1.jpg"/>
+      <file href="assets/call-jordan-ellis-m2.jpg"/>
+      <file href="assets/call-jordan-ellis.jpg"/>
+      <file href="assets/call-margaret-hughes-m1.jpg"/>
+      <file href="assets/call-margaret-hughes-m2.jpg"/>
+      <file href="assets/call-margaret-hughes.jpg"/>
+      <file href="assets/call-mei-chen-m1.jpg"/>
+      <file href="assets/call-mei-chen-m2.jpg"/>
+      <file href="assets/call-mei-chen.jpg"/>
+      <file href="assets/desk-day-blur.jpg"/>
+      <file href="assets/desk-day.jpg"/>
+      <file href="assets/exterior.jpg"/>
+      <file href="assets/grace-1.png"/>
+      <file href="assets/grace-3.png"/>
+      <file href="assets/grace-4.png"/>
+      <file href="assets/hands-phone-thumb.png"/>
+      <file href="assets/hands-phone.png"/>
+      <file href="assets/home-dusk-blur.jpg"/>
+      <file href="assets/home-dusk.jpg"/>
+      <file href="assets/kazeem-m0.jpg"/>
+      <file href="assets/kazeem-m1.jpg"/>
+      <file href="assets/kazeem-m2.jpg"/>
+      <file href="assets/kitchen-base.jpg"/>
+      <file href="assets/kitchen-empty.jpg"/>
+      <file href="assets/kitchen-nophone.jpg"/>
+      <file href="assets/kitchen.jpg"/>
+      <file href="assets/office-desk.jpg"/>
+      <file href="assets/platform.jpg"/>
+      <file href="assets/priya-m0.jpg"/>
+      <file href="assets/priya-m1.jpg"/>
+      <file href="assets/priya-m2.jpg"/>
+      <file href="assets/reception.jpg"/>
+      <file href="assets/tomi-s0.png"/>
+      <file href="assets/tomi-s1.png"/>
+      <file href="assets/tomi-s2.png"/>
+      <file href="assets/tomi-smile.jpg"/>
+      <file href="assets/tomi-t0.png"/>
+      <file href="assets/tomi-t1.png"/>
+      <file href="assets/tomi-t2.png"/>
+      <file href="assets/train-far.jpg"/>
+      <file href="assets/train-near.jpg"/>
+      <file href="assets/you-beach.jpg"/>
+      <file href="assets/you-cam-m1.jpg"/>
+      <file href="assets/you-cam-m2.jpg"/>
+      <file href="assets/you-cam.jpg"/>
+      <file href="assets/you-kitchen.jpg"/>
+      <file href="assets/you-party.jpg"/>
+      <file href="assets/you-plain.jpg"/>
+      <file href="index.html"/>
+      <file href="progress.js"/>
+      <file href="scorm.js"/>
+    </resource>
+  </resources>
+</manifest>

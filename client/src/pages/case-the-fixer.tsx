@@ -6,23 +6,24 @@ export default function CaseTheFixer() {
   useSEO("/work/the-fixer");
   return (
     <CaseStudyLayout
+      page="4"
       tags={["Scenario", "Storyline, illustration", "SCORM"]}
       title="The Fixer"
-      tagline="A branching special assignment. The learner is sent into an agency to close the policy knowledge gaps that are costing it service delivery, and every choice changes what happens next."
+      tagline="A branching special assignment: fix an agency's policy gaps before they cost it more service. Every choice changes what happens next."
       playUrl="https://codvacreatives.com/demo/fixer/story_html5.html"
       playKicker="Scenario · Storyline, illustration"
-      image="/images/the-fixer-hq.jpg"
+      image="/images/the-fixer-frame.jpg"
       imageCaption="The Fixer, characters and interface built alongside the script"
       short={{
-        problem: "Staff passed the policy quiz but still mishandled the real cases.",
-        role: "Instructional design, the script, the illustration and the Storyline 360 build.",
-        did: "A branching assignment: the learner handles cases and lives with the consequences.",
-        result: "Learners finish it, and replay it to find the branches they missed.",
+        problem: "Staff passed the policy quiz, then mishandled real cases.",
+        role: "Instructional design, script, illustration and the Storyline 360 build.",
+        did: "A branching assignment: handle cases, live with the consequences.",
+        result: "Learners finish it, then replay it for the branches they missed.",
       }}
-      challenge="Staff could pass a quiz on the policy and still handle the real case badly. The hard part was never the rule: it was judging which rule applies when a client is upset, a deadline has passed and the file is incomplete. The brief was to test judgement, not recall."
-      solution="The learner plays the fixer, sent into an agency whose service is slipping. Instead of lessons there are cases: a conversation, the file, and a decision. Choices branch, consequences arrive later, and the feedback explains the reasoning rather than marking right or wrong."
-      process="I asked the subject experts for the cases that go wrong, not the policy summary. I mapped the branches on paper, wrote the dialogue the way people actually speak, then built it in Storyline 360 as SCORM and revised it after the first cohort."
-      outcome="Learners finish it, which for policy content is the whole battle, and replay it to find the branches they missed. It is now my go-to format when the problem is judgement under pressure."
+      challenge="Staff could pass the policy quiz and still botch the real case. The hard part was never the rule; it was judging which rule applies when the client is upset, the deadline gone and the file incomplete. The brief: test judgement, not recall."
+      solution="The learner plays the fixer in an agency whose service is slipping. Each lesson is a case: a conversation, a file, a decision. Choices branch, consequences arrive later, and feedback explains the reasoning instead of marking right or wrong."
+      process="I asked subject experts for the cases that go wrong, not the policy summary. I mapped the branches on paper, wrote dialogue the way people speak, built it in Storyline 360 as SCORM and revised it after the first cohort."
+      outcome="Learners finish it (for policy content, the whole battle) and replay it for the branches they missed. It's now my go-to format for judgement under pressure."
       nextLabel="Emotional Intelligence"
       nextHref="/work/emotional-intelligence"
       diagrams={{

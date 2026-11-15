@@ -60,6 +60,7 @@ export default function CareerTimeline({
               type="button"
               className="ct-bar"
               data-dot={s ? undefined : "1"}
+              data-lane={i % 2}
               data-focus={focus === i ? "1" : undefined}
               data-dim={dim ? "1" : undefined}
               style={{ ...style, background: colors[r.track], animationDelay: `${i * 70}ms` }}

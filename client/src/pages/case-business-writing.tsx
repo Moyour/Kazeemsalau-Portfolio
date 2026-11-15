@@ -6,23 +6,24 @@ export default function CaseBusinessWriting() {
   useSEO("/work/business-writing");
   return (
     <CaseStudyLayout
+      page="3"
       tags={["Corporate", "Articulate Storyline 360", "SCORM"]}
       title="Business Writing"
-      tagline="Strong business writing is more than putting words on a page. It's about influencing decisions, building credibility, and communicating with clarity."
+      tagline="Business writing that influences decisions, builds credibility and says it clearly."
       playUrl="https://codvacreatives.com/demo/Businesswriting/story_html5.html"
       playKicker="Corporate · Storyline 360"
-      image="/images/business-writing-hq.jpg"
+      image="/images/business-writing-frame.jpg"
       imageCaption="Business Writing, built in Articulate Storyline 360"
       short={{
-        problem: "Wordy, vague writing was causing delays and costing people credibility.",
+        problem: "Wordy, vague writing caused delays and cost credibility.",
         role: "Instructional design and the Storyline 360 build.",
-        did: "A course on planning, structuring and editing, applied to real emails and reports.",
-        result: "Clearer, shorter messages that get acted on, not just read.",
+        did: "Planning, structuring and editing, applied to real emails and reports.",
+        result: "Shorter, clearer messages that get acted on.",
       }}
-      challenge="Wordy, vague or unpolished writing causes misunderstandings and delays, and quietly costs people credibility and opportunities."
-      solution="A course on planning, structuring and editing so every message has a purpose. Guided lessons and real-world examples build a style people trust, with colleagues, clients and stakeholders alike."
-      process="It starts with clarity, brevity and tone, then applies them to emails, reports, proposals and executive summaries. Editing comes next, and persuasive writing last, once the basics hold."
-      outcome="Clearer, shorter messages, fewer misunderstandings, and writing that gets acted on, not just read."
+      challenge="Wordy, vague writing causes misunderstandings and delays, and quietly costs people credibility."
+      solution="Planning, structuring and editing, so every message has a purpose. Guided lessons and real examples build a style colleagues, clients and stakeholders trust."
+      process="Clarity, brevity and tone first, applied to emails, reports and proposals. Then editing, and persuasion last, once the basics hold."
+      outcome="Shorter, clearer messages, fewer misunderstandings, and writing that gets acted on."
       nextLabel="The Fixer"
       nextHref="/work/the-fixer"
       diagrams={{

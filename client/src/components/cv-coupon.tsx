@@ -164,7 +164,7 @@ export default function CvCoupon() {
     <div className="ks-coupon-wrap" data-state={state}>
       <div
         style={{
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontSize: 11,
           fontWeight: 700,
           letterSpacing: "0.2em",
@@ -172,6 +172,7 @@ export default function CvCoupon() {
           color: "var(--muted)",
           marginBottom: 8,
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-between",
           gap: 10,
         }}
@@ -185,7 +186,7 @@ export default function CvCoupon() {
           <div className="ks-coupon-body">
             <div
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 800,
                 letterSpacing: "0.22em",
@@ -197,7 +198,7 @@ export default function CvCoupon() {
             </div>
             <div
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontWeight: 900,
                 fontSize: 30,
                 lineHeight: 0.95,
@@ -266,7 +267,7 @@ export default function CvCoupon() {
 
       <div
         style={{
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontSize: 11,
           fontWeight: 600,
           letterSpacing: "0.12em",

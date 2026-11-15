@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { paperFor } from "@/lib/paper";
 import { Words } from "@/components/motion";
 import { Folio, PopUp } from "@/components/living-paper";
 
@@ -29,6 +30,8 @@ export function CaseHeader({
   byline,
   hero,
   heroStyle,
+  page,
+  play,
 }: {
   back: { href: string; label: string };
   tags: string[];
@@ -37,6 +40,8 @@ export function CaseHeader({
   byline: ReactNode[];
   hero: ReactNode;
   heroStyle?: CSSProperties;
+  page?: string;
+  play?: { href: string; label: string };
 }) {
   return (
     <header className="cs-head">
@@ -44,7 +49,8 @@ export function CaseHeader({
         &larr; {back.label}
       </Link>
       <div className="cs-kicker">
-        <span className="cs-accent">Case study</span>
+        {page && <span className="cs-accent">Page {page}</span>}
+        <span className={page ? undefined : "cs-accent"}>Case study</span>
         {tags.map((t) => (
           <span key={t}>{t}</span>
         ))}
@@ -53,8 +59,13 @@ export function CaseHeader({
         <Words text={title} />
       </h1>
       <p className="cs-deck">{deck}</p>
+      {play && (
+        <a className="cs-play" href={play.href}>
+          {play.label} <span aria-hidden="true">&darr;</span>
+        </a>
+      )}
       <div className="cs-byline">
-        <span className="cs-ink">By Kazeem Salau</span>
+        <span className="cs-ink">By <span className="ks-name">Kazeem Salau</span></span>
         {byline.map((b, i) => (
           <span key={i}>{b}</span>
         ))}
@@ -113,13 +124,25 @@ export function ShortVersion({ problem, role, did, result }: { problem: string; 
   );
 }
 
-export function CaseSection({ part, id, children }: { part: keyof typeof PARTS; id?: string; children: ReactNode }) {
-  const { num, title } = PARTS[part];
+export function CaseSection({
+  part,
+  id,
+  children,
+  num,
+  title,
+}: {
+  part: keyof typeof PARTS;
+  id?: string;
+  children: ReactNode;
+  num?: string;
+  title?: string;
+}) {
+  const meta = PARTS[part];
   return (
     <section id={id} className="ks-mag-sec cs-sec">
       <div className="cs-sec-head">
-        <Folio num={num} />
-        <h2 className="cs-h2">{title}</h2>
+        <Folio num={num ?? meta.num} />
+        <h2 className="cs-h2">{title ?? meta.title}</h2>
       </div>
       <div className="cs-sec-body">{children}</div>
     </section>
@@ -145,6 +168,8 @@ export function ScreenStrip({ screens }: { screens: { src: string; title: string
 }
 
 export function CaseNext({ label, href, hire }: { label: string; href: string; hire: string }) {
+  const [location] = useLocation();
+  const learning = paperFor(location) === "learning";
   return (
     <section className="cs-next">
       <div>
@@ -154,10 +179,12 @@ export function CaseNext({ label, href, hire }: { label: string; href: string; h
         </Link>
       </div>
       <div className="cs-next-actions">
-        <a href="/files/KazeemSalau-InstructionalDesign.pdf" target="_blank" rel="noopener noreferrer" className="cs-btn" data-track="case_footer_cv">
-          Download CV
-        </a>
-        <Link href="/contact" onClick={toTop} className="cs-btn cs-btn-solid" data-track="case_footer_hire">
+        {learning ? (
+          <a href="/files/KazeemSalau-InstructionalDesign.pdf" target="_blank" rel="noopener noreferrer" className="ks-action" data-track="case_footer_cv">
+            Download CV (PDF)
+          </a>
+        ) : null}
+        <Link href="/contact" onClick={toTop} className="ks-action" data-track="case_footer_hire">
           {hire}
         </Link>
       </div>

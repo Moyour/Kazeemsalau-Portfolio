@@ -47,6 +47,20 @@ export const CALLS: Record<string, Call[]> = {
       why: "The situations came first, from people who manage teams. The theory was written around them.",
     },
   ],
+  "before-day-one": [
+    {
+      question: "A new starter gets a pack of policies before they arrive. What do you build instead?",
+      options: ["A shorter policy pack", "A quiz on the handbook", "The first week, played from Tuesday night"],
+      chose: 2,
+      why: "The hard parts show up in order: the offer, the contract, the late train, the sign-in, the first 1:1.",
+    },
+    {
+      question: "The contract says 20 days of holiday. The offer said 25. What does the course do?",
+      options: ["Tell them the answer", "Let them find the mismatch", "Leave it out"],
+      chose: 1,
+      why: "They have to catch it themselves. Once they sign, the contract is what counts.",
+    },
+  ],
   grubshelf: [
     {
       question: "A new user picks some favourite meals. Where do they go?",

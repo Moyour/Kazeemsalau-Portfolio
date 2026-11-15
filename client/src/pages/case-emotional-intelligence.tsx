@@ -6,25 +6,26 @@ export default function CaseEmotionalIntelligence() {
   useSEO("/work/emotional-intelligence");
   return (
     <CaseStudyLayout
+      page="5"
       tags={["Corporate", "Articulate Storyline 360", "SCORM"]}
       title="Emotional Intelligence"
-      tagline="Recognising your triggers and choosing your response, built around the situations where the pressure changes the decision."
+      tagline="Spot the trigger, choose the response: built around moments when pressure changes the decision."
       playUrl="https://codvacreatives.com/demo/ei/story_html5.html"
       playKicker="Corporate · Storyline 360"
-      image="/images/emotional-intelligence-meeting.jpg"
+      image="/images/emotional-intelligence-frame.jpg"
       imageCaption="Emotional Intelligence, scenario-led rather than definition-led"
       short={{
-        problem: "People knew the theory of emotional intelligence and still reacted badly under pressure.",
-        role: "Instructional design, the scripts and the Storyline 360 build.",
-        did: "Scenarios built from real workplace moments: name the trigger, choose a response, see where it leads.",
-        result: "Managers heard the course's vocabulary in team conversations afterwards.",
+        problem: "People knew the theory and still reacted badly under pressure.",
+        role: "Instructional design, scripts and the Storyline 360 build.",
+        did: "Real workplace scenarios: name the trigger, choose a response, see where it leads.",
+        result: "Managers heard its vocabulary in team conversations afterwards.",
       }}
-      challenge="Emotional intelligence training tends to stop at definitions. People can name the four domains and still snap at a colleague on a bad Friday. The course had to work on noticing it in the moment."
-      solution="Every concept arrives inside a moment the learner recognises: feedback that lands badly, a hijacked meeting, a request at the worst time. They name the trigger, pick a response and see where it leads, then reflect on their own last month at work."
-      process="I gathered the situations first, from people who manage teams, and wrote the scripts around them before the theory. Outcomes were written as things you could watch someone do. Built in Storyline 360 as SCORM, then adjusted where the first group found it unrealistic."
-      outcome="Learners leave with words for what happens under pressure and a habit of pausing first. Managers heard the vocabulary in team conversations afterwards: the content had left the course."
-      nextLabel="Business Writing"
-      nextHref="/work/business-writing"
+      challenge="EI training usually stops at definitions. People can name the four domains and still snap at a colleague on a bad Friday. This course had to work in the moment."
+      solution="Each concept arrives inside a familiar moment: feedback that lands badly, a hijacked meeting, a request at the worst time. Learners name the trigger, pick a response, see the result, then reflect on their own month."
+      process="I gathered situations from people who manage teams and scripted around them before adding theory. Outcomes describe what you could watch someone do. Built in Storyline 360 as SCORM, then adjusted where the first group found it unrealistic."
+      outcome="Learners leave with words for pressure and a habit of pausing first. Managers then heard that vocabulary in team conversations: the content had left the course."
+      nextLabel="Before Day One"
+      nextHref="/work/before-day-one"
       diagrams={{
         challenge: {
           kind: "contrast",

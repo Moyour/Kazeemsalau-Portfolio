@@ -19,6 +19,24 @@
       "image": "/images/og-learning.jpg",
       "imageAlt": "Kazeem Salau, instructional designer and learning experience designer"
     },
+    "/video": {
+      "name": "Video Edition",
+      "parent": "/",
+      "type": "website",
+      "title": "Video Editor | Kazeem Salau",
+      "description": "Video editor. Films on the Moyoursalau YouTube channel: picture, captions and sound.",
+      "image": "/videos/portrait-living.jpg",
+      "imageAlt": "A still from Kazeem Salau's moving portrait"
+    },
+    "/video/reel": {
+      "name": "The reel",
+      "parent": "/video",
+      "type": "website",
+      "title": "The Reel | Kazeem Salau",
+      "description": "21 films from the Moyoursalau YouTube channel. Short ones stay on YouTube.",
+      "image": "/images/reel/tANWyt2mUdw.jpg",
+      "imageAlt": "A still from Kazeem Salau's moving portrait"
+    },
     "/product": {
       "name": "Product Edition",
       "parent": "/",
@@ -33,8 +51,8 @@
       "parent": "/learning",
       "type": "website",
       "title": "eLearning Case Studies & SCORM Demos | Kazeem Salau",
-      "description": "Playable SCORM course demos by instructional designer Kazeem Salau, built in Storyline 360: business writing, a branching scenario and emotional intelligence.",
-      "image": "/images/business-writing-hq.jpg",
+      "description": "Playable SCORM course demos by instructional designer Kazeem Salau: business writing, a branching scenario, emotional intelligence, and Before Day One.",
+      "image": "/images/business-writing-frame.jpg",
       "imageAlt": "eLearning course portfolio showcasing SCORM demos"
     },
     "/work/business-writing": {
@@ -43,7 +61,7 @@
       "type": "article",
       "title": "Business Writing Course in Storyline 360 | Kazeem Salau",
       "description": "A corporate business writing SCORM course built in Articulate Storyline 360: planning, structuring and editing emails, reports and proposals.",
-      "image": "/images/business-writing-hq.jpg",
+      "image": "/images/business-writing-frame.jpg",
       "imageAlt": "Business Writing eLearning course built in Articulate Storyline 360"
     },
     "/work/the-fixer": {
@@ -52,7 +70,7 @@
       "type": "article",
       "title": "The Fixer: Branching Scenario eLearning | Kazeem Salau",
       "description": "Branching scenario SCORM course with custom illustration. A policy-training game where every choice changes what happens next, built in Articulate Storyline.",
-      "image": "/images/the-fixer-hq.jpg",
+      "image": "/images/the-fixer-frame.jpg",
       "imageAlt": "The Fixer branching scenario eLearning course"
     },
     "/work/emotional-intelligence": {
@@ -61,8 +79,17 @@
       "type": "article",
       "title": "Emotional Intelligence eLearning Course | Kazeem Salau",
       "description": "Scenario-led emotional intelligence SCORM course. Learners practise recognising triggers and choosing responses in realistic workplace situations.",
-      "image": "/images/emotional-intelligence-meeting.jpg",
+      "image": "/images/emotional-intelligence-frame.jpg",
       "imageAlt": "Emotional Intelligence eLearning course in Articulate Storyline 360"
+    },
+    "/work/before-day-one": {
+      "name": "Before Day One",
+      "parent": "/work",
+      "type": "article",
+      "title": "Before Day One: Preboarding eLearning Course | Kazeem Salau",
+      "description": "A playable SCORM course for a new starter's first week: the offer, a contract mismatch, a late arrival, a fake sign-in, and the first 1:1.",
+      "image": "/images/before-day-one.jpg",
+      "imageAlt": "Before Day One, a preboarding eLearning course set at Brightfield House"
     },
     "/products": {
       "name": "App and design",

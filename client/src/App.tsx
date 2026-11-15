@@ -3,14 +3,16 @@ import { flushSync } from "react-dom";
 import { Switch, Route, Redirect, useLocation } from "wouter";
 import { navigate } from "wouter/use-browser-location";
 import NotFound from "@/pages/not-found";
-import { LearningFront } from "@/pages/home";
+import { LearningFront, VideoFront } from "@/pages/home";
+import VideoReel from "@/pages/video-reel";
 import ProductFront from "@/pages/product-front";
-import Table, { arriveAtTable } from "@/pages/table";
+import Table, { arriveAtTable, noteOpenPaper } from "@/pages/table";
 import About from "@/pages/about";
 import Work from "@/pages/work";
 import CaseBusinessWriting from "@/pages/case-business-writing";
 import CaseTheFixer from "@/pages/case-the-fixer";
 import CaseEmotionalIntelligence from "@/pages/case-emotional-intelligence";
+import CaseBeforeDayOne from "@/pages/case-before-day-one";
 import Products from "@/pages/products";
 import CaseGrubShelf from "@/pages/case-grubshelf";
 import CaseMaiShara from "@/pages/case-mai-shara";
@@ -25,6 +27,7 @@ import { unfoldPaper } from "@/components/paper-unfold";
 import { ownPaper, paperFor, sectionIndex } from "@/lib/paper";
 import { swapPapers, turnPage } from "@/components/page-turn";
 import PapersPopup from "@/components/papers-popup";
+import { fontsReady, warmAllFonts, whenFontsReady } from "@/lib/fonts";
 
 function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -93,22 +96,35 @@ function CustomCursor() {
 
 function Router() {
   const [location] = useLocation();
+  if (location !== "/") noteOpenPaper(paperFor(location));
   // Which paper is open, so the page prints on that paper's colours. The
   // table sits outside both.
   useLayoutEffect(() => {
     const html = document.documentElement;
     if (location === "/") delete html.dataset.paper;
     else html.dataset.paper = paperFor(location);
+    // A paper reached directly (or swapped to) before its fonts arrived
+    // stays hidden for a moment, then fades in already in its own type.
+    if (location !== "/") {
+      const paper = paperFor(location);
+      if (!fontsReady(paper)) {
+        html.dataset.fonts = "loading";
+        void whenFontsReady(paper, 1200).then(() => delete html.dataset.fonts);
+      }
+      warmAllFonts();
+    }
     // GrubShelf's pages wear the app's own colour.
     if (location.startsWith("/design/grubshelf")) html.dataset.brand = "grubshelf";
     else delete html.dataset.brand;
+    const id = window.location.hash.slice(1);
+    const target = id ? document.getElementById(id) : null;
+    (target?.querySelector("h1, h2") ?? target)?.scrollIntoView();
   }, [location]);
   // The landing is the table the two papers lie on, outside any paper.
   if (location === "/") return <Table />;
   return (
     <div
       style={{
-        fontFamily: "Newsreader, Georgia, serif",
         color: "var(--ink)",
         background: "var(--outer)",
         minHeight: "100vh",
@@ -135,10 +151,13 @@ function Router() {
           <Switch>
             <Route path="/learning" component={LearningFront} />
             <Route path="/product" component={ProductFront} />
+            <Route path="/video" component={VideoFront} />
+            <Route path="/video/reel" component={VideoReel} />
             <Route path="/work" component={Work} />
             <Route path="/work/business-writing" component={CaseBusinessWriting} />
             <Route path="/work/the-fixer" component={CaseTheFixer} />
             <Route path="/work/emotional-intelligence" component={CaseEmotionalIntelligence} />
+            <Route path="/work/before-day-one" component={CaseBeforeDayOne} />
             <Route path="/about" component={About} />
             <Route path="/products" component={Products} />
             <Route path="/apps"><Redirect to="/design/grubshelf" replace /></Route>
@@ -154,7 +173,7 @@ function Router() {
             <Route component={NotFound} />
           </Switch>
         </main>
-        <div className="ks-thirty" aria-label="End">&mdash; 30 &mdash;</div>
+        <div className="ks-thirty" aria-hidden="true">&mdash; 30 &mdash;</div>
         <Footer />
       </div>
     </div>
@@ -182,7 +201,7 @@ function animatePageChange(e: MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
     const from = paperFor(location.pathname);
-    const swap = a.dataset.swap === "learning" || a.dataset.swap === "product" ? a.dataset.swap : undefined;
+    const swap = a.dataset.swap === "learning" || a.dataset.swap === "product" || a.dataset.swap === "video" ? a.dataset.swap : undefined;
     window.scrollTo(0, 0);
     unfoldPaper("fold", () => {
       arriveAtTable(from, swap);

@@ -1,9 +1,9 @@
-// The site is two papers: the Learning Edition (courses and the eLearning
-// career) and the Product Edition (apps and design). Each route belongs to
-// one of them; About and Contact are shared, and take the edition the
-// reader came from.
+// The site is three papers: the Learning Edition (courses), the Product
+// Edition (apps and design), and the Video Edition (the reel). Each route
+// belongs to one of them; About and Contact are shared, and take the
+// edition the reader came from.
 
-export type Paper = "learning" | "product";
+export type Paper = "learning" | "product" | "video";
 
 export const PAPERS: Record<
   Paper,
@@ -38,6 +38,17 @@ export const PAPERS: Record<
     ],
     disciplines: "Product design",
   },
+  video: {
+    name: "Video Edition",
+    front: "/video",
+    sections: [
+      { label: "Front page", href: "/video" },
+      { label: "The reel", href: "/video/reel" },
+      { label: "About", href: "/about" },
+      { label: "Hire", href: "/contact" },
+    ],
+    disciplines: "Video editing",
+  },
 };
 
 const KEY = "ks-paper";
@@ -46,6 +57,7 @@ const KEY = "ks-paper";
 export function ownPaper(path: string): Paper | null {
   if (path === "/learning" || path.startsWith("/work")) return "learning";
   if (path === "/product" || path.startsWith("/products") || path.startsWith("/design")) return "product";
+  if (path === "/video" || path.startsWith("/video/")) return "video";
   return null;
 }
 
@@ -62,7 +74,8 @@ export function paperFor(path: string): Paper {
     return own;
   }
   try {
-    return sessionStorage.getItem(KEY) === "product" ? "product" : "learning";
+    const saved = sessionStorage.getItem(KEY);
+    return saved === "product" || saved === "video" ? saved : "learning";
   } catch {
     return "learning";
   }

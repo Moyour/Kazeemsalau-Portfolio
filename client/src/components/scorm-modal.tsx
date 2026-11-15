@@ -63,7 +63,7 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
           <div>
             <span
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontWeight: 800,
                 fontSize: "clamp(14px, 1.6vw, 18px)",
               }}
@@ -72,7 +72,7 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
             </span>
             <span
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 600,
                 letterSpacing: "0.15em",
@@ -90,7 +90,7 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.18em",
@@ -117,7 +117,7 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
             <button
               onClick={onClose}
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.18em",
@@ -159,7 +159,7 @@ export default function ScormModal({ url, title, kicker, onClose }: ScormModalPr
           style={{
             padding: "8px clamp(14px, 2vw, 22px)",
             borderTop: "1px solid var(--rule)",
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontSize: 11,
             fontWeight: 600,
             letterSpacing: "0.15em",

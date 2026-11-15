@@ -9,7 +9,7 @@ function scrollToTop() {
 }
 
 const kicker = {
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 11,
   fontWeight: 700,
   letterSpacing: "0.18em",
@@ -18,7 +18,7 @@ const kicker = {
 };
 
 const h2Style = {
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontWeight: 900,
   fontSize: "clamp(28px, 4.2vw, 54px)",
   lineHeight: 0.98,
@@ -37,7 +37,7 @@ const standfirst = {
 };
 
 const linkCta = {
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 11,
   fontWeight: 700,
   letterSpacing: "0.14em",
@@ -77,12 +77,12 @@ export default function Products() {
       {/* Header */}
       <section className="ks-mag-head" style={{ padding: "clamp(24px, 3.4vw, 42px) clamp(16px, 2.6vw, 30px) 0" }}>
         <div style={{ ...kicker, fontSize: 11, letterSpacing: "0.22em", color: "var(--accent)", marginBottom: 14 }}>
-          Page 5 &middot; App and design
+          Pages 2 to 4 &middot; App and design
         </div>
         <h1
           className="ks-page-h1"
           style={{
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontWeight: 900,
             fontSize: "clamp(34px, 5.6vw, 74px)",
             lineHeight: 0.93,
@@ -95,8 +95,7 @@ export default function Products() {
           <Words text="Products, designed & built." />
         </h1>
         <p style={{ ...standfirst, maxWidth: "56ch" }}>
-          Same instinct as a good course: watch what people actually do, then take away everything standing between them
-          and it.
+          Same instinct as a good course: watch what people do, then remove what stands in their way.
         </p>
 
         <div style={{ height: 4, background: "var(--ink)", marginBottom: 28 }} />
@@ -122,49 +121,15 @@ export default function Products() {
           }}
         >
           <div style={{ maxWidth: "40ch" }}>
-            <div style={{ fontFamily: "Archivo, sans-serif", fontWeight: 900, fontSize: "clamp(22px, 3vw, 34px)", letterSpacing: "-0.03em", lineHeight: 1.05, marginBottom: 8 }}>
+            <div style={{ fontFamily: "var(--font-learning-text)", fontWeight: 900, fontSize: "clamp(22px, 3vw, 34px)", letterSpacing: "-0.03em", lineHeight: 1.05, marginBottom: 8 }}>
               Got a product that needs designing?
             </div>
-            <div style={{ fontSize: 16, color: "var(--rule)", lineHeight: 1.5 }}>From the first interviews to a build people can tap through.</div>
+            <div style={{ fontSize: 16, color: "var(--rule)", lineHeight: 1.5 }}>From first interviews to a build people can tap through.</div>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            <Link
-              href="/contact"
-              onClick={scrollToTop}
-              data-track="products_footer_hire"
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontSize: 12,
-                fontWeight: 800,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase" as const,
-                padding: "14px 22px",
-                background: "var(--accent)",
-                color: "var(--paper)",
-                textDecoration: "none",
-              }}
-            >
-              Hire me &rarr;
+            <Link href="/contact" onClick={scrollToTop} data-track="products_footer_hire" className="ks-action">
+              Hire me for a project &rarr;
             </Link>
-            <a
-              href="/files/KazeemSalau-InstructionalDesign.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-track="products_footer_cv"
-              style={{
-                fontFamily: "Archivo, sans-serif",
-                fontSize: 12,
-                fontWeight: 800,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase" as const,
-                padding: "12px 20px",
-                border: "2px solid var(--paper)",
-                color: "var(--paper)",
-                textDecoration: "none",
-              }}
-            >
-              Download CV
-            </a>
           </div>
         </div>
       </section>

@@ -161,7 +161,7 @@ export default function PhoneCarousel({
       <div style={{ textAlign: "center", maxWidth: 340, minHeight: 66 }}>
         <div
           style={{
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontSize: 11,
             fontWeight: 800,
             letterSpacing: "0.16em",

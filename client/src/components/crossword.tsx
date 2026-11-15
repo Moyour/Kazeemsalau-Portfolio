@@ -27,7 +27,7 @@ const cellsOf = (c: Clue) =>
   [...c.answer].map((_, i) => (c.dir === "across" ? key(c.row, c.col + i) : key(c.row + i, c.col)));
 
 const kicker: CSSProperties = {
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 10,
   fontWeight: 700,
   letterSpacing: "0.2em",
@@ -221,7 +221,7 @@ export default function Crossword() {
 
         {solved ? (
           <div className="ks-xw-done" role="status">
-            <div style={{ fontFamily: "Archivo, sans-serif", fontWeight: 900, fontSize: 22, letterSpacing: "-0.02em", textTransform: "uppercase" }}>
+            <div style={{ fontFamily: "var(--font-learning-text)", fontWeight: 900, fontSize: 22, letterSpacing: "-0.02em", textTransform: "uppercase" }}>
               {revealed ? "Answers in tomorrow’s edition." : "Puzzle solved."}
             </div>
             <p style={{ margin: "6px 0 10px", fontSize: 15, lineHeight: 1.5, color: "var(--body)" }}>

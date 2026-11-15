@@ -25,6 +25,7 @@ export default function CaseGrubShelfWebsite() {
     <article>
       <CaseHeader
         back={{ href: "/products", label: "All app and design work" }}
+        page="4"
         tags={["Marketing website", "Design & build"]}
         title="GrubShelf website"
         deck="Plan smarter. Waste less. One page with one job: get people on the waiting list."
@@ -39,17 +40,16 @@ export default function CaseGrubShelfWebsite() {
       />
 
       <ShortVersion
-        problem="GrubShelf needed somewhere to send people before the app was ready."
-        role="Design, copy and build, as part of the GrubShelf brand and design system."
-        did="One page that opens on a problem people already feel, and ends every section on the waiting list."
+        problem="GrubShelf needed a home before the app was ready."
+        role="Design, copy and build, within the GrubShelf brand and design system."
+        did="One page that opens on a familiar problem and ends every section on the waiting list."
         result="Live at grubshelf.app, collecting waiting-list sign-ups."
       />
 
       <CaseSection part="challenge">
         <p className="cs-lead">Explain the idea before the visitor leaves.</p>
         <p className="cs-p">
-          GrubShelf needed somewhere to send people before the app was ready. The site had one job: explain the idea quickly
-          enough that a visitor joins the waiting list before they leave.
+          One job: explain the idea fast enough that visitors join the waiting list before they leave.
         </p>
         <YourCalls calls={CALLS["grubshelf-website"]} />
       </CaseSection>
@@ -57,13 +57,12 @@ export default function CaseGrubShelfWebsite() {
       <CaseSection part="approach">
         <p className="cs-lead">Lead with the problem, not the feature list.</p>
         <p className="cs-p">
-          It opens on the problem people already feel. &ldquo;You bought basil. Again.&rdquo; Each section names a familiar
-          kitchen moment, then shows how the app quietly fixes it, and every section ends on the same single action: join the
-          waiting list.
+          It opens on a feeling: &ldquo;You bought basil. Again.&rdquo; Each section names a kitchen moment, shows the fix,
+          and ends on one action: join the waiting list.
         </p>
         <p className="cs-p">
-          It is light on purpose: a short cookie notice with an &ldquo;only essentials&rdquo; option, a light and dark theme,
-          and a layout that works the same on a phone as on a laptop.
+          Deliberately light: a short &ldquo;only essentials&rdquo; cookie notice, light and dark themes, and the same layout
+          on phone and laptop.
         </p>
       </CaseSection>
 
@@ -75,8 +74,7 @@ export default function CaseGrubShelfWebsite() {
         >
           <div style={{ minWidth: 0 }}>
             <p style={{ ...body, marginBottom: 20 }}>
-              The receipt demo does the selling. Instead of describing receipt scanning, it shows a till receipt turning
-              into a dated, counted pantry, so the idea lands in a couple of seconds.
+              The receipt demo sells it: a till receipt turns into a dated, counted pantry, and the idea lands in seconds.
             </p>
             <div>
               <PopUp>
@@ -132,8 +130,7 @@ export default function CaseGrubShelfWebsite() {
       <CaseSection part="outcome">
         <p className="cs-lead">Live at grubshelf.app, collecting waiting-list sign-ups ahead of the app.</p>
         <p className="cs-p">
-          It shares the app&rsquo;s brand and design system, so the first thing people see of GrubShelf already looks and
-          sounds like the product they will use.
+          It shares the app&rsquo;s brand and design system, so GrubShelf looks and sounds the same from the first visit.
         </p>
       </CaseSection>
 

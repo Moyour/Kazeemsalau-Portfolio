@@ -21,14 +21,14 @@ export function NewsPhoto({ children, style, className }: { children: ReactNode;
       const tl = gsap.timeline({
         scrollTrigger: { trigger: root.current, start: "top 88%", end: "top 30%", scrub: 0.6 },
       });
-      tl.fromTo(".ks-np-print", { filter: "grayscale(1) contrast(1.35) brightness(1.05)", scale: 1.14 }, { filter: "grayscale(0) contrast(1) brightness(1)", scale: 1, ease: "none" }, 0);
+      tl.fromTo(".ks-np-print", { scale: 1.14 }, { scale: 1, ease: "none" }, 0);
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
     <div ref={root} className={className} style={{ position: "relative", overflow: "hidden", ...style }}>
-      <div className="ks-np-print" style={{ position: "absolute", inset: 0, willChange: "transform, filter" }}>
+      <div className="ks-np-print" style={{ position: "absolute", inset: 0, willChange: "transform" }}>
         {children}
       </div>
     </div>
@@ -230,7 +230,7 @@ export function PhoneStory({
             left: 0,
             bottom: "4vh",
             whiteSpace: "nowrap",
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontWeight: 900,
             fontSize: "clamp(90px, 17vw, 260px)",
             letterSpacing: "-0.05em",
@@ -252,7 +252,7 @@ export function PhoneStory({
           <div>
             <div
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 800,
                 letterSpacing: "0.2em",
@@ -266,7 +266,7 @@ export function PhoneStory({
             <div key={index} className="ks-ps-caption">
               <div
                 style={{
-                  fontFamily: "Archivo, sans-serif",
+                  fontFamily: "var(--font-learning-text)",
                   fontWeight: 900,
                   fontSize: "clamp(30px, 4.4vw, 58px)",
                   lineHeight: 0.95,
@@ -376,13 +376,15 @@ export function ScrollingSite({ src, url, height = 200 }: { src: string; url: st
 
   return (
     <div ref={root} style={{ position: "relative", height: `${height}vh` }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "flex-start", paddingTop: 64, boxSizing: "border-box", justifyContent: "center", perspective: 1600, padding: "0 clamp(12px, 3vw, 40px)" }}>
+      {/* Pinned just under the section bar, only as tall as the window it holds,
+          so nothing empty is left behind when it lets go. */}
+      <div style={{ position: "sticky", top: "max(56px, 10vh)", display: "flex", justifyContent: "center", perspective: 1600, padding: "0 clamp(12px, 3vw, 40px)" }}>
         <div className="ks-ss-window" style={{ width: "min(1100px, 100%)", border: "1px solid var(--ink)", background: "var(--ink)", boxShadow: "0 40px 80px -40px rgba(0,0,0,0.6)", transformOrigin: "50% 100%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px" }}>
             {["#C0281B", "#F0B442", "#2AB88A"].map((c) => (
               <span key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />
             ))}
-            <span style={{ marginLeft: 10, fontFamily: "Archivo, sans-serif", fontSize: 11, color: "#9C968C", letterSpacing: "0.06em" }}>{url}</span>
+            <span style={{ marginLeft: 10, fontFamily: "var(--font-learning-text)", fontSize: 11, color: "#9C968C", letterSpacing: "0.06em" }}>{url}</span>
           </div>
           <div className="ks-ss-frame" style={{ height: "min(68vh, 620px)", overflow: "hidden", background: "#FFF" }}>
             <img className="ks-ss-img" src={src} alt={`${url}, the full page`} style={{ width: "100%", display: "block" }} />
@@ -420,7 +422,7 @@ export function InkRing({ value, label, color }: { value: number; label: string;
           <circle cx="62" cy="62" r={r} fill="none" stroke="#E2DCCF" strokeWidth="12" />
           <circle className="ks-ir-arc" cx="62" cy="62" r={r} fill="none" stroke={color} strokeWidth="12" strokeLinecap="butt" strokeDasharray={c} strokeDashoffset={c * (1 - value / 100)} />
         </svg>
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Archivo, sans-serif", fontWeight: 900, fontSize: 30, letterSpacing: "-0.04em" }}>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-learning-text)", fontWeight: 900, fontSize: 30, letterSpacing: "-0.04em" }}>
           {shown}%
         </div>
       </div>

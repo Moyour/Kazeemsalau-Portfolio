@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { paperFor } from "@/lib/paper";
 import { useSEO } from "@/hooks/use-seo";
 import { track } from "@/lib/track";
 import ContactForm from "@/components/contact-form";
@@ -12,7 +13,7 @@ function scrollToTop() {
 }
 
 const btnStyle = {
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 12,
   fontWeight: 800,
   letterSpacing: "0.14em",
@@ -22,7 +23,7 @@ const btnStyle = {
 };
 
 const boxLabelStyle = {
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 11,
   fontWeight: 700,
   letterSpacing: "0.2em",
@@ -32,7 +33,15 @@ const boxLabelStyle = {
 };
 
 export default function Contact() {
+  const [location] = useLocation();
+  const paper = paperFor(location);
+  const video = paper === "video";
+  const product = paper === "product";
   useSEO("/contact");
+  useEffect(() => {
+    if (video) document.title = "Hire a video editor | Kazeem Salau";
+    if (product) document.title = "Hire a product designer | Kazeem Salau";
+  }, [video, product]);
   const revealRefs = useRef<HTMLElement[]>([]);
   const [copied, setCopied] = useState(false);
 
@@ -69,7 +78,7 @@ export default function Contact() {
       {/* Label */}
       <div
         style={{
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontSize: 11,
           fontWeight: 700,
           letterSpacing: "0.2em",
@@ -85,7 +94,7 @@ export default function Contact() {
       <h1
         className="ks-page-h1"
         style={{
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontWeight: 900,
           fontSize: "clamp(34px, 6vw, 72px)",
           lineHeight: 0.95,
@@ -93,7 +102,7 @@ export default function Contact() {
           margin: "0 0 14px",
         }}
       >
-        <Words text="Hire a learning experience & product designer" />
+        <Words text={video ? "Hire a video editor" : product ? "Hire a product designer" : "Hire a learning experience designer"} />
       </h1>
       <p
         style={{
@@ -105,7 +114,7 @@ export default function Contact() {
           margin: "0 0 clamp(22px, 3vw, 36px)",
         }}
       >
-        Tell me a little about what you need. I read everything and I usually reply the same day.
+        Tell me what you need. I read everything and usually reply the same day.
       </p>
       <div style={{ height: 4, background: "var(--ink)", marginBottom: "clamp(22px, 3vw, 36px)" }} />
 
@@ -122,56 +131,28 @@ export default function Contact() {
         <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
           <div style={{ border: "1px solid var(--ink)", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 18 }}>
             <div style={boxLabelStyle}>Send a message</div>
-            <ContactForm fallbackEmail={EMAIL} />
+            <ContactForm
+              fallbackEmail={EMAIL}
+              reasons={
+                video
+                  ? ["I need a film cut", "I'm hiring for a role", "Something else"]
+                  : product
+                    ? ["I need an app or site designed", "I'm hiring for a role", "Something else"]
+                    : ["I need a course built", "I'm hiring for a role", "Something else"]
+              }
+              prompt={video ? "About the film" : product ? "About the app" : "Who is it for, and what is going wrong?"}
+            />
           </div>
 
-          <div style={{ border: "1px solid var(--ink)", padding: "clamp(18px, 2.4vw, 28px)", display: "flex", flexDirection: "column", gap: 14 }}>
-            <div style={boxLabelStyle}>Or write to me directly</div>
-            <a
-              href={`mailto:${EMAIL}?subject=${encodeURIComponent("Project enquiry")}`}
-              data-track="contact_email_heading"
-              style={{
-                display: "block",
-                fontFamily: "Archivo, sans-serif",
-                fontWeight: 900,
-                fontSize: "clamp(20px, 2.8vw, 32px)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.035em",
-                color: "var(--ink)",
-                textDecoration: "none",
-                wordBreak: "break-all",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--accent)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--ink)";
-              }}
-            >
-              {EMAIL}
-            </a>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-              <a
-                href={`mailto:${EMAIL}?subject=${encodeURIComponent("Project enquiry")}`}
-                data-track="contact_email_button"
-                style={{ ...btnStyle, background: "transparent", color: "var(--ink)", border: "2px solid var(--ink)" }}
-              >
-                Open email &rarr;
-              </a>
-              <button onClick={copyEmail} style={{ ...btnStyle, background: "transparent", color: "var(--ink)", border: "2px solid var(--ink)", cursor: "pointer" }}>
-                {copied ? "Copied \u2713" : "Copy email address"}
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Right column */}
-        <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
+        <div className="ks-sidebar" style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
           {/* Direct lines */}
           <div style={{ border: "1px solid var(--ink)", padding: "16px 18px" }}>
             <div
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
@@ -183,21 +164,31 @@ export default function Contact() {
             >
               Direct lines
             </div>
+            {/* Email first, as buttons; then the other ways to reach me. */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
+              <a
+                href={`mailto:${EMAIL}?subject=${encodeURIComponent("Project enquiry")}`}
+                data-track="contact_email_button"
+                style={{ ...btnStyle, background: "var(--accent)", color: "var(--paper)", boxShadow: "4px 4px 0 var(--ink)" }}
+              >
+                Email me
+              </a>
+              <button onClick={copyEmail} style={{ ...btnStyle, background: "transparent", color: "var(--ink)", border: "2px solid var(--ink)", cursor: "pointer" }}>
+                {copied ? "Copied \u2713" : "Copy email address"}
+              </button>
+            </div>
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: 10,
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase" as const,
               }}
             >
-              <a href="mailto:kazeem.salau@yahoo.com" style={{ color: "var(--accent)", textDecoration: "none" }}>
-                kazeem.salau@yahoo.com
-              </a>
               <a
                 href="https://linkedin.com/in/kazeem-salau-164b1087"
                 target="_blank"
@@ -207,24 +198,28 @@ export default function Contact() {
                 LinkedIn
               </a>
               <a
-                href="https://www.youtube.com/@moyoursalau"
+                href="https://www.youtube.com/@Moyoursalau"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: "var(--accent)", textDecoration: "none" }}
               >
                 YouTube
               </a>
-              <a
-                href="https://grubshelf.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "var(--accent)", textDecoration: "none" }}
-              >
-                grubshelf.app &#8599;
-              </a>
-              <a href="/files/KazeemSalau-InstructionalDesign.pdf" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "none" }}>
-                Download resume (PDF)
-              </a>
+              {product ? (
+                <a
+                  href="https://grubshelf.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--accent)", textDecoration: "none" }}
+                >
+                  grubshelf.app &#8599;
+                </a>
+              ) : null}
+              {paper === "learning" ? (
+                <a href="/files/KazeemSalau-InstructionalDesign.pdf" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "none" }}>
+                  Download resume (PDF)
+                </a>
+              ) : null}
             </div>
           </div>
 
@@ -240,7 +235,7 @@ export default function Contact() {
           >
             <div
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
@@ -252,11 +247,14 @@ export default function Contact() {
               Right now
             </div>
             <p style={{ fontSize: 15, lineHeight: 1.6, margin: "0 0 10px", color: "var(--rule)" }}>
-              I am happy to take on full-time instructional design, learning experience and product design roles, and
-              freelance work alongside them.
+              {video
+                ? "Video editing. Full-time or freelance."
+                : product
+                  ? "Product design. Full-time or freelance."
+                  : "Instructional and learning experience design. Full-time or freelance."}
             </p>
             <p style={{ fontSize: 14, lineHeight: 1.5, margin: 0, fontStyle: "italic", color: "#9C968C" }}>
-              In London, happy to work with teams anywhere.
+              London-based; teams anywhere.
             </p>
           </div>
 
@@ -268,7 +266,7 @@ export default function Contact() {
           >
             <div
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.2em",
@@ -281,15 +279,14 @@ export default function Contact() {
               Have a look first
             </div>
             <p style={{ fontSize: 15, lineHeight: 1.6, color: "var(--body)", margin: "0 0 12px" }}>
-              All three courses are playable in full, and the app work has clickable screens, so you can see how I build
-              before you write.
+              {video ? "The films are on the reel." : product ? "The apps have clickable screens." : "The courses are playable in full."}
             </p>
             <Link
               className="ks-tap"
-              href="/work"
+              href={video ? "/video/reel" : product ? "/products" : "/work"}
               onClick={scrollToTop}
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.15em",
@@ -300,7 +297,7 @@ export default function Contact() {
                 paddingBottom: 3,
               }}
             >
-              The case studies &rarr;
+              {video ? "The reel" : product ? "App and design" : "The case studies"} &rarr;
             </Link>
           </div>
         </div>

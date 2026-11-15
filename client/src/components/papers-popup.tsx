@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { PAPERS, paperFor } from "@/lib/paper";
+import { paperFor } from "@/lib/paper";
 
-// A small card that pops up in the top-right corner of the screen: "Go back
-// to today's papers". Choosing it folds the paper being read and puts it
-// back on the table beside the other edition. It slides in shortly after a
-// page opens, folds to a tab while the reader scrolls down, and can be put
-// away until wanted.
+// A small card in the corner. It puts this paper back on the table. It
+// slides in shortly after a page opens, folds to a tab while the reader
+// scrolls, and can be put away until wanted.
 
 export default function PapersPopup() {
   const [location] = useLocation();
   const [shown, setShown] = useState(false);
   const [tucked, setTucked] = useState(false);
   const paper = paperFor(location);
-  const other = paper === "learning" ? "product" : "learning";
 
   // Slide in a moment after each page opens.
   useEffect(() => {
@@ -59,14 +56,13 @@ export default function PapersPopup() {
         </button>
       ) : (
         <>
-          <Link href="/" data-section="" className="pp-card">
+          <Link href="/" data-section="" className="pp-card pp-swap">
             <span className="pp-icon" aria-hidden="true">
               <i data-paper={paper} />
-              <i data-paper={other} />
+              <i />
             </span>
             <span className="pp-text">
-              <b>Go back to today&rsquo;s papers</b>
-              <span>Or swap for the {PAPERS[other].name}</span>
+              <b>Put this paper back</b>
             </span>
             <span className="pp-arrow" aria-hidden="true">
               &rarr;

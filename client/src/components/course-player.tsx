@@ -13,13 +13,16 @@ export default function CoursePlayer({
   url,
   title,
   native,
+  poster,
 }: {
   url: string;
   title: string;
   native?: { width: number; height: number };
+  poster?: string;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [awake, setAwake] = useState(false);
 
   useEffect(() => {
     const el = box.current;
@@ -64,6 +67,18 @@ export default function CoursePlayer({
       }
     />
   );
+
+  if (poster && !awake) {
+    return (
+      <div className="ks-course-wrap">
+        <button type="button" className="ks-course ks-course-still" onClick={() => setAwake(true)}>
+          <img src={poster} alt="" />
+          <span className="ks-course-glass" aria-hidden="true" />
+          <span className="ks-course-play">Play {title}</span>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div ref={box} className="ks-course-wrap">

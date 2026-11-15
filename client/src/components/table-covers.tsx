@@ -72,27 +72,19 @@ function LearningFront() {
           </div>
         </div>
         <div>
-          {/* The cover photo moves, like a picture in a wizarding paper:
-              a silent clip on a loop, the still as its poster. */}
+          {/* The lead picture is the featured course, the one that plays in full. */}
           <div className="ks-np-photo">
-            {matchMedia("(prefers-reduced-motion: reduce)").matches ? (
-              <img src="/videos/portrait-living.jpg" alt="" />
-            ) : (
-              <video autoPlay muted loop playsInline poster="/videos/portrait-living.jpg" aria-hidden="true">
-                <source src="/videos/portrait-living.webm" type="video/webm" />
-                <source src="/videos/portrait-living.mp4" type="video/mp4" />
-              </video>
-            )}
+            <img src="/images/before-day-one.jpg" alt="" />
           </div>
           <div className="ks-np-caption">
-            <b>Fig. 1</b> Kazeem Salau, photographed in London
+            <b>Fig. 1</b> Before Day One, a course you can play
           </div>
           <div className="ks-np-stats">
             <span>
               <b>50+</b> courses
             </span>
             <span>
-              <b>+20%</b> completion
+              <b>4</b> you can play
             </span>
           </div>
         </div>
@@ -105,7 +97,7 @@ function LearningFront() {
 function ProductFront() {
   const screens = GRUBSHELF_SCREENS.map((s) => s.src);
   return (
-    <div className="ks-np">
+    <div className="ks-np ks-npp">
       <TopBar discipline="Product design" />
       <div className="ks-np-mast">Product Designer</div>
       <div className="ks-np-rules" />
@@ -134,7 +126,7 @@ function ProductFront() {
               <img src={PORTRAIT} alt="" />
             </div>
             <p>
-              Research, flows, a 53-screen prototype and a SwiftUI build. <b>By Kazeem Salau</b>
+              Research, flows, a 53-screen prototype and a SwiftUI build. <b>By <span className="ks-name">Kazeem Salau</span></b>
             </p>
           </div>
         </div>
@@ -143,6 +135,61 @@ function ProductFront() {
   );
 }
 
+// Video: the moving portrait leads, and the reel is the story.
+function VideoFront() {
+  return (
+    <div className="ks-np ks-npv">
+      <TopBar discipline="Video editing" />
+      <div className="ks-np-mast">Video Editor</div>
+      <div className="ks-np-rules" />
+      <Sections items={["Front page", "The reel", "About", "Hire"]} />
+      <div className="ks-np-body ks-npl">
+        <div>
+          <div className="ks-np-kicker">The lead story</div>
+          <div className="ks-np-head">
+            Pictures,
+            <br />
+            <em>cut.</em>
+          </div>
+          <p className="ks-np-stand">The reel is on YouTube.</p>
+          <div className="ks-np-cols">
+            <p>
+              <b className="ks-np-cap">I</b>cut pictures.
+            </p>
+            <p>The reel is the channel.</p>
+          </div>
+        </div>
+        <div>
+          {/* A small cut of the portrait clip, sized for a thumbnail on the table. */}
+          <div className="ks-np-photo">
+            {matchMedia("(prefers-reduced-motion: reduce)").matches ? (
+              <img src="/videos/portrait-cover.jpg" alt="" />
+            ) : (
+              <video autoPlay muted loop playsInline poster="/videos/portrait-cover.jpg" aria-hidden="true">
+                <source src="/videos/portrait-cover.mp4" type="video/mp4" />
+                <source src="/videos/portrait-cover.webm" type="video/webm" />
+              </video>
+            )}
+          </div>
+          <div className="ks-np-caption">
+            <b>Fig. 1</b> A picture that moves
+          </div>
+          <div className="ks-np-stats">
+            <span>
+              <b>1</b> channel
+            </span>
+            <span>
+              <b>21</b> films
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Cover({ paper }: { paper: Paper }) {
-  return paper === "learning" ? <LearningFront /> : <ProductFront />;
+  if (paper === "learning") return <LearningFront />;
+  if (paper === "product") return <ProductFront />;
+  return <VideoFront />;
 }

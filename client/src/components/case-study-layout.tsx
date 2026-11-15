@@ -1,13 +1,14 @@
 import YourCalls, { type Call } from "@/components/your-call";
 import LearningDiagram, { type Diagram } from "@/components/learning-diagrams";
 import CoursePlayer from "@/components/course-player";
-import { CaseHeader, CaseNext, CaseSection, HeroFigure, ShortVersion } from "@/components/case-kit";
+import { CaseHeader, CaseNext, CaseSection, ShortVersion } from "@/components/case-kit";
 
-// A learning case study, set in the site's one case-study layout: the
-// challenge, how it was made, the solution, the course itself playable on
-// the page, and what it achieved.
+// A learning case study, set in the site's one case-study layout. The course
+// itself, playable, is the picture at the top; then the challenge, how it was
+// made, the solution, and what it achieved.
 
 interface CaseStudyProps {
+  page: string;
   tags: string[];
   title: string;
   tagline: string;
@@ -48,16 +49,25 @@ export default function CaseStudyLayout(props: CaseStudyProps) {
     <article>
       <CaseHeader
         back={{ href: "/work", label: "All learning case studies" }}
+        page={props.page}
         tags={props.tags}
         title={props.title}
         deck={props.tagline}
-        byline={[
-          props.playKicker,
-          <a key="play" href="#the-course">
-            Play it on this page &darr;
-          </a>,
-        ]}
-        hero={<HeroFigure src={props.image} alt={`${props.title} course`} caption={props.imageCaption} />}
+        play={{ href: "#the-course", label: "Play the course" }}
+        byline={[props.playKicker]}
+        hero={
+          <div id="the-course" className="cs-hero-course">
+            <CoursePlayer url={props.playUrl} title={props.title} native={props.playerSize} poster={props.image} />
+            <div className="ks-course-bar">
+              <span>
+                <b>Fig. 1</b> {props.imageCaption}. Press play, sound on.
+              </span>
+              <a href={props.playUrl} target="_blank" rel="noopener noreferrer" data-track="course_new_tab">
+                Not loading? Open it in a new tab &#8599;
+              </a>
+            </div>
+          </div>
+        }
       />
 
       <ShortVersion {...props.short} />
@@ -77,18 +87,7 @@ export default function CaseStudyLayout(props: CaseStudyProps) {
         {props.diagrams?.solution && <LearningDiagram d={props.diagrams.solution} />}
       </CaseSection>
 
-      <CaseSection part="tryIt" id="the-course">
-        <p className="cs-lead">Play the course here. Sound on.</p>
-        <CoursePlayer url={props.playUrl} title={props.title} native={props.playerSize} />
-        <div className="ks-course-bar">
-          <span>{props.playKicker}</span>
-          <a href={props.playUrl} target="_blank" rel="noopener noreferrer" data-track="course_new_tab">
-            Not loading? Open it in a new tab &#8599;
-          </a>
-        </div>
-      </CaseSection>
-
-      <CaseSection part="outcome">
+      <CaseSection part="outcome" num="04">
         <Lead text={props.outcome} />
       </CaseSection>
 

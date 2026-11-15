@@ -1,7 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useLayoutEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { editionName, getEdition } from "@/lib/edition";
 import { PAPERS, paperFor, type Paper } from "@/lib/paper";
+
+// The masthead's full size; it only ever shrinks from here to fit.
+const MASTHEAD_SIZE = "clamp(38px, 9.4vw, 132px)";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -14,6 +17,32 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
   const NAV_LINKS = PAPERS[paper].sections;
   const [progress, setProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const masthead = useRef<HTMLSpanElement>(null);
+
+  // The name always sits on one line: set at its full size, then, if it
+  // would run past the paper's edge, scaled down to fit exactly. Run again
+  // when the window changes size or the fonts arrive.
+  useLayoutEffect(() => {
+    const el = masthead.current;
+    if (!el) return;
+    const fit = () => {
+      el.style.setProperty("font-size", MASTHEAD_SIZE);
+      const room = el.clientWidth;
+      const needed = el.scrollWidth;
+      if (needed > room) {
+        const size = parseFloat(getComputedStyle(el).fontSize) * (room / needed) * 0.98;
+        el.style.setProperty("font-size", `${size}px`, "important");
+      }
+    };
+    fit();
+    void document.fonts?.ready.then(fit);
+    document.fonts?.addEventListener("loadingdone", fit);
+    addEventListener("resize", fit);
+    return () => {
+      document.fonts?.removeEventListener("loadingdone", fit);
+      removeEventListener("resize", fit);
+    };
+  }, [paper]);
 
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY;
@@ -47,7 +76,7 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
           left: 0,
           width: "100%",
           height: 3,
-          background: "var(--accent)",
+          background: "var(--ink)",
           transform: `scaleX(${progress})`,
           transformOrigin: "left",
           zIndex: 60,
@@ -55,6 +84,8 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
         }}
       />
 
+      {/* The paper's header: dateline and masthead. */}
+      <header>
       {/* Top bar */}
       <div
         style={{
@@ -65,7 +96,7 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
           alignItems: "center",
           padding: "8px clamp(16px, 2.6vw, 30px)",
           borderBottom: "1px solid var(--ink)",
-          fontFamily: "Archivo, sans-serif",
+          fontFamily: "var(--font-learning-text)",
           fontSize: 11,
           fontWeight: 600,
           letterSpacing: "0.2em",
@@ -85,12 +116,14 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
         <Link href="/" data-section="" aria-label="Kazeem Salau: back to the table" style={{ display: "block", color: "var(--ink)", textDecoration: "none" }}>
           <span style={{ display: "block", overflow: "hidden" }}>
             <span
+              ref={masthead}
               className="ks-anim ks-masthead"
               style={{
                 display: "block",
-                fontFamily: "Archivo, sans-serif",
+                whiteSpace: "nowrap",
+                fontFamily: "var(--font-learning-text)",
                 fontWeight: 900,
-                fontSize: "clamp(38px, 9.4vw, 132px)",
+                fontSize: MASTHEAD_SIZE,
                 lineHeight: 0.86,
                 letterSpacing: "-0.045em",
                 textTransform: "uppercase" as const,
@@ -123,6 +156,7 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
         />
         {/* Which paper this is, and the way to the other one */}
       </div>
+      </header>
 
       {/* Sticky nav */}
       <nav
@@ -142,7 +176,7 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
             display: "none",
             width: "100%",
             padding: "11px 22px",
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: "0.2em",
@@ -156,24 +190,8 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
         >
           {mobileOpen ? "Close" : "Menu"}
         </button>
-        <Link
-          href="/contact"
-          onClick={scrollToTop}
-          data-track="nav_hire_mobile"
-          style={{
-            flexShrink: 0,
-            padding: "11px 22px",
-            fontFamily: "Archivo, sans-serif",
-            fontSize: 11,
-            fontWeight: 800,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase" as const,
-            background: "var(--accent)",
-            color: "var(--paper)",
-            textDecoration: "none",
-          }}
-        >
-          Hire
+        <Link href="/contact" onClick={scrollToTop} data-track="nav_hire_mobile" className="ks-action" style={{ flexShrink: 0, alignSelf: "center", marginRight: 12 }}>
+          Hire me for a project &rarr;
         </Link>
         </div>
 
@@ -184,7 +202,7 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
             flexWrap: "wrap",
             alignItems: "stretch",
             justifyContent: "center",
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: "0.2em",
@@ -194,7 +212,6 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
           {NAV_LINKS.map((link, i) => {
             const isActive =
               i === 0 ? location === link.href : (link.match ?? [link.href]).some((m) => location.startsWith(m));
-            const isCta = link.href === "/contact";
             return (
               <Link
                 key={link.href}
@@ -203,24 +220,11 @@ export default function Navigation({ paper: fixed }: { paper?: Paper } = {}) {
                 className="ks-nav-link"
                 style={{
                   padding: "11px 22px",
-                  color: isActive || isCta ? "var(--paper)" : "var(--ink)",
-                  background: isActive ? "var(--accent)" : isCta ? "var(--ink)" : "transparent",
-                  fontWeight: isCta ? 800 : undefined,
+                  color: isActive ? "var(--paper)" : "var(--ink)",
+                  background: isActive ? "var(--ink)" : "transparent",
                   borderRight: i < NAV_LINKS.length - 1 ? "1px solid var(--rule)" : "none",
                   textDecoration: "none",
-                  transition: "background 0.2s, color 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    (e.target as HTMLElement).style.background = "var(--accent)";
-                    (e.target as HTMLElement).style.color = "var(--paper)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    (e.target as HTMLElement).style.background = isCta ? "var(--ink)" : "transparent";
-                    (e.target as HTMLElement).style.color = isCta ? "var(--paper)" : "var(--ink)";
-                  }
+                  transition: "color 0.2s",
                 }}
               >
                 {link.label}

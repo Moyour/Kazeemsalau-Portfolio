@@ -14,7 +14,7 @@ const REASONS = [
 
 const labelStyle = {
   display: "block",
-  fontFamily: "Archivo, sans-serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 11,
   fontWeight: 700,
   letterSpacing: "0.18em",
@@ -26,7 +26,7 @@ const labelStyle = {
 const inputStyle = {
   width: "100%",
   boxSizing: "border-box" as const,
-  fontFamily: "Newsreader, Georgia, serif",
+  fontFamily: "var(--font-learning-text)",
   fontSize: 17,
   color: "var(--ink)",
   background: "var(--paper-2)",
@@ -38,9 +38,17 @@ const inputStyle = {
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
+export default function ContactForm({
+  fallbackEmail,
+  reasons = REASONS,
+  prompt = "Who is it for, and what is going wrong?",
+}: {
+  fallbackEmail: string;
+  reasons?: string[];
+  prompt?: string;
+}) {
   const [status, setStatus] = useState<Status>("idle");
-  const [reason, setReason] = useState(REASONS[0]);
+  const [reason, setReason] = useState(reasons[0]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -71,7 +79,7 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
       <div role="status" style={{ padding: "8px 0" }}>
         <div
           style={{
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontWeight: 900,
             fontSize: "clamp(24px, 3vw, 34px)",
             letterSpacing: "-0.03em",
@@ -91,7 +99,7 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <div role="radiogroup" aria-label="What brings you here?" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-        {REASONS.map((r) => {
+        {reasons.map((r) => {
           const active = r === reason;
           return (
             <button
@@ -101,7 +109,7 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
               aria-checked={active}
               onClick={() => setReason(r)}
               style={{
-                fontFamily: "Archivo, sans-serif",
+                fontFamily: "var(--font-learning-text)",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.1em",
@@ -136,7 +144,7 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
       </label>
       <label>
         <span style={labelStyle}>
-          {reason === "I'm hiring for a role" ? "About the role" : "Who is it for, and what is going wrong?"}
+          {reason === "I'm hiring for a role" ? "About the role" : prompt}
         </span>
         <textarea name="message" required rows={5} style={{ ...inputStyle, resize: "vertical" }} />
       </label>
@@ -147,7 +155,7 @@ export default function ContactForm({ fallbackEmail }: { fallbackEmail: string }
           type="submit"
           disabled={status === "sending"}
           style={{
-            fontFamily: "Archivo, sans-serif",
+            fontFamily: "var(--font-learning-text)",
             fontSize: 12,
             fontWeight: 800,
             letterSpacing: "0.14em",

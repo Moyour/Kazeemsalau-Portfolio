@@ -1,3 +1,5 @@
+@import "./fonts.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,24 +7,48 @@
 :root {
   /* The paper's colours. Pages use these names, so each edition can print
      on its own paper: these are the Learning Edition's. */
-  --ink: #14120F;
-  --paper: #F4F1EA;
-  --paper-2: #FBF9F4;
+  --ink: #141414;
+  --paper: #F6F6F4;
+  --paper-2: #FFFFFF;
   --accent: #C0281B;
-  --muted: #5F5A50;
-  --body: #3A362F;
-  --rule: #CFC9BB;
-  --outer: #E8E4D9;
-  --ks-bg-outer: #E8E4D9;
-  --ks-bg-paper: #F4F1EA;
-  --ks-text-dark: #14120F;
-  --ks-text-body: #3A362F;
-  --ks-text-muted: #5F5A50;
+  --edition: #C0281B;
+  --muted: #6A6A6A;
+  --body: #333333;
+  --rule: #D4D4D4;
+  --outer: #E6E6E4;
+  --ks-bg-outer: #E6E6E4;
+  --ks-bg-paper: #F6F6F4;
+  --ks-text-dark: #141414;
+  --ks-text-body: #333333;
+  --ks-text-muted: #6A6A6A;
   --ks-accent: #C0281B;
   --ks-border: #CFC9BB;
   --ks-footer-bg: #14120F;
   --ks-footer-text: #E7E3DA;
   --ks-footer-muted: #9C968C;
+
+  /* One house pair for the whole site: Libre Baskerville for headlines,
+     IBM Plex Serif for reading and labels. Each part of the site (the cover
+     page and the three editions) still names its own roles, so any one can
+     take a pairing of its own later without touching the rest. Pages name
+     the role, never the font, so a paper and its preview on the cover
+     always print in the same type. */
+  --font-learning-display: "Libre Baskerville", Baskerville, Georgia, serif;
+  --font-learning-text: "IBM Plex Serif", Georgia, serif;
+  /* The cover page. */
+  --font-cover-display: var(--font-learning-display);
+  --font-cover-text: var(--font-learning-text);
+  /* Product and Video. */
+  --font-product-display: var(--font-learning-display);
+  --font-product-text: var(--font-learning-text);
+  --font-video-display: var(--font-learning-display);
+  --font-video-text: var(--font-learning-text);
+}
+
+html {
+  /* Never fake a weight or style the font does not have: a browser-made
+     bold or slant reads as a glitch. */
+  font-synthesis: none;
 }
 
 * {
@@ -32,7 +58,7 @@
 }
 
 body {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: var(--font-cover-text);
   color: var(--ks-text-dark);
   background: var(--ks-bg-outer);
   -webkit-font-smoothing: antialiased;
@@ -51,6 +77,73 @@ a:hover {
 ::selection {
   background: var(--ks-accent);
   color: var(--ks-bg-paper);
+}
+
+/* Body copy is set like a newspaper column: both edges even, last line
+   left, with hyphens so the gaps stay small. Headings, the masthead and
+   anything already centred stay as they are. */
+main p,
+main li {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+/* A short measure stretches if both edges are forced even. Columns, steps,
+   cards, the wire and lists stay ragged. */
+main li,
+.ks-cols p,
+.ks-steps-grid p,
+.ks-more-line,
+.ks-coupon p,
+.wire-text,
+.wire-desk {
+  text-align: start;
+  hyphens: manual;
+}
+/* Display-size lines (decks, standfirsts, pull quotes) hold too few words
+   to justify without gaps, and so does a phone-width column: both are set
+   ragged. Body copy on wider screens keeps its even edges. */
+main :is(.cs-deck, .cs-lead, .ks-stand, .ks-sidebar p, .ks-pull p, .ks-mag-pull p, .ks-mag-pull, .ks-mag-cover p, blockquote p) {
+  text-align: start;
+  hyphens: manual;
+}
+@media (max-width: 600px) {
+  main p {
+    text-align: start;
+  }
+}
+.ks-cols p {
+  break-inside: avoid;
+}
+.ks-aside {
+  border-top: 1px solid var(--ink);
+  padding-top: 12px;
+}
+.ks-aside summary {
+  cursor: pointer;
+  font: 900 clamp(22px, 2.8vw, 34px)/1 var(--font-learning-text);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.ks-aside summary:hover {
+  color: var(--ks-accent);
+}
+.ks-aside[open] summary {
+  margin-bottom: 16px;
+}
+html {
+  scroll-padding-top: 58px;
+}
+.ks-paper :is(h1, h2, h3) {
+  scroll-margin-top: 58px;
+}
+main [style*="text-align: center"] p,
+main [style*="text-align:center"] p,
+main [style*="text-align: center"] li,
+main [style*="text-align:center"] li {
+  text-align: center;
+  hyphens: manual;
 }
 
 /* Scroll-reveal */
@@ -221,9 +314,8 @@ a:hover {
 }
 
 /* ── Turning the page (components/page-turn.ts) ──
-   A leaf hinged at the page's left edge, cut into strips that curl as it
-   turns; each strip has the printed page on its front and plain newsprint
-   on its back. */
+   One leaf hinged at the spine, opening the way a book cover does. The
+   front is the printed page; the back is plain newsprint. */
 .ks-turn {
   position: fixed;
   inset: 0;
@@ -238,18 +330,27 @@ a:hover {
   height: 100%;
 }
 .ks-leaf {
-  perspective: 2200px;
-  perspective-origin: 0 40%;
+  perspective: 1800px;
+  perspective-origin: 0 46%;
+}
+.ks-book-hinge {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  will-change: transform;
 }
 .ks-leaf-front,
 .ks-leaf-back {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  will-change: transform;
 }
 .ks-leaf-back {
+  /* Solid paper; the curl is a shadow, not a fade. */
   background: #ECE7DB;
+  box-shadow: inset 28px 0 24px -16px rgba(20, 18, 15, 0.16);
+  transform: rotateY(180deg);
 }
 /* The copies are the page as it finally looks: no entrances replaying. */
 .ks-leaf-front *,
@@ -269,9 +370,11 @@ a:hover {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 60px;
-  background: rgba(20, 18, 15, 0.32);
-  filter: blur(18px);
+  width: 46%;
+  transform-origin: left center;
+  /* A solid shade softened by the blur, rather than a fade. */
+  background: rgba(20, 18, 15, 0.2);
+  filter: blur(14px);
   opacity: 0;
 }
 html[data-turning] .ks-paper {
@@ -442,7 +545,7 @@ html[data-intro] .ks-paper {
   align-items: flex-end;
   gap: 12px;
   margin-top: 12px;
-  font-family: Archivo, sans-serif;
+  font-family: var(--font-learning-text);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -462,7 +565,7 @@ html[data-intro] .ks-paper {
   padding: 4px 10px;
   border: 3px solid var(--ks-accent);
   color: var(--ks-accent);
-  font-family: Archivo, sans-serif;
+  font-family: var(--font-learning-text);
   font-weight: 900;
   font-size: 18px;
   letter-spacing: 0.18em;
@@ -562,7 +665,7 @@ html[data-intro] .ks-paper {
   position: absolute;
   top: 1px;
   left: 3px;
-  font: 700 9px/1 Archivo, sans-serif;
+  font: 700 9px/1 var(--font-learning-text);
   color: #14120F;
   pointer-events: none;
 }
@@ -573,7 +676,7 @@ html[data-intro] .ks-paper {
   border: 0;
   background: transparent;
   text-align: center;
-  font: 900 clamp(14px, 3.6vw, 22px)/1 Archivo, sans-serif;
+  font: 900 clamp(14px, 3.6vw, 22px)/1 var(--font-learning-text);
   text-transform: uppercase;
   color: #3A362F;
   caret-color: transparent;
@@ -607,7 +710,7 @@ html[data-intro] .ks-paper {
   margin: 0 -6px;
 }
 .ks-xw-clue b {
-  font: 800 12px Archivo, sans-serif;
+  font: 800 12px var(--font-learning-text);
   color: var(--ks-accent);
   margin-right: 4px;
 }
@@ -624,7 +727,7 @@ html[data-intro] .ks-paper {
   outline: 2px solid var(--ks-accent);
 }
 .ks-xw-btn {
-  font: 800 11px Archivo, sans-serif;
+  font: 800 11px var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 10px 16px;
@@ -651,7 +754,7 @@ html[data-intro] .ks-paper {
   padding: 6px 16px;
   border: 4px double var(--ks-accent);
   color: var(--ks-accent);
-  font: 900 clamp(22px, 4vw, 36px)/1 Archivo, sans-serif;
+  font: 900 clamp(22px, 4vw, 36px)/1 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   rotate: -10deg;
@@ -743,7 +846,7 @@ html[data-night] .ks-lamp {
 .ks-thirty {
   text-align: center;
   padding: 0 0 clamp(20px, 2.6vw, 30px);
-  font: 700 11px/1 Archivo, sans-serif;
+  font: 700 11px/1 var(--font-learning-text);
   letter-spacing: 0.4em;
   color: var(--ks-text-muted);
 }
@@ -771,16 +874,6 @@ html[data-night] .ks-lamp {
   }
 }
 
-/* Fig. 1 heads the sidebar on wide screens and runs under the headline,
-   as the lead story's photo, once the columns stack. */
-.ks-photo-lead {
-  display: none;
-  margin-bottom: 22px;
-}
-@media (max-width: 900px) {
-  .ks-photo-lead { display: block; }
-  .ks-photo-side { display: none; }
-}
 
 /* The edition band under the masthead: which paper this is, and the way
    to swap it for the other one on the table. */
@@ -791,7 +884,7 @@ html[data-night] .ks-lamp {
   align-items: center;
   gap: 6px 16px;
   padding: 9px 0 10px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -827,7 +920,7 @@ html[data-table] body {
   background:
     var(--ks-bg-outer);
   color: var(--ks-text-dark);
-  font-family: Newsreader, Georgia, serif;
+  font-family: var(--font-cover-text);
 }
 .ks-table-head {
   text-align: center;
@@ -838,15 +931,15 @@ html[data-table] body {
   opacity: 0;
 }
 .ks-table-kicker {
-  font: 700 11px/1.4 Archivo, sans-serif;
+  font: 500 12px/1.4 var(--font-cover-display);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ks-text-muted);
+  color: #555555;
   margin-bottom: 10px;
 }
 .ks-table-title {
-  font: 900 clamp(30px, 5vw, 60px)/0.95 Archivo, sans-serif;
-  letter-spacing: -0.04em;
+  font: 700 clamp(36px, 6vw, 76px)/0.95 var(--font-cover-display);
+  letter-spacing: -0.005em;
   text-transform: uppercase;
   margin: 0;
 }
@@ -859,8 +952,8 @@ html[data-table] body {
 .ks-table-papers {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: clamp(12px, 4vw, 64px);
+  align-items: flex-end;
+  gap: clamp(88px, 10vw, 160px);
   width: 100%;
 }
 .ks-fp {
@@ -880,7 +973,7 @@ html[data-table] body {
   border: 1px solid rgba(20, 18, 15, 0.45);
   border-radius: 1px 1px 10px 10px / 1px 1px 14px 14px;
   box-shadow: 0 4px 8px rgba(20, 18, 15, 0.08);
-  transition: translate 0.6s ease-in, opacity 0.4s;
+  transition: translate 0.5s var(--ks-ease-out), rotate 0.5s var(--ks-ease-out), opacity 0.4s;
 }
 .ks-fp-under-1 {
   translate: 7px 8px;
@@ -910,8 +1003,47 @@ html[data-table] body {
 }
 .ks-table:not([data-opening]) .ks-fp-sheet:hover,
 .ks-table:not([data-opening]) .ks-fp-sheet:focus-visible {
-  translate: 0 -10px;
+  translate: 0 -22px;
   rotate: 0deg;
+  scale: 1.04;
+  filter: drop-shadow(0 26px 22px rgba(20, 18, 15, 0.24));
+}
+/* At rest each stack breathes. Hover lifts the top sheet and fans the
+   pages underneath, the way a cover starts to open before you turn it. */
+.ks-table:not([data-opening]) .ks-fp-stack {
+  animation: ks-fp-want 3.6s ease-in-out infinite;
+}
+.ks-fp:nth-child(2) .ks-fp-stack { animation-delay: 0.7s; }
+@keyframes ks-fp-want {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+.ks-table:not([data-opening]) .ks-fp:hover .ks-fp-stack,
+.ks-table:not([data-opening]) .ks-fp:focus-within .ks-fp-stack {
+  animation: none;
+}
+.ks-table:not([data-opening]) .ks-fp:nth-child(1):hover .ks-fp-under-1,
+.ks-table:not([data-opening]) .ks-fp:nth-child(1):focus-within .ks-fp-under-1 {
+  translate: 16px 18px;
+  rotate: 5deg;
+}
+.ks-table:not([data-opening]) .ks-fp:nth-child(1):hover .ks-fp-under-2,
+.ks-table:not([data-opening]) .ks-fp:nth-child(1):focus-within .ks-fp-under-2 {
+  translate: -18px 28px;
+  rotate: -4deg;
+}
+.ks-table:not([data-opening]) .ks-fp:nth-child(2):hover .ks-fp-under-1,
+.ks-table:not([data-opening]) .ks-fp:nth-child(2):focus-within .ks-fp-under-1 {
+  translate: -16px 18px;
+  rotate: -5deg;
+}
+.ks-table:not([data-opening]) .ks-fp:nth-child(2):hover .ks-fp-under-2,
+.ks-table:not([data-opening]) .ks-fp:nth-child(2):focus-within .ks-fp-under-2 {
+  translate: 18px 28px;
+  rotate: 4.5deg;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ks-fp-stack { animation: none !important; }
 }
 .ks-fp-sheet:focus-visible .ks-fp-cut {
   outline: 2px solid var(--ks-accent);
@@ -985,7 +1117,7 @@ html[data-table] body {
   opacity: 0;
 }
 .ks-fp-label b {
-  font: 900 13px/1.2 Archivo, sans-serif;
+  font: 600 14px/1.2 var(--font-cover-display);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -994,7 +1126,7 @@ html[data-table] body {
   color: var(--ks-text-body);
 }
 .ks-fp-label span {
-  font: 700 10px/1.4 Archivo, sans-serif;
+  font: 500 12px/1.4 var(--font-cover-display);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--ks-accent);
@@ -1016,7 +1148,7 @@ html[data-table] body {
   background: #F4F1EA;
   border: 1px solid #14120F;
   color: #14120F;
-  font-family: Newsreader, Georgia, serif;
+  font-family: var(--font-learning-text);
 }
 .ks-np img {
   display: block;
@@ -1029,7 +1161,7 @@ html[data-table] body {
   justify-content: space-between;
   padding: 8px 26px;
   border-bottom: 1px solid #14120F;
-  font: 600 10px/1.3 Archivo, sans-serif;
+  font: 600 10px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #5F5A50;
@@ -1037,7 +1169,7 @@ html[data-table] body {
 .ks-np-mast {
   padding: 22px 26px 0;
   text-align: center;
-  font: 900 86px/0.86 Archivo, sans-serif;
+  font: 900 86px/0.86 var(--font-learning-text);
   letter-spacing: -0.045em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -1058,7 +1190,7 @@ html[data-table] body {
   margin-top: 10px;
   border-top: 1px solid #14120F;
   border-bottom: 1px solid #14120F;
-  font: 700 11px/1 Archivo, sans-serif;
+  font: 700 11px/1 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -1084,14 +1216,14 @@ html[data-table] body {
   padding: 24px 26px 0;
 }
 .ks-np-kicker {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #C0281B;
   margin-bottom: 10px;
 }
 .ks-np-head {
-  font: 900 74px/0.9 Archivo, sans-serif;
+  font: 900 74px/0.9 var(--font-learning-text);
   letter-spacing: -0.045em;
   text-transform: uppercase;
 }
@@ -1099,6 +1231,51 @@ html[data-table] body {
   font-style: normal;
   color: #C0281B;
 }
+/* The product cover is the other paper: serif, sentence case, its own
+   accent. The learning cover keeps the block capitals above. */
+.ks-npp .ks-np-mast {
+  font-family: var(--font-product-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 78px;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-transform: none;
+}
+.ks-npp .ks-np-head {
+  font-family: var(--font-product-display);
+  font-weight: 600;
+  font-size: 64px;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+.ks-npp .ks-np-head em {
+  font-style: italic;
+  color: #1E5B5E;
+}
+.ks-npp .ks-np-kicker { color: #1E5B5E; }
+.ks-npp .ks-np-sections span[data-on] { background: #1E5B5E; }
+.ks-npv .ks-np-mast {
+  font-family: var(--font-video-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 78px;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-transform: none;
+}
+.ks-npv .ks-np-head {
+  font-family: var(--font-video-display);
+  font-weight: 600;
+  font-size: 64px;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+.ks-npv .ks-np-head em { font-style: italic; color: #9A4508; }
+.ks-npv .ks-np-kicker { color: #9A4508; }
+.ks-npv .ks-np-sections span[data-on] { background: #9A4508; }
+.ks-npv .ks-np-stats b,
+.ks-npv .ks-np-caption b { color: #9A4508; }
 .ks-np-stand {
   margin: 14px 0 14px;
   font-style: italic;
@@ -1119,7 +1296,7 @@ html[data-table] body {
 }
 .ks-np-cap {
   float: left;
-  font: 900 58px/0.76 Archivo, sans-serif;
+  font: 900 58px/0.76 var(--font-learning-text);
   color: #C0281B;
   padding: 4px 9px 0 0;
 }
@@ -1128,7 +1305,7 @@ html[data-table] body {
   gap: 6px;
   padding: 7px 0 8px;
   border-bottom: 1px solid #CFC9BB;
-  font: 600 10px/1.3 Archivo, sans-serif;
+  font: 600 10px/1.3 var(--font-learning-text);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #5F5A50;
@@ -1157,13 +1334,13 @@ html[data-table] body {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-  font: 700 10px/1.3 Archivo, sans-serif;
+  font: 700 10px/1.3 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #5F5A50;
 }
 .ks-np-stats b {
-  font: 900 26px Archivo, sans-serif;
+  font: 900 26px var(--font-learning-text);
   letter-spacing: -0.04em;
   color: #C0281B;
   margin-right: 4px;
@@ -1228,7 +1405,7 @@ html[data-table] body {
 .ks-npp-byline b {
   display: block;
   margin-top: 4px;
-  font: 700 10px/1.3 Archivo, sans-serif;
+  font: 700 10px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #14120F;
@@ -1253,7 +1430,7 @@ html[data-table] body {
   gap: 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid #14120F;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #C0281B;
@@ -1274,7 +1451,7 @@ html[data-table] body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font: 900 13px Archivo, sans-serif;
+  font: 900 13px var(--font-learning-text);
   color: #CFC9BB;
 }
 .ks-fx-slot > span {
@@ -1294,7 +1471,7 @@ html[data-table] body {
   padding: 3px 8px;
   border: 2px solid #C0281B;
   color: #C0281B;
-  font: 900 11px/1.1 Archivo, sans-serif;
+  font: 900 11px/1.1 var(--font-learning-text);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   rotate: -5deg;
@@ -1305,7 +1482,7 @@ html[data-table] body {
   animation: ks-fade 0.5s var(--ks-ease-out) both;
 }
 .ks-fx-when {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #5F5A50;
@@ -1325,13 +1502,13 @@ html[data-table] body {
 .ks-fx-line cite {
   display: block;
   margin-bottom: 4px;
-  font: normal 700 11px/1.3 Archivo, sans-serif;
+  font: normal 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #C0281B;
 }
 .ks-fx-ask {
-  font: 900 clamp(20px, 2.4vw, 28px)/1.05 Archivo, sans-serif;
+  font: 900 clamp(20px, 2.4vw, 28px)/1.05 var(--font-learning-text);
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin-bottom: 12px;
@@ -1355,7 +1532,7 @@ html[data-table] body {
   transition: background 0.15s, color 0.15s, translate 0.2s var(--ks-spring);
 }
 .ks-fx-choice span {
-  font: 900 13px Archivo, sans-serif;
+  font: 900 13px var(--font-learning-text);
   color: #C0281B;
 }
 .ks-fx-choice:hover,
@@ -1376,7 +1553,7 @@ html[data-table] body {
   color: #5F5A50;
 }
 .ks-fx-small {
-  font: 600 11px/1.3 Archivo, sans-serif;
+  font: 600 11px/1.3 var(--font-learning-text);
   font-style: normal;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1389,7 +1566,7 @@ html[data-table] body {
   margin-bottom: 20px;
 }
 .ks-fx-meter-label {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   margin-bottom: 6px;
@@ -1412,7 +1589,7 @@ html[data-table] body {
 .ks-fx-meter[data-tone="bad"] .ks-fx-meter-track span { background: #C0281B; }
 .ks-fx-meter-word {
   margin-top: 5px;
-  font: 900 14px Archivo, sans-serif;
+  font: 900 14px var(--font-learning-text);
   text-transform: uppercase;
 }
 .ks-fx-meter[data-tone="good"] .ks-fx-meter-word { color: #2E7D32; }
@@ -1427,7 +1604,7 @@ html[data-table] body {
   padding-top: 10px;
 }
 .ks-fx-why-ask {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #5F5A50;
@@ -1452,7 +1629,7 @@ html[data-table] body {
   cursor: pointer;
   padding: 5px 9px;
   border: 1px solid #CFC9BB;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #5F5A50;
@@ -1490,7 +1667,7 @@ html[data-table] body {
   cursor: pointer;
   padding: 12px 18px;
   border: 2px solid #14120F;
-  font: 800 12px/1 Archivo, sans-serif;
+  font: 800 12px/1 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1542,7 +1719,7 @@ html[data-table] body {
   padding-bottom: 8px;
   margin-bottom: 12px;
   border-bottom: 1px solid #14120F;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -1553,7 +1730,7 @@ html[data-table] body {
   margin-bottom: 0;
 }
 .ks-gw-list .ks-gw-label span:last-child {
-  font: 900 18px Archivo, sans-serif;
+  font: 900 18px var(--font-learning-text);
   letter-spacing: -0.02em;
   color: #0A4D3E;
 }
@@ -1580,7 +1757,7 @@ html[data-table] body {
   transition: background 0.2s, border-color 0.2s;
 }
 .ks-gw-day b {
-  font: 800 11px Archivo, sans-serif;
+  font: 800 11px var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #14120F;
@@ -1622,7 +1799,7 @@ html[data-table] body {
   transition: background 0.15s;
 }
 .ks-gw-meal-add b {
-  font: 800 14px/1.2 Archivo, sans-serif;
+  font: 800 14px/1.2 var(--font-learning-text);
 }
 .ks-gw-meal-add span {
   font-size: 13px;
@@ -1674,7 +1851,7 @@ html[data-table] body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #C0281B;
@@ -1693,7 +1870,7 @@ html[data-table] body {
   justify-content: space-between;
   padding: 4px 0;
   border-bottom: 1px solid #0A4D3E;
-  font: 800 11px/1.3 Archivo, sans-serif;
+  font: 800 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #0A4D3E;
@@ -1711,7 +1888,7 @@ html[data-table] body {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #5F5A50;
@@ -1746,7 +1923,7 @@ html[data-table] body {
   cursor: pointer;
   display: block;
   margin-top: 8px;
-  font: 800 11px/1.3 Archivo, sans-serif;
+  font: 800 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   border-bottom: 1px solid currentColor;
@@ -1754,7 +1931,7 @@ html[data-table] body {
 }
 .ks-gw-small {
   margin-top: auto;
-  font: 600 11px/1.3 Archivo, sans-serif;
+  font: 600 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #5F5A50;
@@ -1781,7 +1958,7 @@ html[data-table] body {
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -1796,7 +1973,7 @@ html[data-table] body {
 }
 .ks-yc-q {
   margin: 10px 0 8px;
-  font: italic 500 clamp(19px, 2vw, 23px)/1.3 Newsreader, Georgia, serif;
+  font: italic 500 clamp(19px, 2vw, 23px)/1.3 var(--font-learning-text);
   color: var(--ink, #14120F);
 }
 .ks-yc-options {
@@ -1838,7 +2015,7 @@ html[data-table] body {
   opacity: 0.4;
 }
 .ks-yc-options em {
-  font: 700 11px/1.6 Archivo, sans-serif;
+  font: 700 11px/1.6 var(--font-learning-text);
   font-style: normal;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1889,6 +2066,7 @@ html[data-paper="product"] {
   /* Deep petrol: sits with the salmon stock and navy ink, distinct from
      the Learning paper's red without fighting it. */
   --accent: #1E5B5E;
+  --edition: #1E5B5E;
   --muted: #6F6158;
   --body: #3E3A44;
   --rule: #E3C8B4;
@@ -1904,17 +2082,52 @@ html[data-paper="product"] {
   --ks-border: var(--rule);
 }
 html[data-paper="product"] .ks-paper :is(h1, h2, h3) {
-  font-family: Newsreader, Georgia, serif !important;
-  font-weight: 600 !important;
+  font-family: var(--font-product-display) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
   text-transform: none !important;
-  letter-spacing: -0.025em !important;
+  letter-spacing: -0.015em !important;
+}
+/* ── The Video Edition's paper ──
+   A third stock: warm grey, amber accent, film-title italics. Neither the
+   learning capitals nor the product salmon. */
+html[data-paper="video"] {
+  --ink: #1C1915;
+  --paper: #F3EFE4;
+  --paper-2: #F7F3EA;
+  --accent: #9A4508;
+  --edition: #9A4508;
+  --muted: #6B645B;
+  --body: #3A342C;
+  --rule: #DDD4C4;
+  --outer: #E4DDD0;
+  --paper-deep: #E7DFD0;
+  --ks-bg-outer: var(--outer);
+  --ks-bg-paper: var(--paper);
+  --ks-text-dark: var(--ink);
+  --ks-text-body: var(--body);
+  --ks-text-muted: var(--muted);
+  --ks-accent: var(--accent);
+  --ks-border: var(--rule);
+}
+html[data-paper="video"] .ks-paper :is(h1, h2, h3, .ks-masthead) {
+  font-family: var(--font-video-display) !important;
+  font-weight: 700 !important;
+  font-style: normal;
+  text-transform: uppercase !important;
+  letter-spacing: -0.02em !important;
+}
+html[data-paper="video"] .ks-paper .ks-masthead {
+  font-weight: 700 !important;
+  line-height: 1.04 !important;
+  text-transform: uppercase !important;
 }
 html[data-paper="product"] .ks-masthead {
-  font-family: Newsreader, Georgia, serif !important;
-  font-style: italic;
+  font-family: var(--font-product-display) !important;
+  font-style: normal !important;
   font-weight: 700 !important;
   text-transform: none !important;
-  letter-spacing: -0.035em !important;
+  letter-spacing: -0.01em !important;
   /* The serif's ascenders stand taller than the capitals it replaces, so
      give them room inside the box that clips the masthead's entrance. */
   line-height: 1.04 !important;
@@ -1929,12 +2142,12 @@ html[data-paper="product"] .ks-masthead {
 }
 .ks-pull p {
   margin: 0 0 10px;
-  font: italic 600 clamp(22px, 2.5vw, 30px)/1.2 Newsreader, Georgia, serif;
+  font: italic 600 clamp(22px, 2.5vw, 30px)/1.2 var(--font-learning-text);
   letter-spacing: -0.015em;
   color: var(--ink);
 }
 .ks-pull cite {
-  font: normal 700 11px/1.3 Archivo, sans-serif;
+  font: normal 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -1981,18 +2194,18 @@ html[data-paper="product"] .ks-masthead {
   gap: 6px;
 }
 .ks-more-kicker {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent);
 }
 .ks-more-title {
-  font: 900 clamp(20px, 2.2vw, 26px)/1 Archivo, sans-serif;
+  font: 900 clamp(20px, 2.2vw, 26px)/1 var(--font-learning-text);
   letter-spacing: -0.03em;
   text-transform: uppercase;
 }
 html[data-paper="product"] .ks-more-title {
-  font-family: Newsreader, Georgia, serif;
+  font-family: var(--font-learning-text);
   font-weight: 600;
   text-transform: none;
 }
@@ -2008,11 +2221,11 @@ html[data-paper="product"] .ks-more-title {
 /* ── The Product Edition front page as a magazine (pages/product-front.tsx) ── */
 .ks-mag {
   --mag-pad: clamp(16px, 3.2vw, 44px);
-  font-family: Newsreader, Georgia, serif;
+  font-family: var(--font-learning-text);
   color: var(--ink);
 }
 .ks-mag-kicker {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent);
@@ -2040,7 +2253,7 @@ html[data-paper="product"] .ks-more-title {
 }
 .ks-mag-cover h1 {
   margin: 14px 0 16px;
-  font: 600 clamp(52px, 8.2vw, 116px)/0.88 Newsreader, Georgia, serif;
+  font: 600 clamp(52px, 7vw, 88px)/0.88 var(--font-learning-text);
   letter-spacing: -0.035em;
   color: var(--ink);
 }
@@ -2081,7 +2294,7 @@ html[data-paper="product"] .ks-more-title {
   display: inline-block;
   padding: 14px 22px;
   border: 2px solid var(--ink);
-  font: 800 12px/1 Archivo, sans-serif;
+  font: 800 12px/1 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
@@ -2112,7 +2325,7 @@ html[data-paper="product"] .ks-more-title {
   display: flex;
   align-items: center;
   gap: 8px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--body);
@@ -2141,9 +2354,12 @@ html[data-paper="product"] .ks-more-title {
   .ks-mag-feature {
     flex: 1;
   }
-  .ks-mag-feature-art {
+  /* The feature picture grows to meet the sidebar; its floor is low enough
+     that it never forces the story column taller than the sidebar. */
+  .ks-mag-spread .ks-mag-feature-art {
     flex: 1 0 auto;
-    min-height: clamp(300px, 34vw, 430px);
+    height: auto;
+    min-height: clamp(220px, 20vw, 260px);
   }
 }
 @media (max-width: 900px) {
@@ -2160,22 +2376,6 @@ html[data-paper="product"] .ks-more-title {
   gap: 28px;
   min-width: 0;
 }
-.ks-mag-portrait {
-  margin: 0;
-}
-.ks-mag-portrait img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  background: var(--accent);
-}
-.ks-mag-portrait figcaption {
-  margin-top: 8px;
-  font-style: italic;
-  font-size: 14px;
-  color: var(--muted);
-}
 .ks-mag-pull {
   margin: 0;
   padding-top: 14px;
@@ -2183,11 +2383,11 @@ html[data-paper="product"] .ks-more-title {
 }
 .ks-mag-pull p {
   margin: 0 0 10px;
-  font: italic 500 clamp(22px, 2.2vw, 28px)/1.22 Newsreader, Georgia, serif;
+  font: italic 500 clamp(22px, 2.2vw, 28px)/1.22 var(--font-learning-text);
   letter-spacing: -0.015em;
 }
 .ks-mag-pull cite {
-  font: normal 700 11px/1.3 Archivo, sans-serif;
+  font: normal 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -2214,7 +2414,7 @@ html[data-paper="product"] .ks-more-title {
   color: var(--accent);
 }
 .ks-mag-index b {
-  font: 600 18px Newsreader, Georgia, serif;
+  font: 600 18px var(--font-learning-text);
   font-style: italic;
   color: var(--accent);
 }
@@ -2226,7 +2426,7 @@ html[data-paper="product"] .ks-more-title {
   padding-bottom: 12px;
   margin-bottom: 18px;
   border-bottom: 1px solid var(--ink);
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -2242,7 +2442,9 @@ html[data-paper="product"] .ks-more-title {
 }
 .ks-mag-lede::first-letter {
   float: left;
-  font: 600 4.3em/0.8 Newsreader, Georgia, serif;
+  font-weight: 600;
+  font-size: 4.3em;
+  line-height: 0.8;
   padding: 0.06em 0.1em 0 0;
   color: var(--accent);
 }
@@ -2258,14 +2460,14 @@ html[data-paper="product"] .ks-more-title {
 }
 .ks-mag-stats b {
   display: block;
-  font: 600 clamp(38px, 4.4vw, 58px)/1 Newsreader, Georgia, serif;
+  font: 600 clamp(38px, 4.4vw, 58px)/1 var(--font-learning-text);
   letter-spacing: -0.04em;
   color: var(--accent);
 }
 .ks-mag-stats div > span {
   display: block;
   margin-top: 6px;
-  font: 700 11px/1.35 Archivo, sans-serif;
+  font: 700 11px/1.35 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
@@ -2285,7 +2487,7 @@ html[data-paper="product"] .ks-more-title {
   overflow: hidden;
 }
 .ks-mag-feature-title {
-  font: 600 clamp(34px, 4vw, 52px)/0.95 Newsreader, Georgia, serif;
+  font: 600 clamp(34px, 4vw, 52px)/0.95 var(--font-learning-text);
   letter-spacing: -0.03em;
 }
 .ks-mag-feature:hover .ks-mag-feature-title {
@@ -2298,7 +2500,7 @@ html[data-paper="product"] .ks-more-title {
   color: var(--body);
 }
 .ks-mag-more-link {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
@@ -2367,7 +2569,7 @@ html[data-paper="product"] .ks-more-title {
   transform: scale(1.04);
 }
 .ks-mag-tile-title {
-  font: 600 clamp(24px, 2.6vw, 34px)/1 Newsreader, Georgia, serif;
+  font: 600 clamp(24px, 2.6vw, 34px)/1 var(--font-learning-text);
   letter-spacing: -0.025em;
 }
 .ks-mag-tile[data-big] .ks-mag-tile-title {
@@ -2396,7 +2598,7 @@ html[data-paper="product"] .ks-more-title {
 }
 .ks-mag-steps b {
   display: block;
-  font: italic 600 54px/0.9 Newsreader, Georgia, serif;
+  font: italic 600 54px/0.9 var(--font-learning-text);
   color: var(--accent);
 }
 .ks-mag-steps h3 {
@@ -2530,7 +2732,7 @@ html[data-paper="product"] .ks-more-title {
 .ks-gal-num {
   display: block;
   margin-bottom: 6px;
-  font: italic 600 clamp(40px, 4.6vw, 60px)/0.9 Newsreader, Georgia, serif;
+  font: italic 600 clamp(40px, 4.6vw, 60px)/0.9 var(--font-learning-text);
   color: var(--accent);
 }
 .ks-gal-grid {
@@ -2611,7 +2813,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 .lp-folio {
   display: block;
   margin-bottom: 4px;
-  font: 900 clamp(70px, 8vw, 118px)/0.85 Archivo, sans-serif;
+  font: 900 clamp(70px, 8vw, 118px)/0.85 var(--font-learning-text);
   letter-spacing: -0.06em;
   color: var(--folio, var(--accent));
   -webkit-text-stroke: 1px var(--ink);
@@ -2740,7 +2942,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   position: relative;
   padding: 16px 16px 20px;
   background: #FFFDF8;
-  font: 500 12px/1.7 "SFMono-Regular", Menlo, Consolas, monospace;
+  font: 500 12px/1.7 var(--font-learning-text);
   color: #2A2724;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
   /* Torn top and bottom edges. */
@@ -2753,7 +2955,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   display: block;
   margin-bottom: 6px;
   text-align: center;
-  font: 700 11px/1.4 Archivo, sans-serif;
+  font: 700 11px/1.4 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -2778,7 +2980,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   margin-top: 6px;
   text-align: center;
   font-size: 10px;
-  color: #8A8378;
+  color: #6B655B;
 }
 .lp-note {
   position: relative;
@@ -2805,7 +3007,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 .lp-note b {
-  font: italic 700 20px/1.1 Newsreader, Georgia, serif;
+  font: italic 700 20px/1.1 var(--font-learning-text);
 }
 .lp-note em {
   font-size: 14px;
@@ -2827,11 +3029,11 @@ html[data-paper="product"][data-brand="grubshelf"] {
   color: #3A3A44;
 }
 .lp-card b {
-  font: italic 600 19px/1.3 Newsreader, Georgia, serif;
+  font: italic 600 19px/1.3 var(--font-learning-text);
   color: #1C2433;
 }
 .lp-card-kicker {
-  font: 700 10px/1.3 Archivo, sans-serif;
+  font: 700 10px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent);
@@ -2841,13 +3043,22 @@ html[data-paper="product"][data-brand="grubshelf"] {
 .lp-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 26px clamp(18px, 2.4vw, 28px);
+  gap: 18px clamp(18px, 2.4vw, 28px);
+}
+/* Each step is two rows of the shared grid (its picture, then its text),
+   so a taller picture makes room for itself instead of rising over the
+   heading above, and the texts in a row still start on one line. */
+.lp-steps > * {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 18px;
+  margin-bottom: 8px;
 }
 .lp-step-art {
-  height: 190px;
+  min-height: 190px;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 18px;
 }
 .lp-step-art > .lp-pop {
   width: 100%;
@@ -2859,11 +3070,11 @@ html[data-paper="product"][data-brand="grubshelf"] {
   padding: 14px 14px 16px;
   background: #FFFEFA;
   border: 1px solid rgba(20, 18, 15, 0.18);
-  font: 500 11px/1.3 Archivo, sans-serif;
+  font: 500 11px/1.3 var(--font-learning-text);
   color: #3A3A44;
 }
 .lp-doc > b {
-  font: 700 12px/1.2 Archivo, sans-serif;
+  font: 700 12px/1.2 var(--font-learning-text);
   margin-bottom: 4px;
 }
 .lp-doc-h {
@@ -2890,7 +3101,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 .lp-proto > b {
   display: block;
   margin-bottom: 8px;
-  font: 700 10px/1 Archivo, sans-serif;
+  font: 700 10px/1 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #9FD8BF;
@@ -2913,7 +3124,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   padding: 16px;
   background: #16201C;
   border-radius: 8px;
-  font: 500 12.5px/1.6 "SFMono-Regular", Menlo, Consolas, monospace;
+  font: 500 12.5px/1.6 var(--font-learning-text);
   color: #D8E6DF;
   white-space: pre;
   overflow: hidden;
@@ -2928,16 +3139,16 @@ html[data-paper="product"][data-brand="grubshelf"] {
   gap: 16px;
 }
 .lp-flap-num {
-  font: italic 600 34px/1 Newsreader, Georgia, serif;
+  font: italic 600 34px/1 var(--font-learning-text);
   color: var(--accent);
 }
 .lp-flap-call {
-  font: 600 22px/1.15 Newsreader, Georgia, serif;
+  font: 600 22px/1.15 var(--font-learning-text);
   letter-spacing: -0.015em;
   color: var(--ink);
 }
 .lp-flap-hint {
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -2960,7 +3171,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   border-bottom: 2px solid var(--ink);
 }
 .lp-checklist-head b {
-  font: 600 20px/1.2 Newsreader, Georgia, serif;
+  font: 600 20px/1.2 var(--font-learning-text);
 }
 .lp-checklist ul {
   list-style: none;
@@ -2971,7 +3182,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   padding: 3px 9px;
   border: 2px solid var(--accent);
   color: var(--accent);
-  font: 900 10px/1.2 Archivo, sans-serif;
+  font: 900 10px/1.2 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   rotate: -6deg;
@@ -3000,7 +3211,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 }
 .lp-target b {
   margin-top: auto;
-  font: italic 600 20px/1.15 Newsreader, Georgia, serif;
+  font: italic 600 20px/1.15 var(--font-learning-text);
   color: var(--accent);
 }
 .lp-lessons {
@@ -3056,7 +3267,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   box-shadow: 0 14px 24px -14px rgba(20, 18, 15, 0.45);
 }
 .pt-kicker {
-  font: 700 11px/1.4 Archivo, sans-serif;
+  font: 700 11px/1.4 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3065,7 +3276,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   color: var(--accent);
 }
 .pt-title {
-  font: 600 clamp(24px, 2.4vw, 30px)/1.05 Newsreader, Georgia, serif;
+  font: 600 clamp(24px, 2.4vw, 30px)/1.05 var(--font-learning-text);
   letter-spacing: -0.02em;
 }
 .pt-card:hover .pt-title {
@@ -3084,7 +3295,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 }
 .pt-cta {
   margin-top: 4px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
@@ -3130,13 +3341,13 @@ html[data-paper="product"][data-brand="grubshelf"] {
   gap: 4px;
   border: 1.5px dashed var(--muted);
   text-align: center;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
 }
 .ch-shot figcaption b {
-  font: italic 600 22px/1 Newsreader, Georgia, serif;
+  font: italic 600 22px/1 var(--font-learning-text);
   letter-spacing: 0;
   color: var(--accent);
 }
@@ -3153,7 +3364,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   gap: 8px;
   padding: 3px 0;
   border-bottom: 1px dotted #D8D1C2;
-  font: 500 12px/1.3 Archivo, sans-serif;
+  font: 500 12px/1.3 var(--font-learning-text);
 }
 .lp-tick-row i {
   width: 14px;
@@ -3161,7 +3372,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   display: grid;
   place-items: center;
   border: 1px solid var(--ink);
-  font: normal 700 10px/1 Archivo, sans-serif;
+  font: normal 700 10px/1 var(--font-learning-text);
   color: var(--accent);
 }
 .lp-empathy {
@@ -3175,7 +3386,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 .lp-empathy span {
   padding: 8px;
   border: 1px dashed #CFC8B7;
-  font: 700 10px/1 Archivo, sans-serif;
+  font: 700 10px/1 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3189,7 +3400,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   border-radius: 50%;
   background: var(--accent);
   color: #FBEFE6;
-  font: italic 600 15px/1 Newsreader, Georgia, serif;
+  font: italic 600 15px/1 var(--font-learning-text);
 }
 .lp-flows {
   display: flex;
@@ -3206,7 +3417,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 }
 .lp-flows span {
   min-width: 96px;
-  font: 700 10px/1.2 Archivo, sans-serif;
+  font: 700 10px/1.2 var(--font-learning-text);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -3243,7 +3454,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   border-radius: 14px;
 }
 .lp-quote-note b {
-  font: italic 500 17px/1.4 Newsreader, Georgia, serif;
+  font: italic 500 17px/1.4 var(--font-learning-text);
 }
 .lp-quotes {
   display: grid;
@@ -3285,7 +3496,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   inset: 0;
   display: grid;
   place-items: center;
-  font: 700 11px Archivo, sans-serif;
+  font: 700 11px var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3306,7 +3517,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   gap: 6px;
   padding: 6px 10px;
   border: 1px solid var(--rule);
-  font: 700 11px/1 Archivo, sans-serif;
+  font: 700 11px/1 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3374,7 +3585,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 }
 .ld-side-label {
   margin-bottom: 8px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3388,7 +3599,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
 .ld-side li {
   padding: 8px 0;
   border-bottom: 1px solid var(--rule);
-  font: 500 clamp(17px, 1.7vw, 20px)/1.3 Newsreader, Georgia, serif;
+  font: 500 clamp(17px, 1.7vw, 20px)/1.3 var(--font-learning-text);
   color: var(--ink);
   animation: ks-fade 0.5s var(--ks-ease-out) both;
 }
@@ -3397,7 +3608,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   left: 50%;
   top: 46%;
   translate: -50% -50%;
-  font: 600 40px/1 Newsreader, Georgia, serif;
+  font: 600 40px/1 var(--font-learning-text);
   color: var(--accent);
 }
 
@@ -3444,11 +3655,11 @@ html[data-paper="product"][data-brand="grubshelf"] {
   transition: background 0.2s, color 0.2s;
 }
 .ld-step b {
-  font: italic 600 18px/1 Newsreader, Georgia, serif;
+  font: italic 600 18px/1 var(--font-learning-text);
   color: var(--accent);
 }
 .ld-step span {
-  font: 600 15px/1.25 Newsreader, Georgia, serif;
+  font: 600 15px/1.25 var(--font-learning-text);
 }
 .ld-step button:hover,
 .ld-step[data-open] button {
@@ -3470,7 +3681,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   border-left: 1.5px dashed var(--ink);
 }
 .ld-branches i {
-  font: italic 400 13px/1.3 Newsreader, Georgia, serif;
+  font: italic 400 13px/1.3 var(--font-learning-text);
   color: var(--body);
 }
 .ld-loop {
@@ -3486,7 +3697,7 @@ html[data-paper="product"][data-brand="grubshelf"] {
   border-top: none;
 }
 .ld-loop em {
-  font: italic 400 14px/1.3 Newsreader, Georgia, serif;
+  font: italic 400 14px/1.3 var(--font-learning-text);
   color: var(--muted);
 }
 .ld-note {
@@ -3522,13 +3733,61 @@ html[data-paper="product"][data-brand="grubshelf"] {
   height: 100%;
   border: 0;
 }
+/* The course waits as a still. Hover, and the glass catches a light.
+   Pressing play is what starts it, and it stays started. */
+.ks-course-still {
+  display: block;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  color: #fff;
+}
+.ks-course-still img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ks-course-glass {
+  position: absolute;
+  inset: 0;
+  /* A flat warm wash over the poster on hover: solid, no gradient. */
+  background: rgba(255, 214, 140, 0.16);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.ks-course-still:hover .ks-course-glass,
+.ks-course-still:focus-visible .ks-course-glass {
+  opacity: 1;
+}
+.ks-course-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  padding: 14px 22px;
+  background: var(--accent);
+  color: #fff;
+  font: 800 13px/1 var(--font-learning-text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 #14120f;
+}
+.ks-course-still:hover .ks-course-play,
+.ks-course-still:focus-visible .ks-course-play { translate: calc(-50% - 2px) calc(-50% - 2px); box-shadow: 6px 6px 0 #14120f; }
+.ks-course-still:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .ks-course-glass { display: none; }
+  .cs-play:hover, .ks-course-still:hover .ks-course-play { translate: none; }
+}
 .ks-course-bar {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 8px 16px;
   margin-top: 10px;
-  font: 700 11px/1.4 Archivo, sans-serif;
+  font: 700 11px/1.4 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3542,20 +3801,6 @@ html[data-paper="product"][data-brand="grubshelf"] {
   .ks-course { width: 100%; aspect-ratio: 4 / 5; max-height: calc(100svh - 120px); }
 }
 
-/* The Product portrait's frame. */
-.ks-mag-photo {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background: var(--accent);
-}
-.ks-mag-photo img {
-  position: absolute !important;
-  inset: 0;
-  width: 100%;
-  height: 100% !important;
-  aspect-ratio: auto !important;
-  background: none !important;
-}
 
 
 /* Swapping papers: the outgoing paper is a copy slid off the desk. */
@@ -3637,7 +3882,7 @@ html[data-swapping] .ks-paper {
   padding: 8px 12px;
   background: var(--accent);
   color: var(--paper);
-  font: 800 11px/1 Archivo, sans-serif;
+  font: 800 11px/1 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
@@ -3659,12 +3904,24 @@ html[data-swapping] .ks-paper {
   position: absolute;
   top: 10px;
   height: 16px;
+  /* The shortest jobs still get a bar a finger can find (WCAG target size). */
+  min-width: 24px;
   box-sizing: border-box;
   border-radius: 2px;
   cursor: pointer;
   transform-origin: left;
   animation: ct-grow 0.9s var(--ks-ease-out) both;
   transition: opacity 0.3s, height 0.25s, top 0.25s, box-shadow 0.25s;
+}
+/* Short jobs draw thin bars; give every bar a finger-sized hit area. */
+.ct-bar::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  left: 50%;
+  width: max(100%, 28px);
+  translate: -50% 0;
 }
 .ct-bar[data-dot] {
   height: 14px;
@@ -3676,7 +3933,7 @@ html[data-swapping] .ks-paper {
   left: 0;
   bottom: calc(100% + 4px);
   white-space: nowrap;
-  font: 700 11px/1 Archivo, sans-serif;
+  font: 700 11px/1 var(--font-learning-text);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink);
@@ -3720,7 +3977,7 @@ html[data-swapping] .ks-paper {
   top: 0;
   padding-top: 6px;
   translate: -50% 0;
-  font: 700 11px/1 Archivo, sans-serif;
+  font: 700 11px/1 var(--font-learning-text);
   letter-spacing: 0.08em;
   color: var(--muted);
 }
@@ -3759,7 +4016,7 @@ html[data-swapping] .ks-paper {
 }
 .cp-point b {
   display: block;
-  font: italic 600 30px/1 Newsreader, Georgia, serif;
+  font: italic 600 30px/1 var(--font-learning-text);
   color: var(--accent);
 }
 .cp-point h3 {
@@ -3801,7 +4058,7 @@ html[data-swapping] .ks-paper {
 }
 .cp-figure figcaption b {
   margin-right: 6px;
-  font: 700 11px/1 Archivo, sans-serif;
+  font: 700 11px/1 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
@@ -3812,7 +4069,7 @@ html[data-swapping] .ks-paper {
    puts this paper back on the table beside the other edition. */
 .pp {
   position: fixed;
-  top: clamp(12px, 2vw, 22px);
+  bottom: 18px;
   right: clamp(12px, 2vw, 22px);
   z-index: 9990;
   display: flex;
@@ -3826,25 +4083,40 @@ html[data-swapping] .ks-paper {
 }
 .pp-card {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 380px;
-  padding: 10px 14px 10px 10px;
+  flex-direction: column;
+  max-width: 340px;
   background: var(--paper);
   border: 1.5px solid var(--ink);
   box-shadow: 0 12px 26px -10px rgba(20, 18, 15, 0.4);
   color: var(--ink);
-  text-decoration: none;
   transition: translate 0.3s var(--ks-spring), box-shadow 0.3s;
 }
 .pp-card:hover {
   translate: 0 -2px;
   box-shadow: 0 16px 30px -10px rgba(20, 18, 15, 0.45);
 }
-.pp-card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+.pp-swap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 8px 10px;
+  color: inherit;
+  text-decoration: none;
 }
+.pp-swap:focus-visible,
+.pp-table:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+.pp-table {
+  padding: 0 14px 10px 62px;
+  font: 700 11px/1.3 var(--font-learning-text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+}
+.pp-table:hover { color: var(--accent); }
 /* Two tiny folded papers, the one being read in front. */
 .pp-icon {
   position: relative;
@@ -3872,6 +4144,8 @@ html[data-swapping] .ks-paper {
   rotate: 6deg;
 }
 .pp-icon i[data-paper="product"] { background: #F6E4D6; }
+.pp-icon i[data-paper="video"] { background: #E7DFD0; }
+.pp-card.pp-swap { flex-direction: row; align-items: center; }
 .pp-icon i::before {
   content: "";
   position: absolute;
@@ -3882,29 +4156,29 @@ html[data-swapping] .ks-paper {
   background: var(--ink);
   box-shadow: 0 6px 0 -1px var(--rule), 0 11px 0 -1px var(--rule);
 }
-.pp-card:hover .pp-icon i:first-child { translate: -3px 0; rotate: -10deg; }
-.pp-card:hover .pp-icon i:last-child { translate: 4px -2px; rotate: 10deg; }
+.pp-swap:hover .pp-icon i:first-child { translate: -3px 0; rotate: -10deg; }
+.pp-swap:hover .pp-icon i:last-child { translate: 4px -2px; rotate: 10deg; }
 .pp-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 .pp-text b {
-  font: 600 17px/1.15 Newsreader, Georgia, serif;
+  font: 600 17px/1.15 var(--font-learning-text);
   letter-spacing: -0.01em;
 }
 .pp-text span {
-  font: 700 11px/1.4 Archivo, sans-serif;
+  font: 700 11px/1.4 var(--font-learning-text);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
 }
 .pp-arrow {
-  font: 800 16px/1 Archivo, sans-serif;
+  font: 800 16px/1 var(--font-learning-text);
   color: var(--accent);
   transition: translate 0.3s var(--ks-spring);
 }
-.pp-card:hover .pp-arrow { translate: 4px 0; }
+.pp-swap:hover .pp-arrow { translate: 4px 0; }
 .pp-close,
 .pp-tab {
   all: unset;
@@ -3915,7 +4189,7 @@ html[data-swapping] .ks-paper {
   height: 26px;
   background: var(--ink);
   color: var(--paper);
-  font: 700 16px/1 Archivo, sans-serif;
+  font: 700 16px/1 var(--font-learning-text);
 }
 .pp-close:focus-visible,
 .pp-tab:focus-visible {
@@ -3929,12 +4203,23 @@ html[data-swapping] .ks-paper {
   border: 1.5px solid var(--ink);
   box-shadow: 0 8px 18px -8px rgba(20, 18, 15, 0.4);
 }
-/* On a phone the sticky bar runs full width, so the card sits just under it. */
 @media (max-width: 700px) {
-  .pp { top: 52px; right: 10px; }
+  .pp { bottom: 12px; right: 10px; }
+}
+/* The lead story and the coupon share a row until the row gets tight.
+   Below this the coupon drops under the story instead of sitting on it. */
+@media (max-width: 1040px) {
+  .ks-lead {
+    grid-template-columns: 1fr !important;
+  }
+}
+.ks-coupon-wrap {
+  max-width: 100%;
 }
 @media (max-width: 640px) {
-  .pp-card { max-width: calc(100vw - 70px); padding: 8px 10px 8px 8px; gap: 8px; }
+  .pp-card { max-width: calc(100vw - 70px); }
+  .pp-swap { padding: 8px 10px 6px 8px; gap: 8px; }
+  .pp-table { padding-left: 14px; }
   .pp-text b { font-size: 15px; }
   .pp-text span { display: none; }
 }
@@ -3966,7 +4251,7 @@ html[data-swapping] .ks-paper {
   display: inline-flex;
   align-items: center;
   min-height: 32px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3978,7 +4263,7 @@ html[data-swapping] .ks-paper {
   flex-wrap: wrap;
   gap: 6px 16px;
   margin: 16px 0 14px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3991,11 +4276,27 @@ html[data-swapping] .ks-paper {
   line-height: 0.92;
 }
 .cs-deck {
-  margin: 0 0 22px;
+  margin: 0 0 18px;
   max-width: 50ch;
-  font: italic 400 clamp(19px, 2vw, 24px)/1.4 Newsreader, Georgia, serif;
+  font: italic 400 clamp(19px, 2vw, 24px)/1.4 var(--font-learning-text);
   color: var(--body);
 }
+.cs-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  padding: 14px 22px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font: 800 13px/1 var(--font-learning-text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.cs-play:hover { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
+.cs-play:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .cs-byline {
   display: flex;
   flex-wrap: wrap;
@@ -4003,7 +4304,7 @@ html[data-swapping] .ks-paper {
   padding: 10px 0;
   border-top: 1px solid var(--ink);
   border-bottom: 1px solid var(--ink);
-  font: 700 11px/1.5 Archivo, sans-serif;
+  font: 700 11px/1.5 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
@@ -4036,7 +4337,7 @@ html[data-swapping] .ks-paper {
   display: flex;
   gap: 10px;
   padding-top: 8px;
-  font: 700 11px/1.45 Archivo, sans-serif;
+  font: 700 11px/1.45 var(--font-learning-text);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
@@ -4075,7 +4376,7 @@ html[data-swapping] .ks-paper {
   margin: 0 0 14px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--ink);
-  font: 800 12px/1.3 Archivo, sans-serif;
+  font: 800 12px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
@@ -4088,7 +4389,7 @@ html[data-swapping] .ks-paper {
 }
 .cs-short dt {
   margin-bottom: 6px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
@@ -4118,7 +4419,7 @@ html[data-swapping] .ks-paper {
 .cs-lead {
   margin: 0 0 16px;
   max-width: 40ch;
-  font: 600 clamp(22px, 2.4vw, 30px)/1.25 Newsreader, Georgia, serif;
+  font: 600 clamp(22px, 2.4vw, 30px)/1.25 var(--font-learning-text);
   letter-spacing: -0.015em;
   color: var(--ink);
 }
@@ -4139,7 +4440,7 @@ html[data-swapping] .ks-paper {
   align-items: center;
   min-height: 32px;
   margin-top: 8px;
-  font: 800 12px/1.3 Archivo, sans-serif;
+  font: 800 12px/1.3 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
@@ -4182,7 +4483,7 @@ html[data-swapping] .ks-paper {
 .cs-facts b {
   display: block;
   margin-bottom: 6px;
-  font: 900 clamp(34px, 4vw, 48px)/1 Archivo, sans-serif;
+  font: 900 clamp(34px, 4vw, 48px)/1 var(--font-learning-text);
   letter-spacing: -0.05em;
   color: var(--accent);
 }
@@ -4226,7 +4527,7 @@ html[data-swapping] .ks-paper {
 }
 .cs-next-kicker {
   margin: 0 0 10px;
-  font: 700 11px/1.3 Archivo, sans-serif;
+  font: 700 11px/1.3 var(--font-learning-text);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
@@ -4250,7 +4551,7 @@ html[data-swapping] .ks-paper {
   min-height: 46px;
   padding: 0 22px;
   border: 2px solid var(--ink);
-  font: 800 12px/1 Archivo, sans-serif;
+  font: 800 12px/1 var(--font-learning-text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
@@ -4268,18 +4569,18 @@ html[data-swapping] .ks-paper {
 /* ── One headline style per paper ──
    Learning: heavy grotesque capitals. Product: serif sentence case (its
    rule sits with the Product paper above). Page titles share one size. */
-html:not([data-paper="product"]) .ks-paper :is(.cs-h1, .cs-h2, .cs-h3, .cs-next-link, .ks-page-h1) {
-  font-family: Archivo, sans-serif !important;
-  font-weight: 900 !important;
+html[data-paper="learning"] .ks-paper :is(.cs-h1, .cs-h2, .cs-h3, .cs-next-link, .ks-page-h1) {
+  font-family: var(--font-learning-display) !important;
+  font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
 }
-html:not([data-paper="product"]) .ks-paper .cs-h2,
-html:not([data-paper="product"]) .ks-paper .cs-h3 {
+html[data-paper="learning"] .ks-paper .cs-h2,
+html[data-paper="learning"] .ks-paper .cs-h3 {
   letter-spacing: -0.03em;
 }
 html[data-paper="product"] .ks-paper .cs-next-link {
-  font-family: Newsreader, Georgia, serif;
+  font-family: var(--font-learning-text);
   font-weight: 600;
   letter-spacing: -0.025em;
 }
@@ -4311,3 +4612,674 @@ html[data-paper="product"] .ks-paper .cs-next-link {
   }
 }
 
+
+/* ── The Wire (components/the-wire.tsx) ──
+   A newsroom teleprinter: the machine, a slit, and paper feeding out of it
+   with a dispatch typing itself. Tearing the sheet off drops it away and
+   the next one feeds through. */
+.wire {
+  display: flex;
+  flex-direction: column;
+  border: 1.5px solid var(--ink);
+  background: var(--paper-2);
+}
+.wire-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 800 12px/1 var(--font-learning-text);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.wire-live {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 var(--accent);
+  animation: wire-pulse 1.6s ease-out infinite;
+}
+@keyframes wire-pulse {
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.wire-meta {
+  margin-left: auto;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  opacity: 0.75;
+}
+.wire-machine {
+  position: relative;
+  height: 22px;
+  margin: 0 10px;
+  background: var(--ink);
+  border-radius: 0 0 6px 6px;
+}
+.wire-slit {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 5px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--paper);
+  opacity: 0.35;
+}
+.wire-feed {
+  position: relative;
+  min-height: 236px;
+  margin: 0 18px;
+  overflow: hidden;
+}
+.wire-sheet {
+  position: relative;
+  display: block;
+  padding: 14px 16px 26px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: none;
+  box-shadow: 0 10px 18px -12px rgba(20, 18, 15, 0.35);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), 100.00% 100%, 94.44% calc(100% - 7px), 88.89% 100%, 83.33% calc(100% - 7px), 77.78% 100%, 72.22% calc(100% - 7px), 66.67% 100%, 61.11% calc(100% - 7px), 55.56% 100%, 50.00% calc(100% - 7px), 44.44% 100%, 38.89% calc(100% - 7px), 33.33% 100%, 27.78% calc(100% - 7px), 22.22% 100%, 16.67% calc(100% - 7px), 11.11% 100%, 5.56% calc(100% - 7px), 0.00% 100%);
+  transform-origin: 30% 0;
+  animation: wire-out 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+@keyframes wire-out {
+  from { translate: 0 -100%; }
+}
+.wire-sheet[data-tearing] {
+  animation: wire-tear 0.65s cubic-bezier(0.5, 0, 0.8, 0.4) forwards;
+}
+@keyframes wire-tear {
+  0% { rotate: 0deg; translate: 0 0; }
+  25% { rotate: 3deg; translate: 2px 4px; }
+  100% { rotate: 9deg; translate: 18px 120%; opacity: 0; }
+}
+.wire-desk {
+  margin: 0 0 10px;
+  font: 700 11px/1.3 var(--font-learning-text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.wire-text {
+  margin: 0;
+  min-height: 7.2em;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.wire-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.wire-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--ink);
+  animation: wire-blink 0.8s steps(1) infinite;
+}
+@keyframes wire-blink {
+  50% { opacity: 0; }
+}
+.wire-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  margin-top: 6px;
+  font: 800 11px/1 var(--font-learning-text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  opacity: 0;
+  translate: 0 4px;
+  transition: opacity 0.3s, translate 0.3s;
+  pointer-events: none;
+}
+.wire-link[data-shown] {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+.wire-link:hover { text-decoration: underline; }
+.wire-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--rule);
+}
+.wire-tear {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid var(--ink);
+  font: 800 12px/1 var(--font-learning-text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: background 0.2s, color 0.2s;
+}
+.wire-tear:hover { background: var(--ink); color: var(--paper); }
+.wire-tear:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wire-count {
+  font: 700 11px/1 var(--font-learning-text);
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wire-live, .wire-caret { animation: none; }
+  .wire-sheet, .wire-sheet[data-tearing] { animation: none; }
+}
+
+/* The About portrait stays a still. Hover, and it wakes: the picture
+   moves, candlelight crosses the glass, and gold dust rises. */
+.ks-enchant {
+  position: relative;
+  height: clamp(280px, 32vw, 360px);
+  background: #1a120c;
+  border: 1px solid var(--ink);
+  overflow: hidden;
+  cursor: pointer;
+}
+.ks-enchant :is(video, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+.ks-enchant video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.ks-enchant:hover video { opacity: 1; }
+.ks-enchant:hover :is(video, img) { transform: scale(1.06); transition: transform 0.8s ease, opacity 0.45s ease; }
+.ks-enchant-glass,
+.ks-enchant-dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.ks-enchant:hover .ks-enchant-glass,
+.ks-enchant:hover .ks-enchant-dust { opacity: 1; }
+.ks-enchant-glass {
+  /* A flat warm wash and an inset vignette: solid fills and shadows only. */
+  background: rgba(255, 214, 140, 0.18);
+  mix-blend-mode: soft-light;
+  box-shadow: inset 0 0 0 7px rgba(196, 154, 62, 0.55), inset 0 0 48px rgba(20, 8, 0, 0.3);
+}
+.ks-enchant-dust { overflow: hidden; }
+.ks-enchant-dust i {
+  position: absolute;
+  bottom: -8px;
+  border-radius: 50%;
+  background: #ffe7a8;
+  box-shadow: 0 0 6px 2px rgba(255, 196, 90, 0.85);
+  opacity: 0;
+}
+.ks-enchant:hover .ks-enchant-dust i { animation: ks-enchant-dust 4.5s linear infinite; }
+
+/* Body copy stays in sentence case. The menu, the titles, and the name stay in capitals. */
+html[data-paper] .ks-paper *:not(.ks-masthead),
+.pp *:not(.ks-name) {
+  text-transform: none !important;
+}
+html[data-paper] .ks-paper :is(
+  .ks-nav-links,
+  .ks-nav-link,
+  .ks-mobile-bar,
+  .ks-mobile-toggle,
+  h1, h2, h3,
+  .ks-more-title,
+  .ks-mag-feature-title,
+  .ks-mag-tile-title
+),
+html[data-paper] .ks-paper :is(h1, h2, h3, .ks-nav-links, .ks-mobile-bar) * {
+  text-transform: uppercase !important;
+}
+html[data-paper] .ks-paper .ks-masthead,
+html[data-paper] .ks-paper .ks-name,
+.ks-name,
+.ks-table-title,
+.ks-np-mast,
+.ks-np-head,
+.ks-np-sections,
+.ks-np-sections span {
+  text-transform: uppercase !important;
+}
+
+/* Learning paper (Broadsheet): Libre Baskerville for titles, IBM Plex Serif for reading, the menu and labels. */
+html[data-paper="learning"] .ks-paper,
+html[data-paper="learning"] .ks-paper *,
+html[data-paper="learning"] .pp,
+html[data-paper="learning"] .pp * {
+  font-family: var(--font-learning-text) !important;
+}
+html[data-paper="learning"] .ks-paper :is(h1, h2, h3, blockquote, .ks-masthead, .ks-pull),
+html[data-paper="learning"] .ks-paper :is(h1, h2, h3, blockquote, .ks-masthead) * {
+  font-family: var(--font-learning-display) !important;
+}
+.ks-np:not(.ks-npp):not(.ks-npv),
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-mast,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-head,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-stand,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-cols,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-cols p {
+  font-family: var(--font-learning-display);
+}
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-top,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-sections,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-kicker,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-caption,
+.ks-np:not(.ks-npp):not(.ks-npv) .ks-np-stats {
+  font-family: var(--font-learning-text);
+}
+
+/* Video paper: the house pair, Libre Baskerville for titles, IBM Plex Serif for reading, the menu and labels. */
+html[data-paper="video"] .ks-paper,
+html[data-paper="video"] .ks-paper *,
+html[data-paper="video"] .pp,
+html[data-paper="video"] .pp * {
+  font-family: var(--font-video-text) !important;
+}
+html[data-paper="video"] .ks-paper :is(h1, h2, h3, blockquote, .ks-masthead, .ks-pull, .ks-more-title),
+html[data-paper="video"] .ks-paper :is(h1, h2, h3, blockquote, .ks-masthead, .ks-more-title) * {
+  font-family: var(--font-video-display) !important;
+}
+.ks-npv,
+.ks-npv .ks-np-stand,
+.ks-npv .ks-np-cols,
+.ks-npv .ks-np-cols p {
+  font-family: var(--font-video-display);
+}
+.ks-npv .ks-np-top,
+.ks-npv .ks-np-sections,
+.ks-npv .ks-np-kicker,
+.ks-npv .ks-np-caption,
+.ks-npv .ks-np-stats {
+  font-family: var(--font-video-text);
+}
+
+/* Product paper: the house pair, Libre Baskerville for titles, IBM Plex Serif for reading, the menu and labels. */
+html[data-paper="product"] .ks-paper,
+html[data-paper="product"] .ks-paper *,
+html[data-paper="product"] .pp,
+html[data-paper="product"] .pp * {
+  font-family: var(--font-product-text) !important;
+}
+html[data-paper="product"] .ks-paper :is(
+  h1, h2, h3, .ks-masthead, .ks-more-title, .ks-mag-feature-title, .ks-mag-tile-title, blockquote
+),
+html[data-paper="product"] .ks-paper :is(h1, h2, h3, .ks-masthead, .ks-more-title, .ks-mag-feature-title, .ks-mag-tile-title, blockquote) * {
+  font-family: var(--font-product-display) !important;
+  font-style: normal;
+}
+.ks-npp .ks-np-top,
+.ks-npp .ks-np-sections,
+.ks-npp .ks-np-kicker,
+.ks-npp .ks-np-stand,
+.ks-npp .ks-np-caption,
+.ks-npp p {
+  font-family: var(--font-product-text);
+}
+
+/* The paper prints in black, white and grey. Colour is the edition's,
+   and it only shows when an action is highlighted. */
+html[data-paper="learning"],
+html[data-paper="product"],
+html[data-paper="video"] {
+  --ink: #141414;
+  --paper: #F6F6F4;
+  --paper-2: #FFFFFF;
+  --muted: #6A6A6A;
+  --body: #333333;
+  --rule: #D4D4D4;
+  --outer: #E6E6E4;
+  --paper-deep: #ECECEC;
+  --ks-bg-outer: var(--outer);
+  --ks-bg-paper: var(--paper);
+  --ks-text-dark: var(--ink);
+  --ks-text-body: var(--body);
+  --ks-text-muted: var(--muted);
+  --ks-border: var(--rule);
+  --ks-footer-bg: #141414;
+  --ks-footer-text: #F4F4F2;
+  --ks-footer-muted: #A3A3A3;
+}
+html[data-paper] .ks-paper,
+html[data-paper] .pp {
+  --accent: var(--ink);
+  --ks-accent: var(--ink);
+}
+img,
+video,
+iframe,
+canvas,
+.ks-np-print,
+.ch-stage-phones,
+.ks-mag-cover-art,
+.ks-mag-feature-art,
+.ks-mag-tile-art,
+.ks-enchant {
+  filter: grayscale(1) !important;
+}
+.ks-np-kicker,
+.ks-np-head em,
+.ks-npp .ks-np-kicker,
+.ks-npv .ks-np-kicker,
+.ks-npv .ks-np-head em,
+.ks-npv .ks-np-stats b,
+.ks-npv .ks-np-caption b {
+  color: #141414 !important;
+}
+.ks-np-sections span[data-on],
+.ks-npp .ks-np-sections span[data-on],
+.ks-npv .ks-np-sections span[data-on] {
+  background: #141414 !important;
+  color: #F6F6F4 !important;
+}
+.ks-mag-available i,
+html[data-paper] .ks-paper [style*="2E7D32"] {
+  background: #6A6A6A !important;
+}
+.ks-fx-meter[data-tone="good"] .ks-fx-meter-track span,
+.ks-fx-meter[data-tone="bad"] .ks-fx-meter-track span {
+  background: #141414;
+}
+.ks-fx-meter[data-tone="good"] .ks-fx-meter-word {
+  color: #141414;
+}
+html[data-paper] .ks-paper :is(a, button):hover,
+html[data-paper] .ks-paper :is(a, button):focus-visible,
+html[data-paper] .pp :is(a, button):hover,
+html[data-paper] .pp :is(a, button):focus-visible {
+  color: var(--edition) !important;
+}
+.ks-action {
+  display: inline-block;
+  padding: 0 0 2px;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--ink) !important;
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: currentColor;
+}
+.ks-action:hover,
+.ks-action:focus-visible {
+  color: var(--edition, var(--accent)) !important;
+  text-decoration-color: currentColor;
+}
+html[data-paper="learning"] .ks-paper .ks-mag-lede::first-letter {
+  font-family: var(--font-learning-display) !important;
+}
+html[data-paper="video"] .ks-paper .ks-mag-lede::first-letter {
+  font-family: var(--font-video-display) !important;
+}
+html[data-paper="product"] .ks-paper .ks-mag-lede::first-letter {
+  font-family: var(--font-product-display) !important;
+}
+@keyframes ks-enchant-dust {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  12% { opacity: 0.95; }
+  100% { transform: translateY(-380px) scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ks-enchant-glass, .ks-enchant-dust { display: none; }
+  .ks-enchant :is(video, img) { transform: none; }
+}
+
+/* ── Cover previews print in their own edition's type ──
+   On the table, each folded paper keeps the fonts of the edition it opens
+   into, never the cover page's. Scoped by the cover's own class, so neither
+   the table nor an open edition can reach in and swap them mid-flight. */
+.ks-np { --np-display: var(--font-learning-display); --np-text: var(--font-learning-text); }
+.ks-np.ks-npp { --np-display: var(--font-product-display); --np-text: var(--font-product-text); }
+.ks-np.ks-npv { --np-display: var(--font-video-display); --np-text: var(--font-video-text); }
+.ks-np.ks-np,
+.ks-np.ks-np * {
+  font-family: var(--np-text) !important;
+}
+.ks-np.ks-np :is(.ks-np-mast, .ks-np-head, .ks-np-head *, .ks-np-cap) {
+  font-family: var(--np-display) !important;
+}
+/* The Product cover's headline sits upright, as in the paper. */
+.ks-np.ks-npp :is(.ks-np-mast, .ks-np-head, .ks-np-head em) {
+  font-style: normal !important;
+}
+
+/* Anything an edition draws outside the paper (the lamp, pop-ups) takes
+   that edition's reading font, not the cover page's. */
+html[data-paper="learning"] body { font-family: var(--font-learning-display); }
+html[data-paper="product"] body { font-family: var(--font-product-text); }
+html[data-paper="video"] body { font-family: var(--font-video-text); }
+
+/* ── Cover thumbnails: printed in black and white, colour on hover ──
+   At rest each folded paper matches the black-and-white editions. Hover
+   (or keyboard focus) develops it into its full-colour print: photos,
+   art and the edition's own accent. The fade runs on the whole sheet, so
+   type, photo and accent turn together. */
+.ks-np { --np-accent: #C0281B; }
+.ks-np.ks-npp { --np-accent: #1E5B5E; }
+.ks-np.ks-npv { --np-accent: #9A4508; }
+.ks-fp-page :is(img, video, canvas, .ks-np-print) {
+  filter: none !important;
+}
+.ks-fp-page .ks-np :is(.ks-np-kicker, .ks-np-head em) {
+  color: var(--np-accent) !important;
+}
+.ks-fp-page .ks-np.ks-npv :is(.ks-np-stats b, .ks-np-caption b) {
+  color: var(--np-accent) !important;
+}
+.ks-fp-page .ks-np .ks-np-sections span[data-on] {
+  background: var(--np-accent) !important;
+  color: #F4F1EA !important;
+}
+.ks-fp-cut {
+  filter: grayscale(1);
+  transition: filter 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.ks-table:not([data-opening]) .ks-fp-sheet:is(:hover, :focus-visible) .ks-fp-cut {
+  filter: grayscale(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ks-fp-cut { transition-duration: 0.01s; }
+}
+/* The Product display face is set light, on the cover as in the paper. */
+.ks-np.ks-npp :is(.ks-np-mast, .ks-np-head) {
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
+.ks-np.ks-npv :is(.ks-np-mast, .ks-np-head) {
+  font-weight: 700 !important;
+  font-style: normal !important;
+  letter-spacing: -0.02em !important;
+}
+/* Baskerville sets wider than the old grotesque: size the Learning
+   cover's masthead and headline so they sit inside the page. */
+.ks-np .ks-np-mast {
+  font-size: 64px !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1 !important;
+}
+.ks-np .ks-np-head {
+  font-size: 40px !important;
+  letter-spacing: -0.02em !important;
+  line-height: 0.98 !important;
+}
+
+/* An edition whose fonts are still arriving waits, briefly, unseen, then
+   fades in in its own type (see lib/fonts.ts), rather than showing a
+   stand-in font and switching. */
+.ks-paper > * {
+  transition: opacity 0.25s ease;
+}
+html[data-fonts="loading"] .ks-paper > * {
+  opacity: 0;
+  transition: none;
+}
+
+/* One masthead across the three editions: the same face, weight and
+   tracking, so the name prints at the same size in each. */
+html[data-paper] .ks-paper .ks-masthead {
+  font-family: var(--font-learning-display) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.04 !important;
+  padding: 0.04em 0 0.02em;
+}
+
+/* ── Thumbnails develop into colour on hover ──
+   Inside the editions every picture prints in black and white. Pointing at
+   a story's thumbnail (a case study, a film on the reel, an app or design
+   project) develops it into its colour print, the same way the papers on
+   the cover do. */
+:is(img, video, canvas, .ks-np-print, .ks-mag-feature-art, .ks-mag-tile-art, .ch-stage-phones) {
+  transition: filter 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+html[data-paper] .ks-paper :is(a:hover, a:focus-visible, .ks-work-grid > :hover, .ks-work-grid > :focus-within)
+  :is(img, video, canvas, .ks-np-print, .ks-mag-feature-art, .ks-mag-tile-art, .ch-stage-phones) {
+  filter: grayscale(0) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(img, video, canvas, .ks-np-print, .ks-mag-feature-art, .ks-mag-tile-art, .ch-stage-phones) {
+    transition-duration: 0.01s;
+  }
+}
+
+/* Long one-word case titles ("Householder") in wide Baskerville capitals:
+   never larger than the phone's width allows. */
+@media (max-width: 600px) {
+  .ks-paper .cs-h1 { font-size: min(40px, 9vw) !important; }
+}
+
+/* A learning case study opens on the course itself, at the hero's width,
+   captioned like the figures elsewhere. */
+.cs-hero-course {
+  margin: 0 auto;
+  max-width: 980px;
+  scroll-margin-top: 60px;
+}
+.cs-hero-course .ks-course-bar span {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+}
+.cs-hero-course .ks-course-bar span b {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+
+/* On a phone the years are narrow and neighbouring jobs touch: alternate
+   bars drop to a second row, so each keeps a full-size target. */
+@media (max-width: 640px) {
+  .ct-rows { height: 72px; }
+  .ct-bar[data-lane="1"] { top: 42px; }
+  .ct-bar[data-lane="1"][data-focus] { top: 38px; }
+  .ct-bar[data-lane="1"][data-dot] { top: 43px; }
+  .ct-bar[data-lane="1"][data-dot][data-focus] { top: 40px; }
+}
+
+/* ── No orphaned cards ──
+   Grids whose count doesn't divide by the columns left a lone card beside
+   empty space. Each now composes to fill its rows. */
+
+/* Four flaps (Mai Shara's solution): one row of four where there's room,
+   two by two otherwise. */
+.lp-flaps:has(> :nth-child(4):last-child) {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+}
+@media (max-width: 900px) and (min-width: 481px) {
+  .lp-flaps:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Five targets (GrubShelf): the first, the number that matters, leads
+   across two columns, so the five fill two rows of three. */
+.lp-cards:has(> :nth-child(5):last-child) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.lp-cards:has(> :nth-child(5):last-child) > :first-child {
+  grid-column: span 2;
+}
+@media (max-width: 640px) {
+  .lp-cards:has(> :nth-child(5):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 420px) {
+  .lp-cards:has(> :nth-child(5):last-child) { grid-template-columns: 1fr; }
+  .lp-cards:has(> :nth-child(5):last-child) > :first-child { grid-column: auto; }
+}
+
+/* The reel's lead film. */
+@media (min-width: 540px) {
+  .rl-film[data-lead] { grid-column: span 2; grid-row: span 2; }
+  .rl-film[data-lead] .ks-film-title { font-size: clamp(24px, 2.4vw, 32px) !important; }
+}
+
+/* The phone's menu bar: "Hire me" set as a label, like MENU beside it, not
+   in body-size capitals. */
+html[data-paper] .ks-paper .ks-mobile-bar .ks-action {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.16em !important;
+  padding-bottom: 3px;
+  min-height: 24px;
+  display: inline-flex;
+  align-items: flex-end;
+}
+
+/* The smallest phones: a page title with a long word ("EXPERIENCE") in
+   wide capitals is sized so the word fits. */
+@media (max-width: 400px) {
+  .ks-paper .ks-page-h1 { font-size: min(40px, 11.2vw) !important; }
+}
+
+/* GrubShelf's week planner on a phone: seven days share a narrow row, so the
+   day names lose their tracking and padding instead of breaking mid-word. */
+@media (max-width: 480px) {
+  .ks-gw-days { gap: 3px; }
+  .ks-gw-day { padding: 5px 2px; }
+  .ks-gw-day b { letter-spacing: 0; font-size: 10.5px; text-align: center; }
+}
+
+/* The Video About page's latest films: six, three across (two on a tablet,
+   one on a phone), so the rows always fill. */
+.va-films {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 700px) {
+  .va-films { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 380px) {
+  .va-films { grid-template-columns: 1fr; }
+}
