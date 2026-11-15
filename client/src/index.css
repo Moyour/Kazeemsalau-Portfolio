@@ -4974,9 +4974,10 @@ html[data-paper] .pp {
   --accent: var(--ink);
   --ks-accent: var(--ink);
 }
+/* Pictures print in black and white. Anything played or clicked through
+   (the courses, the Figma prototypes) is an iframe and keeps its colour. */
 img,
 video,
-iframe,
 canvas,
 .ks-np-print,
 .ch-stage-phones,
