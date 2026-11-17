@@ -261,9 +261,12 @@ export const EDITIONS: Record<
   },
   video: {
     headline: ["Video", "editor"],
-    standfirst: "The reel is on YouTube.",
+    standfirst: "Every film on the channel, written and cut by me.",
     role: "Video editor",
-    story: ["I cut pictures.", "The reel is the channel."],
+    story: [
+      "Book reviews, productivity explainers and how-tos on design, learning and AI. I write each film, then cut the picture, captions and sound so it holds attention from the first frame.",
+      "The same craft goes into my courses: video that makes a complex idea simple and keeps people watching to the end. The 21 films are on YouTube at @Moyoursalau.",
+    ],
     wire: [
       {
         desk: "The reel",
@@ -273,7 +276,7 @@ export const EDITIONS: Record<
       },
       {
         desk: "The cut",
-        text: "Picture, captions and sound.",
+        text: "Picture, captions and sound, cut in Camtasia.",
         href: "/video/reel",
         link: "See the films",
       },
@@ -282,14 +285,18 @@ export const EDITIONS: Record<
       { label: "The reel, on YouTube", page: "P. 2", href: "/video/reel" },
       { label: "About", page: "P. 6", href: "/about" },
     ],
-    stats: [],
+    stats: [
+      { value: "21", label: "Films on the reel" },
+      { value: "1", label: "Channel, all mine" },
+      { value: "3", label: "Picture, captions, sound" },
+    ],
     skills: ["Camtasia", "YouTube", "Picture edit", "Captions", "Sound"],
     featuredNote: "On the channel",
     featured: {
       num: "01",
       tags: ["Picture", "YouTube"],
       title: "The reel",
-      description: "Edited pieces, on the channel.",
+      description: "21 films: book reviews, productivity explainers and how-tos on design, learning and AI.",
       href: "/video/reel",
       page: "2",
       image: "/images/reel/tANWyt2mUdw.jpg",

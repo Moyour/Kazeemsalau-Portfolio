@@ -927,8 +927,40 @@ html[data-table] body {
   margin-bottom: clamp(22px, 5vh, 52px);
   transition: opacity 0.35s;
 }
-.ks-table[data-opening] .ks-table-head {
+.ks-table[data-opening] .ks-table-head,
+.ks-table[data-opening] .ks-table-foot {
   opacity: 0;
+}
+/* The index of today's papers along the foot of the table. */
+.ks-table-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 22px;
+  width: min(100%, 1100px);
+  padding-top: 12px;
+  border-top: 1px solid #14120F;
+  font: 600 11px/1.4 var(--font-cover-text);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #555555;
+  transition: opacity 0.35s;
+}
+.ks-table-foot b {
+  color: #14120F;
+}
+.ks-table[data-stacked] .ks-table-foot { display: none; }
+.ks-table[data-stacked] .ks-fp { gap: 18px; }
+.ks-table[data-portrait] .ks-table-papers { flex-wrap: wrap; row-gap: 36px; }
+.ks-table[data-portrait] .ks-fp:first-child { flex-basis: 100%; }
+.ks-table[data-portrait] .ks-fp { gap: 22px; }
+/* Short phones: drop the taglines so all three papers fit without scrolling. */
+@media (max-height: 720px) {
+  .ks-table[data-stacked] .ks-fp-label i { display: none; }
+  .ks-table[data-stacked] .ks-table-head { margin-bottom: 14px; }
+}
+@media (max-height: 640px) {
+  .ks-table-foot { display: none; }
 }
 .ks-table-kicker {
   font: 500 12px/1.4 var(--font-cover-display);
@@ -944,12 +976,15 @@ html[data-table] body {
   margin: 0;
 }
 .ks-table-sub {
+  text-align: center !important;
   margin: 8px 0 0;
   font-style: italic;
   font-size: clamp(16px, 2vw, 20px);
   color: var(--ks-text-body);
 }
 .ks-table-papers {
+  /* Sits in the middle of the space under the heading, not stuck to the top. */
+  margin-block: auto;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -1275,7 +1310,26 @@ html[data-table] body {
 .ks-npv .ks-np-kicker { color: #9A4508; }
 .ks-npv .ks-np-sections span[data-on] { background: #9A4508; }
 .ks-npv .ks-np-stats b,
-.ks-npv .ks-np-caption b { color: #9A4508; }
+.ks-npv .ks-np-caption b,
+.ks-npv .ks-np-cap { color: #9A4508; }
+/* Video: a fuller lead, with a contact sheet of stills under the story. */
+.ks-npv .ks-np-head { font-size: 58px; }
+.ks-npv .ks-np-stand { margin: 10px 0 12px; font-size: 19px; }
+.ks-npv .ks-np-cols { font-size: 14px; line-height: 1.5; }
+.ks-npv .ks-np-cols p { margin-bottom: 6px; }
+.ks-npv-sheet {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px;
+  background: #14120F;
+}
+.ks-npv-still {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  outline: 1px solid #3A362F;
+}
 .ks-np-stand {
   margin: 14px 0 14px;
   font-style: italic;

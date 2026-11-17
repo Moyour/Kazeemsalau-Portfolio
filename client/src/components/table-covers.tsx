@@ -136,6 +136,7 @@ function ProductFront() {
 }
 
 // Video: the moving portrait leads, and the reel is the story.
+const REEL_STILLS = ["tANWyt2mUdw", "fYb8WI9faec", "_51hFdFnWGk", "00mCQkv6FFQ"];
 function VideoFront() {
   return (
     <div className="ks-np ks-npv">
@@ -151,12 +152,24 @@ function VideoFront() {
             <br />
             <em>cut.</em>
           </div>
-          <p className="ks-np-stand">The reel is on YouTube.</p>
+          <p className="ks-np-stand">Every film on the channel, written and cut by me.</p>
           <div className="ks-np-cols">
             <p>
-              <b className="ks-np-cap">I</b>cut pictures.
+              <b className="ks-np-cap">B</b>ook reviews, productivity explainers and how-tos on design and AI, cut
+              to hold attention from the first frame.
             </p>
-            <p>The reel is the channel.</p>
+            <p>The same craft goes into my courses: video that makes complex ideas simple.</p>
+          </div>
+          {/* A contact sheet of stills from the reel. */}
+          <div className="ks-npv-sheet">
+            {REEL_STILLS.map((id) => (
+              <div key={id} className="ks-npv-still">
+                <img src={`/images/reel/${id}.jpg`} alt="" decoding="async" />
+              </div>
+            ))}
+          </div>
+          <div className="ks-np-caption">
+            <b>From the reel</b> Four of the films
           </div>
         </div>
         <div>

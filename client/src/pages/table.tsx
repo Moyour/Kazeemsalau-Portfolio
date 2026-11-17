@@ -67,9 +67,17 @@ export default function Table() {
   const gap = stacked ? 28 : Math.round(Math.min(72, Math.max(28, innerWidth * 0.035)));
   // Three papers, their labels and the heading fit the window without scrolling.
   const weightSum = ORDER.reduce((n, p) => n + WEIGHT[p], 0);
+  // A tall window (a tablet held upright): Learning on its own row, the
+  // other two side by side under it, so all three can be drawn larger.
+  const portrait = !stacked && innerHeight > innerWidth * 1.1;
   const s = stacked
-    ? Math.min((innerWidth - 48) / COVER_W, Math.max(0.12, (innerHeight - 480) / (ORDER.length * COVER_H)))
-    : Math.min(
+    ? Math.min((innerWidth - 48) / COVER_W, Math.max(0.12, (innerHeight - 560) / (ORDER.length * COVER_H)))
+    : portrait
+      ? Math.min(
+          (innerWidth - 48 - gap) / (COVER_W * (WEIGHT.product + WEIGHT.video)),
+          Math.max(0.16, (innerHeight - 600) / (COVER_H * (WEIGHT.learning + WEIGHT.product))),
+        )
+      : Math.min(
         (Math.min(innerWidth, 1600) - 48 - gap * (ORDER.length - 1)) / (COVER_W * weightSum),
         Math.max(0.16, (innerHeight - 340) / COVER_H),
       );
@@ -168,7 +176,7 @@ export default function Table() {
 
   const e = getEdition();
   return (
-    <main className="ks-table" data-opening={opening ?? undefined} data-stacked={stacked ? "1" : undefined}>
+    <main className="ks-table" data-opening={opening ?? undefined} data-stacked={stacked ? "1" : undefined} data-portrait={portrait ? "1" : undefined}>
       <header className="ks-table-head">
         <div className="ks-table-kicker">
           <span className="ks-name">Kazeem Salau</span> &middot; {e.time} delivery{e.city ? ` · ${e.city}` : ""} &middot;{" "}
@@ -219,6 +227,12 @@ export default function Table() {
         ))}
       </div>
 
+      <footer className="ks-table-foot">
+        <span><b>Inside today</b></span>
+        <span>A course you can play</span>
+        <span>A 53-screen prototype</span>
+        <span>21 films on the reel</span>
+      </footer>
     </main>
   );
 }

@@ -220,7 +220,7 @@ function VideoAbout() {
           <Words text="Video editor." />
         </h1>
         <p style={{ fontSize: "clamp(18px, 2vw, 23px)", lineHeight: 1.4, fontStyle: "italic", color: "var(--body)", margin: "0 0 20px", maxWidth: "42ch" }}>
-          I cut pictures. The reel is the channel.
+          I write and cut every film on my channel: book reviews, productivity and how-tos.
         </p>
         <div style={{ ...kicker, letterSpacing: "0.18em", display: "flex", flexWrap: "wrap", gap: 14, padding: "10px 0", borderTop: "1px solid var(--ink)", borderBottom: "4px solid var(--ink)", color: "var(--muted)", marginBottom: 26 }}>
           <span className="ks-name" style={{ color: "var(--ink)" }}>Kazeem Salau</span>
